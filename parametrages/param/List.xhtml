@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <p:growl id="msg" />
+
+    <h:form id="ParamListForm">
+
+        <center>
+            <div style="width:85% ; height: 350px" >
+                <div style="width: 46.5%;float: left">
+
+                    <p:panel header="BASIC SETTINGS">  
+
+                        <h:panelGrid columns="2">
+
+                            <p:outputLabel value="Image directory" for="ri" />
+                            <p:inputText style="width: 300px" id="ri" value="#{paramController.parametrage.repertoirePhoto}" 
+                                         required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                            <p:outputLabel value="VAT rate" for="ttva" />
+                            <p:inputText style=" width: 75px" id="ttva" value="#{paramController.parametrage.tauxtva}"
+                                         required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                       
+                            <p:outputLabel value="Percentage M" for="pm" />
+                            <p:inputText  style=" width: 75px"  id="pm" value="#{paramController.parametrage.pourcentagemercurial}" 
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                        </h:panelGrid>
+
+                    </p:panel>
+
+                </div>
+
+                <div style="width: 53% ; float: right;margin-left: 0.5%">
+
+                    <p:panel header="SETTINGS OF THE TOMPRO CONNECTION CHAIN">   
+
+                        <h:panelGrid columns="2">
+
+                            <p:outputLabel value="User" for="utpro" />
+                            <p:inputText  style=" width: 300px" id="utpro" value="#{paramController.parametrage.userTompro}" 
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                            <p:outputLabel value="Password" for="ptpro" />
+                            <p:inputText  style=" width: 200px" id="ptpro" value="#{paramController.parametrage.passwordTompro}"
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                            <p:outputLabel value="Connection chain" for="cctpro" />
+                            <p:inputText  style=" width: 350px"  id="cctpro" value="#{paramController.parametrage.chaineConnexionTompro}" 
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+                            
+                            <p:outputLabel value="Driver Class Name" for="dcn_tpro" />
+                            <p:inputText  style=" width: 300px" id="dcn_tpro" value="#{paramController.parametrage.driverClassNameTompro}"
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+                            
+                             <p:outputLabel value="Database Name" for="dbn_tpro" />
+                             <p:inputText  style=" width: 200px" id="dbn_tpro" value="#{paramController.parametrage.dataBaseNameTompro}"
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+                            
+                        </h:panelGrid>
+
+                    </p:panel>
+
+                    <p:separator />
+
+                    <p:panel header="SETTING THE GENDATA CONNECTION CHAIN">  
+
+                        <h:panelGrid columns="2">
+
+                            <p:outputLabel value="User " for="usergendata" />
+                            <p:inputText  style=" width: 300px"  id="usergendata" value="#{paramController.parametrage.userGendata}" 
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                            <p:outputLabel value="Password" for="passwordgendata" />
+                            <p:inputText  style=" width: 200px"  id="passwordgendata" value="#{paramController.parametrage.passwordGendata}"
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                            <p:outputLabel value="Connection chain" for="ccgendata" />
+                            <p:inputText  style=" width: 350px"  id="ccgendata" value="#{paramController.parametrage.chaineConnexionGendata}" 
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+                            
+                            <p:outputLabel value="Driver Class Name" for="dcn_gendata" />
+                            <p:inputText  style=" width: 300px" id="dcn_gendata" value="#{paramController.parametrage.driverClassNameGendata}"
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+                            
+                            <p:outputLabel value="Database Name" for="dbn_gendata" />
+                            <p:inputText  style=" width: 200px" id="dbn_gendata" value="#{paramController.parametrage.dataBaseNameGendata}"
+                                          required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                        </h:panelGrid>
+
+                    </p:panel>
+                </div>
+            </div>
+        </center>
+        
+        <br/>
+        
+        <p:separator style="width: 85% ; margin-left: 7.5%" />
+
+        <center>            
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="Edit" actionListener="#{paramController.edit()}" update="ParamListForm,:msg" />
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

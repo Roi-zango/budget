@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RubriqueMercurialCreateDlg" 
+                  widgetVar="RubriqueMercurialCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD AN ITEM" closeOnEscape="true">
+
+            <h:form id="RubriqueMercurialCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">
+                        
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText style="width: 200px" id="code" value="#{articleController.article.code}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="code" />
+
+                        <p:outputLabel value="Name" for="nom" />
+                        <p:inputTextarea style="width: 600px" cols="500" rows="5" id="nom" value="#{articleController.article.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="nom" />
+                                                
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>            
+                        <p:commandButton value="Cancel" onclick="PF('RubriqueMercurialCreateDialog').hide()"/>
+                        
+                        <p:commandButton actionListener="#{articleController.save()}" value="Save" update="display,:RubriqueMercurialListForm:datalist,:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>             
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

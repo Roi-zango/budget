@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="UtilisateurCreateDlg" 
+                  widgetVar="UtilisateurCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD A USER" closeOnEscape="true">
+
+            <h:form id="UtilisateurCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">
+                             
+                        <p:outputLabel value="Name" for="nom" />
+                        <p:inputText style="width: 300px" id="nom" value="#{utilisateurController.utilisateur.nom}" 
+                                     required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="nom" />
+                        
+                        <p:outputLabel value="Surname" for="prenom" />
+                        <p:inputText style="width: 300px" id="prenom" value="#{utilisateurController.utilisateur.prenom}" />
+                                   
+                        <p:message for="prenom" />
+                     
+                        <p:outputLabel rendered="#{compteController.mode.equals('Create')}" value="Retype password" for="repeat" />
+                        <p:inputText rendered="#{compteController.mode.equals('Create')}" id="repeat" value="#{compteController.repeatPassword}"  required="true" requiredMessage="Valeur obligatoire" />
+                    
+                        <p:outputLabel value="Sex" for="sex" />
+                        <p:selectOneMenu id="sex" filter="true" value="#{utilisateurController.utilisateur.sexe}">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="-" />
+                            <f:selectItem itemLabel="Masculin" itemValue="M" />
+                             <f:selectItem itemLabel="Feminin" itemValue="F" />
+                        </p:selectOneMenu>
+                        <p:message for="sex" />
+                        
+                         <p:outputLabel value="Marital status" for="stat_mat" />
+                        <p:selectOneMenu id="stat_mat" filter="true" value="#{utilisateurController.statutMatrimonial.idStatutMatrimonial}">             
+                            <f:selectItems value="#{utilisateurController.statutMatrimonials}" var="item" itemLabel="#{item.libelle}" itemValue="#{item.idStatutMatrimonial}" />
+                        </p:selectOneMenu>
+                        <p:message for="stat_mat" />
+                      
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+                        
+                        <p:commandButton value="Cancel" onclick="PF('UtilisateurCreateDialog').hide()"/>
+                        
+                        <p:commandButton actionListener="#{utilisateurController.save()}" value="Save" update="display,:UtilisateurListForm:datalist,:msg">
+                            <p:confirm header="ConfirmationHeader" message="ConfirmCreateMessage" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

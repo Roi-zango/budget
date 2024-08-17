@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="StructureCreateDlg" 
+                  widgetVar="StructureCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="AJOUTER UNE STRUCTURE" 
+                  closeOnEscape="true"
+                  height="450px">
+
+            <h:form id="StructureCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">                        
+
+                        <p:outputLabel value="Nom" for="libelle" />
+                        <p:inputTextarea style="width: 400px" cols="350" rows="3" id="libelle" value="#{serviceController.structure.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="libelle" /> 
+
+                        <p:outputLabel value="Type" for="type" />
+                        <p:selectOneMenu id="type" filter="true" value="#{serviceController.typestructure.idtypestructure}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{serviceController.typestructures}" var="ts" itemLabel="#{ts.nom}" itemValue="#{ts.idtypestructure}" />
+                        </p:selectOneMenu>
+                        <p:message for="type" />
+                        
+                        <p:outputLabel value="Status" for="status" />
+                        <p:selectOneMenu id="status" filter="true" value="#{serviceController.statutstructure.idstatutstructure}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{serviceController.statutstructures}" var="ss" itemLabel="#{ss.nom}" itemValue="#{ss.idstatutstructure}" />
+                        </p:selectOneMenu>
+                        <p:message for="status" />
+
+                        <p:outputLabel value="Niveau" for="niveau" />
+                        <p:selectOneMenu id="niveau" filter="true" value="#{serviceController.niveaupyramide.idniveaupyramide}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{serviceController.niveaupyramides}" var="np" itemLabel="#{np.nom}" itemValue="#{np.idniveaupyramide}" />
+                        </p:selectOneMenu>
+                        <p:message for="niveau" />
+                                      
+                        <p:outputLabel value="Region" for="region" />
+                        <p:selectOneMenu id="region" filter="true" value="#{serviceController.region.idregion}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{serviceController.regions}" var="rg" itemLabel="#{rg.nom}" itemValue="#{rg.idregion}" />
+                            <p:ajax update="departement" listener="#{serviceController.updateDepartement()}" />
+                        </p:selectOneMenu>
+                        <p:message for="region" />
+                        
+                        <p:outputLabel value="Departement" for="departement" />
+                        <p:selectOneMenu id="departement" filter="true" value="#{serviceController.departement.iddepartement}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{serviceController.departements}" var="dep" itemLabel="#{dep.nom}" itemValue="#{dep.iddepartement}" />
+                            <p:ajax update="arrondissement" listener="#{serviceController.updateArrondissement()}" />     
+                        </p:selectOneMenu>
+                        <p:message for="departement" />
+                        
+                        <p:outputLabel value="Arrondissement" for="arrondissement" />
+                        <p:selectOneMenu id="arrondissement" filter="true" value="#{serviceController.arrondissement.idarrondissement}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{serviceController.arrondissements}" var="ar" itemLabel="#{ar.nom}" itemValue="#{ar.idarrondissement}" />
+                        </p:selectOneMenu>
+                        <p:message for="arrondissement" />
+
+                        <p:outputLabel value="Article" for="article" />
+                        <p:inputText style="width: 200px" id="article" value="#{serviceController.structure.article}" />
+                        <p:message for="article" />
+
+                        <p:outputLabel rendered="#{serviceController.mode.equals('Edit')}" value="Etat" for="etat" />
+                        <p:selectOneMenu rendered="#{serviceController.mode.equals('Edit')}"  id="etat" filter="true" value="#{serviceController.structure.etat}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="Actif" itemValue="true" />
+                            <f:selectItem itemLabel="Inactif" itemValue="false" />
+                        </p:selectOneMenu>
+                        <p:message rendered="#{serviceController.mode.equals('Edit')}" for="etat" />
+
+                        <p:outputLabel value="Presentation" for="presentation" />
+                        <p:inputTextarea style="width: 400px" cols="350" rows="10" id="presentation" value="#{serviceController.structure.presentation}" />
+                        <p:message for="presentation" /> 
+                        
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('StructureCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{serviceController.save()}" value="#{langues.Save}" update="display,:StructureListForm:datalist,:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

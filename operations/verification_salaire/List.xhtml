@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="VerificationListForm">
+
+        <p:messages id="growl" closable="true" />
+        <p:growl id="msg" />
+
+        <p:panel header="LISTE DES VERIFICATIONS DES ENGAGEMENTS DE SALAIRE">    
+
+            <p:contextMenu id="VerificationDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('VerificationListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('VerificationListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('VerificationListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('VerificationListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{verificationmisController.verificationbcs}"
+                         var="item"                         
+                         rowKey="#{item.idverificationbc}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 95% ; margin-left: 2.5%"
+                         selection="#{verificationmisController.verificationbc}">
+
+                <p:ajax event="rowSelect" update="@form:editButton,@form:deleteButton,@form:imprimer,@form:VerificationDataTableContextMenu" listener="#{verificationmisController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:imprimer,@form:VerificationDataTableContextMenu" listener="#{verificationmisController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:editButton,@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('VerificationListForm:viewButton').click();"/>
+
+                <p:column style="width:10% ; text-align: center" filterBy="#{item.boncommande.code}">
+                    <f:facet name="header">
+                        <h:outputText value="N°"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.code}"/>
+                </p:column>
+
+                <p:column style="width:30%" filterBy="#{item.boncommande.objet}">
+                    <f:facet name="header">
+                        <h:outputText value="Objet"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.objet}"/>
+                </p:column>
+
+                <p:column style="width:20%" filterBy="#{item.boncommande.structure.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Structure"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.structure.nom}"/>
+                </p:column> 
+
+                <p:column style="width:32%" filterBy="#{item.observation}">
+                    <f:facet name="header">
+                        <h:outputText value="Observation"/>
+                    </f:facet>
+                    <h:outputText value="#{item.observation}"/>
+                </p:column>
+                
+                <p:column style="width:10%;text-align: center" >
+                    <f:facet name="header">
+                        <h:outputText value="Date"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dateverification}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width:8% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Etat"/>
+                    </f:facet>
+                    <h:outputText value="#{item.valide eq true ? 'Validé' : 'Rejet'}" />
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="#{langues.Create}" 
+                             actionListener="#{verificationmisController.prepareCreate()}" update=":VerificationCreateForm,msg,growl" />
+
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{langues.Edit}" 
+                             actionListener="#{verificationmisController.prepareEdit()}" update=":VerificationCreateForm,msg,growl" 
+                             disabled="true"/>
+
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{langues.Delete}" actionListener="#{verificationmisController.delete()}" update="growl,datalist,msg" disabled="#{verificationmisController.imprimer}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:commandButton value="Imprimer"
+                             id="imprimer"
+                             actionListener="#{verificationmisController.print()}"
+                             icon="ui-icon-print"
+                             ajax="false"
+                             update="msg,growl"
+                             disabled="#{verificationmisController.detail}"/>
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

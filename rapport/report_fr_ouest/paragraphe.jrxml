@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="paragraphe" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1ae1c77-1dda-4b2b-825c-a2d077d42422">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     imputation."code" AS imputation_code,
+     imputation."nom" AS imputation_nom,
+     rubrique."idrubrique" AS rubrique_idrubrique,
+     rubrique."nom" AS rubrique_nom,
+     rubrique."code" AS rubrique_code,
+     sousrubrique."idsousrubrique" AS sousrubrique_idsousrubrique,
+     sousrubrique."nom" AS sousrubrique_nom,
+     sousrubrique."code" AS sousrubrique_code
+FROM
+     "public"."imputation" imputation INNER JOIN "public"."sousrubrique" sousrubrique
+	 ON imputation."idsousrubrique" = sousrubrique."idsousrubrique"
+     INNER JOIN "public"."rubrique" rubrique ON sousrubrique."idrubrique" = rubrique."idrubrique"
+ORDER BY rubrique.code,sousrubrique.code,imputation.code]]>
+	</queryString>
+	<field name="imputation_code" class="java.lang.String"/>
+	<field name="imputation_nom" class="java.lang.String"/>
+	<field name="rubrique_idrubrique" class="java.lang.Integer"/>
+	<field name="rubrique_nom" class="java.lang.String"/>
+	<field name="rubrique_code" class="java.lang.String"/>
+	<field name="sousrubrique_idsousrubrique" class="java.lang.Integer"/>
+	<field name="sousrubrique_nom" class="java.lang.String"/>
+	<field name="sousrubrique_code" class="java.lang.String"/>
+	<group name="RubriqueGroup">
+		<groupExpression><![CDATA[$F{rubrique_idrubrique}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="30" backcolor="#F0F8FF" uuid="2e8591f6-ffb2-48c6-9273-fc401b54b42f"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Rubrique : "+$F{rubrique_code}+" - "+$F{rubrique_nom}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="SousRubriqueGroup">
+		<groupExpression><![CDATA[$F{sousrubrique_idsousrubrique}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="30" backcolor="#BFE1FF" uuid="95f6e30d-e59f-4ca6-9604-736f66846a50"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Sous - Rubrique : "+$F{sousrubrique_code}+" - "+$F{sousrubrique_nom}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="43" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="130" height="33" backcolor="#CCCCCC" uuid="3b4367da-56fb-499c-b897-7f2eb35885a7"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="130" y="0" width="425" height="33" backcolor="#CCCCCC" uuid="3319305d-09e5-4212-99fa-403b17218a32"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Libellé]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="130" height="18" uuid="7749558e-83cd-4640-807b-c877dd828da7"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imputation_code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="130" y="0" width="425" height="18" uuid="d27f1b36-cbe2-4a06-85b9-e6585f336c61"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imputation_nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

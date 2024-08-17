@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:form id="PayementListForm">
+
+        <p:messages id="growl" closable="true" />
+        <p:growl id="msg" />
+
+        <p:panel header="LIST OF PAID MARKETS">    
+
+            <p:contextMenu id="PayementDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('PayementListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('PayementListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('PayementListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('PayementListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{payementMarcheController.payements}"
+                         var="item"                         
+                         rowKey="#{item.idpayement}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 95% ; margin-left: 2.5%"
+                         selection="#{payementMarcheController.payement}">
+
+                <p:ajax event="rowSelect" update="@form:imprimer,@form:PayementDataTableContextMenu" listener="#{payementMarcheController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:imprimer,@form:PayementDataTableContextMenu" listener="#{payementMarcheController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('PayementListForm:viewButton').click();"/>
+
+                <p:column style="width:32%" filterBy="#{item.objet}">
+                    <f:facet name="header">
+                        <h:outputText value="Pattern"/>
+                    </f:facet>
+                    <h:outputText value="#{item.objet}"/>
+                </p:column>
+
+                <p:column style="width:9% ; text-align: right">
+                    <f:facet name="header">
+                        <h:outputText value="Amount"/>
+                    </f:facet>
+                    <h:outputText value="#{item.montant}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width:15% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Type"/>
+                    </f:facet>
+                    <h:outputText value="#{item.bc eq true ? 'Bon de commande' : ''} #{item.lc eq true ? 'Lettre Commande' : ''} #{item.mission eq true ? 'Mission' : ''} #{item.decision eq true ? 'Décision' : ''} #{item.salaire eq true ? 'Salaire' : ''}" />
+                </p:column>
+
+                <p:column style="width:15% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Beneficiary"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombeneficiaire}" />
+                </p:column>
+
+                <p:column style="width:10% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="RIB"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ribbeneficiaire}" />
+                </p:column>
+
+                <p:column style="width:9% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Date entered"/>
+                    </f:facet>
+                    <h:outputText value="#{item.datesaisie}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width:9% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Validation date"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dateValidation}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <p:separator style="width: 95% ; margin-left: 2.5%" />
+
+        <center> 
+
+            <p:commandButton id="importButton" icon="ui-icon-plus" value="Import From GenData" 
+                             actionListener="#{payementMarcheController.importFromGendata()}" update="msg,growl,datalist" >
+                <p:confirm header="Confirmation" message="Voulez - Vous importer les données de payement ?" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:commandButton value="Print"
+                             id="imprimer"
+                             actionListener="#{payementMarcheController.print()}"
+                             icon="ui-icon-print"
+                             ajax="false"
+                             disabled="true" 
+                             update="msg,growl"/>
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

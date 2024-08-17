@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:body>
+        <ui:composition> 
+            <div id="header">
+                <div id="Logo-nasla-left">
+                    <h:graphicImage library="images" name="Logo-nasla.jpg" style="width: 70px;"/>
+                </div>
+                <div id="HeaderMiddlediv">
+                    <h1>
+                        <a href="#" style="text-decoration: none;">
+                            <center class="logo_colour">
+                                #{langues.AppName} - #{loginController.institution.nom} / #{loginController.annee.nom}
+                            </center>
+                        </a>
+                    </h1>
+                </div>
+                <div id="Logo-nasladiv">
+                    <h:graphicImage library="images" name="Logo-nasla.jpg" id="Logo-nasla" style="width: 70px;"/>
+                </div>
+                <div id="menu">
+                    <ui:include src="/appmenu.xhtml"/>
+                </div>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

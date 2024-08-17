@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" isSummaryWithPageHeaderAndFooter="true" uuid="60ee13a1-a0d0-497c-ad29-4331e9b686c7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="125"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<queryString>
+		<![CDATA[SELECT
+  SUM(budgetdepense1.cp) AS cp,
+  imputation.code AS codeimputations,
+  annee.nom AS annees,
+  action.code AS codesactions,
+  action.idaction AS codesactions,
+  structure.article AS codestructures,
+  programme.code AS codeprogrammes
+FROM
+  public.tache tache
+  INNER JOIN public.budgetdepense1 budgetdepense1 ON (tache.idtache = budgetdepense1.idtache)
+  INNER JOIN public.imputation imputation ON (budgetdepense1.idimputation = imputation.idimputation)
+  INNER JOIN public.annee annee ON (budgetdepense1.idannee = annee.idannee)
+  INNER JOIN public.activite activite ON (tache.idactivite = activite.idactivite)
+  INNER JOIN public.action action ON (activite.idaction = action.idaction)
+  INNER JOIN public.structure structure ON (activite.idstructure = structure.idstructure)
+  INNER JOIN public.programme programme ON (action.idprogramme = programme.idprogramme)
+GROUP BY
+  imputation.code,
+  annee.nom,
+  action.code,
+  action.idaction,
+  structure.article,
+  programme.code
+ORDER BY
+  annee.nom,
+  programme.code,
+  action.code,
+  structure.article,
+  imputation.code]]>
+	</queryString>
+	<field name="cp" class="java.lang.Double"/>
+	<field name="codeimputations" class="java.lang.String"/>
+	<field name="annees" class="java.lang.String"/>
+	<field name="codesactions" class="java.lang.String"/>
+	<field name="codestructures" class="java.lang.String"/>
+	<field name="codeprogrammes" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="495" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="621" y="69" width="173" height="23" uuid="d30971ec-7659-4163-bb1e-308845a612f6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[---------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="621" y="31" width="160" height="30" uuid="c7d8f84f-8092-4522-9d75-0d27e5908c52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Peace-Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="21" y="62" width="179" height="23" uuid="4ce4a79d-2cb8-484c-ae41-ec0c96377b6c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[---------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="29" y="50" width="211" height="22" uuid="9499dfa0-5b87-4645-b586-8a3160f26529"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MINISTERE DE LA SANTE PUBLIQUE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="209" height="30" uuid="333a9161-8675-4fcf-a21c-69060925e188"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[République du cameroun]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" stretchType="RelativeToTallestObject" x="21" y="206" width="771" height="93" uuid="59dd7c74-6d10-49af-ad96-83e10bfba7e9"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="30" isBold="false" isItalic="false" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<textFieldExpression><![CDATA["HOPITAL GYNECO-OBSTETRIQUE ET PEDIATRIQUE DE DOUALA"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="31" y="30" width="162" height="30" uuid="1a8ed97d-34c8-45ca-a2f6-a4a54bc3592d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail - Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="608" y="51" width="200" height="28" uuid="bf688c14-03fa-452d-946c-00403ad0978a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MINISTRY OF PUBLIC HEALTH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="608" y="11" width="189" height="30" uuid="329bc499-a63e-4f1e-9d7c-c038291722f8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Republic of Cameroon]]></text>
+			</staticText>
+			<image>
+				<reportElement x="179" y="299" width="964" height="184" uuid="629b3344-169e-47d6-a077-6d9b1420ad47"/>
+				<imageExpression><![CDATA["tcb.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="331" y="14" width="187" height="160" uuid="07bf13bc-9dbc-406a-8ce3-ff29f16f4bc3"/>
+				<imageExpression><![CDATA["logo.jpeg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="26" y="0" width="142" height="42" backcolor="#CCCCCC" uuid="3dafce51-3423-4e0d-b73c-8a03115439a8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Année]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="168" y="0" width="100" height="42" backcolor="#CCCCCC" uuid="f879d87f-1b20-4fc3-ba1f-b228a99beda4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Programme]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="268" y="0" width="117" height="42" backcolor="#CCCCCC" uuid="a6c5120c-6930-490a-bb76-aafcce333fe3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Action]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="385" y="0" width="115" height="42" backcolor="#CCCCCC" uuid="a168244b-b826-4bd7-99c9-da1285b343d2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Article]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="500" y="0" width="141" height="42" backcolor="#CCCCCC" uuid="878ba4c9-315b-4d73-908d-e3a53015a2df"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paragraphe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="641" y="0" width="151" height="42" backcolor="#CCCCCC" uuid="89156f86-e16b-4b39-966a-d81058c934ab"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Montant(FCFA)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="26" y="0" width="142" height="36" uuid="53a07243-fc2e-4095-b6ed-7b6c38990c09"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{annees}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="168" y="0" width="100" height="36" uuid="7442d3bf-eee9-43f6-9342-6c0bba30ef65"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codeprogrammes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="268" y="0" width="117" height="36" uuid="5ad599c6-235c-4a7f-9c31-fb7c32fa6e7d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codesactions}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="0" width="115" height="36" uuid="fc84dff9-2736-4d8c-9b95-d4e55da459e0"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codestructures}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="0" width="141" height="36" uuid="8997ccb3-b8c8-4365-8f8f-ba5835f23b04"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codeimputations}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="641" y="0" width="151" height="36" uuid="dd130c12-a688-409d-8a07-1f7206abeb91"/>
+				<box rightPadding="5">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cp}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="679" y="10" width="80" height="20" uuid="3641194e-1666-40e0-ad4c-082516764d96"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="759" y="10" width="40" height="20" uuid="7339a17d-ecfe-4ca3-bf7e-b168ec105903"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

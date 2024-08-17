@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a766878c-d5c8-461d-ba23-83676e6184a5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     tache."totalmontantaloue" AS tache_totalmontantaloue,
+     tache."nom" AS tache_nom,
+     tache."aeencours" AS tache_aeencours,
+     tache."cpconsommee" AS tache_cpconsommee,
+     tache."montantengage" AS tache_montantengage,
+     tache."montantliquide" AS tache_montantliquide,
+     tache."montantpayeht" AS tache_montantpayeht,
+     tache."montantpayettc" AS tache_montantpayettc,
+     activite."nom" AS activite_nom,
+     action."nom" AS action_nom,
+     programme."nom" AS programme_nom,
+     programme."code" AS programme_code,
+     action."code" AS action_code,
+     activite."code" AS activite_code
+FROM
+     "public"."tache" tache INNER JOIN "public"."activite" activite ON tache."idactivite" = activite."idactivite"
+     INNER JOIN "public"."action" action ON activite."idaction" = action."idaction"
+     INNER JOIN "public"."programme" programme ON action."idprogramme" = programme."idprogramme"]]>
+	</queryString>
+	<field name="tache_totalmontantaloue" class="java.lang.Double"/>
+	<field name="tache_nom" class="java.lang.String"/>
+	<field name="tache_aeencours" class="java.lang.Double"/>
+	<field name="tache_cpconsommee" class="java.lang.Double"/>
+	<field name="tache_montantengage" class="java.lang.Double"/>
+	<field name="tache_montantliquide" class="java.lang.Double"/>
+	<field name="tache_montantpayeht" class="java.lang.Double"/>
+	<field name="tache_montantpayettc" class="java.lang.Double"/>
+	<field name="activite_nom" class="java.lang.String"/>
+	<field name="action_nom" class="java.lang.String"/>
+	<field name="programme_nom" class="java.lang.String"/>
+	<field name="programme_code" class="java.lang.String"/>
+	<field name="action_code" class="java.lang.String"/>
+	<field name="activite_code" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="48" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

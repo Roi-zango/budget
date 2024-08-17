@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Recipe"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="RecetteListForm">
+
+                <p:growl id="growl" showDetail="true"/>
+                <center>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Year" for="annee" />
+                        <p:selectOneMenu id="annee" value="#{recetteController.annee}" converter="anneeConverter">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{recetteController.annees}" var="annee" itemLabel="#{annee.nom}" itemValue="#{annee}"/>                                                                             
+                            <p:ajax listener="#{recetteController.updateAnnee()}" update="datalist,creer"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </center>
+
+                <p:dataTable id="datalist" value="#{recetteController.imputations}" var="item"                             
+                             paginator="true"
+                             rowKey="#{item.idimputation}"
+                             rows="15"
+                             selectionMode="single"
+                             selection="#{recetteController.imputation}"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             emptyMessage="#{msg.Vide}"
+                             widgetVar="fonctionTable"
+                             draggableColumns="true"
+                             resizableColumns="true">
+
+                    <p:ajax event="rowSelect"   update="@form:creer @form:edit"/>
+                    <p:ajax event="rowUnselect" update="@form:creer @form:edit"/>
+
+                    <f:facet name="header"> 
+                        <h:outputText value="LISTE DES RECETTES"/>
+                    </f:facet> 
+
+                    <p:column filterBy="#{item.code}" style="width: 7%">
+                        <f:facet name="header">
+                            <h:outputText value="Code"/>
+                        </f:facet>
+                        <h:outputText value="#{item.code}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{item.nom}" style="width: 38%">
+                        <f:facet name="header">
+                            <h:outputText value="Imputation"/>
+                        </f:facet>
+                        <h:outputText class="hardBreak" value="#{item.nom}"/>
+                    </p:column>
+
+                    <p:column style="width: 15%">
+                        <f:facet name="header">
+                            <h:outputText value="Recipe Year #{recetteController.ann - 1}"/>
+                        </f:facet>
+                        <h:outputText value="#{recetteController.find(item).ranneeavant}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 15%">
+                        <f:facet name="header">
+                            <h:outputText value="Achievement Year #{recetteController.ann - 1}"/>
+                        </f:facet>
+                        <h:outputText value="#{recetteController.find(item).reaanneeavant}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 15%">
+                        <f:facet name="header">
+                            <h:outputText value="Recipe #{recetteController.ann}"/>
+                        </f:facet>
+                        <h:outputText value="#{recetteController.find(item).ct}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+
+                <center>
+                    <p:commandButton id="creer" disabled="#{recetteController.showCreateButton}"  value="input" 
+                                     actionListener="#{recetteController.prepareCreate()}"  
+                                     oncomplete="PF('RecetteCreateDialog').show()" update="growl,:RecetteCreateForm"/>
+                    
+                    <p:commandButton id="edit" disabled="#{recetteController.showEditButton}"  
+                                     value="edit" actionListener="#{recetteController.prepareEdit()}" 
+                                     oncomplete="PF('RecetteCreateDialog').show()" update="growl,:RecetteCreateForm"/>
+                </center>
+                <ui:include src="/confirmation.xhtml"/>
+
+            </h:form>
+            <ui:include src="Create.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

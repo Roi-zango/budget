@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="BoncommandeCreateDlg" 
+                  widgetVar="BoncommandeCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="AJOUTER UN BON DE COMMANDE" closeOnEscape="true"
+                  width="90%"
+                  height="650px">
+
+            <h:form id="Duplication_Option">
+                <center>
+                    <h:panelGrid columns="3">
+
+                        <h:outputLabel for="id_bc" value="#{langues.bon_commande}" />                        
+                        <p:selectOneMenu disabled="#{boncommandeController.mode.equals('Edit')}" filter="true" filterMatchMode="contains" id="id_bc" value="#{boncommandeController.idboncommande}">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                            <f:selectItems value="#{boncommandeController.boncommandes}" var="bc" itemLabel="#{bc.code}" itemValue="#{bc.idboncommande}" /> 
+                        </p:selectOneMenu>
+
+                        <p:commandButton disabled="#{boncommandeController.mode.equals('Edit')}" value="#{langues.charger}" actionListener="#{boncommandeController.updateDuplicationData()}" update=":BoncommandeCreateForm:display" />
+                    </h:panelGrid>
+                </center>       
+            </h:form>
+
+            <h:form id="BoncommandeCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <center>
+
+                        <h:panelGrid columns="3" columnClasses="column">
+
+                            <p:outputLabel value="#{langues.structure}" for="structure" />
+                            <p:selectOneMenu value="#{boncommandeController.structure.idstructure}" disabled="#{boncommandeController.mode.equals('Edit')}" id="structure" filter="true"  required="true" requiredMessage="Valeur obligatoire" autoWidth="false" style="width: 500px">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{boncommandeController.structures}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idstructure}" />
+                                <p:ajax update="tache,moyens,imputation_,montant_execute,montant_programme" listener="#{boncommandeController.updateTache()}" />
+                            </p:selectOneMenu>
+                            <p:message for="structure" />
+                            
+                            <p:outputLabel value="#{langues.tache}" for="tache" />
+                            <p:selectOneMenu disabled="#{boncommandeController.mode.equals('Edit')}" id="tache" filter="true" value="#{boncommandeController.tache}" converter="tacheConverter" required="true" requiredMessage="Valeur obligatoire" autoWidth="false" style="width: 500px">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{boncommandeController.taches}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                <p:ajax update="moyens,montant_execute,montant_programme,imputation_" listener="#{boncommandeController.updateMoyens()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="tache" />
+                            
+                            <p:outputLabel value="#{langues.paragraphe}" for="moyens" />
+                            <p:selectOneMenu disabled="#{boncommandeController.mode.equals('Edit')}" id="moyens" value="#{boncommandeController.moyens}" filter="true" filterMatchMode="contains" converter="moyensConverter" required="true" requiredMessage="Valeur obligatoire" autoWidth="false" style="width: 500px">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{boncommandeController.moyenses}" var="moyen" itemLabel="#{moyen.idimputation.code} - #{moyen.idimputation.nom}" itemValue="#{item}" />
+                                <p:ajax update="montant_programme,montant_execute,imputation_" listener="#{boncommandeController.updateImputationData()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="moyens" />
+
+                            <p:outputLabel value="#{langues.prestataire}" for="prestataire" />
+                            <p:selectOneMenu id="prestataire" value="#{boncommandeController.societe.idsociete}" filter="true" filterMatchMode="contains" required="true" requiredMessage="Valeur obligatoire" autoWidth="false" style="width: 500px">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{boncommandeController.societes}" var="prest" itemLabel="#{prest.nom}" itemValue="#{prest.idsociete}" />
+                                <p:ajax />
+                            </p:selectOneMenu>
+                            <p:message for="prestataire" />
+
+                            <p:outputLabel value="Signataire" for="signataire" />
+                            <p:selectOneMenu id="signataire" filter="true" value="#{boncommandeController.signataire.idsignataire}" required="true" requiredMessage="Valeur obligatoire" autoWidth="false" style="width: 500px">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{boncommandeController.signataires}" var="obj" itemLabel="#{obj.nom} #{obj.prenom}" itemValue="#{obj.idsignataire}" />
+                                <p:ajax />
+                            </p:selectOneMenu>
+                            <p:message for="signataire" />
+
+                            <p:outputLabel value="Object" for="objet" />
+                            <p:inputTextarea style="width: 500px" cols="500" rows="5" id="objet" value="#{boncommandeController.boncommande.objet}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:message for="objet" /> 
+
+                            <p:outputLabel value="Numero" for="numero" />
+                            <p:inputText style="width: 150px" id="numero" value="#{boncommandeController.boncommande.code}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputText>
+                            <p:message for="numero" />
+
+                            <p:outputLabel value="Ref / Fact" for="reference" />
+                            <p:inputText style="width: 150px" id="reference" value="#{boncommandeController.boncommande.reference}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputText>
+                            <p:message for="reference" />
+
+                            <p:outputLabel value="Imputation" for="imputation_" />
+                            <p:inputText style="width: 150px" id="imputation_" value="#{boncommandeController.boncommande.imputations}" >
+                                <p:ajax />
+                            </p:inputText>
+                            <p:message for="imputation_" />
+
+                            <p:outputLabel value="Date d'émission" for="dateemission" />
+                            <p:calendar pattern="dd/MM/yyyy" id="dateemission" value="#{boncommandeController.boncommande.dateemission}" required="true" requiredMessage="Valeur obligatoire" navigator="true">
+                                <p:ajax event="dateSelect" />
+                            </p:calendar>
+                            <p:message for="dateemission" />
+
+                            <p:outputLabel value="Délai de livrasion (en jrs)" for="delailivraison" />
+                            <p:inputText style="width: 75px" id="delailivraison" value="#{boncommandeController.boncommande.delailivraison}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputText>
+                            <p:message for="delailivraison" />
+                            
+                            <p:outputLabel value="#{langues.montant_alloue}" />
+                            <p:outputLabel id="montant_programme" style="width: 120px" value="#{boncommandeController.moyens.ct}">
+                                <f:convertNumber />
+                            </p:outputLabel>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Montant Exécuté" />
+                            <p:outputLabel id="montant_execute" style="width: 120px" value="#{boncommandeController.moyens.montantexecute}" >
+                                <f:convertNumber />
+                            </p:outputLabel>
+                            <p:outputLabel value="" />
+
+                        </h:panelGrid>
+
+                    </center>
+
+                    <p:separator style="width: 80%;margin-left: 10%;"/>
+
+                    <center>
+                        <p:outputLabel style="text-align: left ; color: blue ; font-size: 20px" value="Coefficient : #{boncommandeController.boncommande.coefficientreducteur}" />
+                    </center>
+
+                    <h:panelGrid style="margin-left: 10%;">
+                        <ui:repeat value="#{boncommandeController.notif}" var="item" rendered="#{boncommandeController.renderedNotif}">
+                            <h:panelGrid columns="1">
+                                <p:outputLabel style="text-align: left ; color: red ; font-size: 20px" value="#{item}" />
+                            </h:panelGrid>                          
+                        </ui:repeat>
+                    </h:panelGrid>
+                    <p:separator style="width: 80%;margin-left: 10%;" id="notif_2" rendered="#{boncommandeController.renderedNotif}"  />
+
+                    <p:dataTable id="datalist" value="#{boncommandeController.ligneboncommandes}" var="item"                             
+                                 paginator="true"
+                                 editable="true" 
+                                 rowKey="#{item.idligneboncommande}"
+                                 rows="15"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="width: 80%;margin-left: 10%;margin-top: 1%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true">
+
+                        <f:facet name="header"> 
+                            <h:outputText value="#{langues.liste_reference}"/>
+                        </f:facet> 
+
+                        <p:column style="width: 10% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="Code"/>
+                            </f:facet>
+                            <h:outputText value="#{item.elementcout.code}"/> 
+                        </p:column>
+
+                        <p:column style="width: 45%" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.designation}" />
+                            </f:facet>
+                            <h:outputText value="#{item.elementcout.nom}"/> 
+                        </p:column>
+
+                        <p:column style="width: 10% ; text-align:center" headerText="#{langues.qte}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.quantite}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText required="true" value="#{item.quantite}">                                             
+                                        <p:ajax event="keyup" listener="#{boncommandeController.updateTotal()}" update=":BoncommandeCreateForm:ht,:BoncommandeCreateForm:tva,:BoncommandeCreateForm:totalair,:BoncommandeCreateForm:ttc,:BoncommandeCreateForm:netaper,:BoncommandeCreateForm:montant_en_lettre"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width: 10% ; text-align:center" headerText="#{langues.prix_unitaire}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{item.prixunitaire}" >
+                                        <f:convertNumber />
+                                    </h:outputText>    
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText required="true" value="#{item.prixunitaire}">
+                                        <f:convertNumber />
+                                        <p:ajax event="keyup" listener="#{boncommandeController.updateTotal()}" update=":BoncommandeCreateForm:ht,:BoncommandeCreateForm:tva,:BoncommandeCreateForm:totalair,:BoncommandeCreateForm:ttc,:BoncommandeCreateForm:netaper,:BoncommandeCreateForm:montant_en_lettre"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width: 10% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="#{langues.total}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.total}">
+                                <f:convertNumber />
+                            </h:outputText>  
+                        </p:column>
+
+                        <p:column style="width:5% ; text-align: center">
+                            <p:rowEditor />
+                        </p:column>
+
+                        <p:column style="width: 5%" >
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <p:commandButton icon="ui-icon-trash">
+                                <p:ajax event="click" listener="#{boncommandeController.removeElement(item)}" update=":BoncommandeListForm:growl,datalist,:BoncommandeCreateForm:ht,:BoncommandeCreateForm:tva,:BoncommandeCreateForm:totalair,:BoncommandeCreateForm:ttc,:BoncommandeCreateForm:netaper"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:panelGrid id="finance_info" style="width: 80%;margin-left: 10%;" columns="12">
+
+                        <p:outputLabel value="Total ht"/>
+                        <p:outputLabel id="ht" value="#{boncommandeController.boncommande.totalht}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="Tva"/>
+                        <p:outputLabel id="tva" value="#{boncommandeController.boncommande.tva}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="Montant air"/>
+                        <p:outputLabel id="totalair" value="#{boncommandeController.boncommande.totalair}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="TTC"/>
+                        <p:outputLabel id="ttc" value="#{boncommandeController.boncommande.ttc}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="NAP"/>
+                        <p:outputLabel id="netaper" value="#{boncommandeController.boncommande.netapayer}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:commandButton value="#{langues.calculer}" actionListener="#{boncommandeController.updateTotal()}" update="ht,tva,totalair,ttc,netaper"/>
+                        <p:commandButton icon="ui-icon-plus" value="#{langues.ajouter_reference}" update="display,:ElementcoutCreateForm" actionListener="#{boncommandeController.prepareAddElements()}" />
+
+                    </p:panelGrid>
+
+                    <p:separator style="width: 80%;margin-left: 10%;"/>
+
+                    <center>
+
+                        <h:panelGrid columns="3" columnClasses="column">
+
+                            <p:outputLabel value="Montant en lettre" for="montant_en_lettre" />
+                            <p:inputTextarea style="width: 350px" cols="350" rows="3" id="montant_en_lettre" value="#{boncommandeController.boncommande.montantenlettre}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:message for="montant_en_lettre" />
+
+                            <p:outputLabel value="Avance" for="avance" />
+                            <p:inputText style="width: 100px" id="avance" value="#{boncommandeController.boncommande.avance}" >
+                                <p:ajax  />
+                            </p:inputText>
+                            <p:message for="avance" />
+
+                            <p:outputLabel value="Mode de payement" />
+                            <h:panelGroup>
+                                <h:panelGrid columns="6">
+                                    <p:outputLabel value="Chèque" />
+                                    <p:selectBooleanCheckbox id="cheque" value="#{boncommandeController.boncommande.cheque}">
+                                        <p:ajax listener="#{boncommandeController.updateMP1()}" update="espece,virement" />
+                                    </p:selectBooleanCheckbox>
+                                    <p:outputLabel value="Espèce" />
+                                    <p:selectBooleanCheckbox id="espece" value="#{boncommandeController.boncommande.espece}">
+                                        <p:ajax listener="#{boncommandeController.updateMP2()}" update="cheque,virement"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:outputLabel value="Virement"  />
+                                    <p:selectBooleanCheckbox id="virement" value="#{boncommandeController.boncommande.virement}">
+                                        <p:ajax listener="#{boncommandeController.updateMP3()}" update="espece,cheque,virement" />
+                                    </p:selectBooleanCheckbox>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <p:outputLabel value=""/>
+
+                            <p:outputLabel value="Taux Tva (%)" for="taux_tva" />
+                            <p:inputText style="width: 75px" id="taux_tva" value="#{boncommandeController.boncommande.tauxtva}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax event="keyup" listener="#{boncommandeController.updateTotal()}" update="finance_info,montant_en_lettre" />
+                            </p:inputText>
+                            <p:message for="taux_tva" />
+
+                            <p:outputLabel value="Taux Ir (%)" for="taux_ir" />
+                            <p:inputText style="width: 75px" id="taux_ir" value="#{boncommandeController.boncommande.tauxair}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax event="keyup" listener="#{boncommandeController.updateTotal()}" update="finance_info,montant_en_lettre" />
+                            </p:inputText>
+                            <p:message for="taux_ir" />
+
+                        </h:panelGrid>
+
+                    </center>
+
+                    <p:separator style="width: 80%;margin-left: 10%;"/>
+
+                    <center>
+
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('BoncommandeCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{boncommandeController.save()}" value="#{langues.Save}" update="display,:BoncommandeListForm:datalist,:BoncommandeListForm:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+

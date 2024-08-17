@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="CompteUtilisateurCreateDlg" 
+                  widgetVar="CompteUtilisateurCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD A USER ACCOUNT" 
+                  closeOnEscape="true">
+
+            <h:form id="CompteUtilisateurCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="User" for="utilisateur" />
+                        <p:selectOneMenu disabled="#{compteController.mode.equals('Edit')}" id="utilisateur" value="#{compteController.utilisateur.idUtilisateur}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{compteController.utilisateurs}" var="item" itemLabel="#{item.nom} #{item.prenom}" itemValue="#{item.idUtilisateur}"/>                     
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="login" for="login" />
+                        <p:inputText id="login" value="#{compteController.compte.login}" required="true" requiredMessage="Valeur obligatoire" style="width: 250px" />
+
+                        <p:outputLabel rendered="#{compteController.mode.equals('Create')}" value="#{langues.password}" for="password" />
+                        <p:inputText rendered="#{compteController.mode.equals('Create')}" id="password" value="#{compteController.compte.mdp}"  required="true" requiredMessage="Valeur obligatoire" />
+
+                        <p:outputLabel rendered="#{compteController.mode.equals('Create')}" value="Retapez le mot de passe" for="repeat" />
+                        <p:inputText rendered="#{compteController.mode.equals('Create')}" id="repeat" value="#{compteController.repeatPassword}"  required="true" requiredMessage="Valeur obligatoire" />
+
+                        <p:outputLabel rendered="#{compteController.mode.equals('Edit')}" value="Etat" for="etat" />
+                        <p:selectOneMenu rendered="#{compteController.mode.equals('Edit')}" id="etat" value="#{compteController.utilisateur.etat}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="Actif" itemValue="Actif"/>
+                            <f:selectItem itemLabel="Inactif" itemValue="Inactif"/>                    
+                        </p:selectOneMenu>
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="Cancel" onclick="PF('CompteUtilisateurCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{compteController.save()}" value="Save" update="display,:CompteUtilisateurListForm:datalist,:msg">
+                            <p:confirm header="ConfirmationHeader" message="ConfirmCreateMessage" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

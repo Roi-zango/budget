@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProgrammeCreateDlg" 
+                  widgetVar="ProgrammeCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD A SUBPROGRAM" closeOnEscape="true">
+
+            <h:form id="ProgrammeCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">
+
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText style="width: 100px" id="code" value="#{programmeController.programme.code}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="code" />
+
+                        <p:outputLabel value="Name" for="nom" />
+                        <p:inputTextarea style="width: 600px" cols="500" rows="5" id="nom" value="#{programmeController.programme.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="nom" />
+
+                        <p:outputLabel value="Objective" for="objectif" />
+                        <p:inputTextarea style="width: 600px" cols="500" rows="5" id="objectif" value="#{programmeController.programme.objectifs}" />
+                        <p:message for="nom" />
+
+                        <p:outputLabel value="Indicator" for="indicateur" />
+                        <p:inputTextarea style="width: 600px" cols="500" rows="5" id="indicateur" value="#{programmeController.programme.indicateur}" />
+                        <p:message for="nom" />
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="Cancel" onclick="PF('ProgrammeCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{programmeController.save()}" value="Save" update="display,:ProgrammeListForm:datalist,:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

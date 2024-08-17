@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:form id="OrdrePayementListForm">
+
+        <p:messages id="growl" closable="true" />
+        <p:growl id="msg" />
+
+        <p:panel header="LIST OF LIQUIDATION ORDERS">    
+
+            <p:contextMenu id="OrdrePayementDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('OrdrePayementListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('OrdrePayementListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('OrdrePayementListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('OrdrePayementListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{ordrePayementBcController.ordrePayements}"
+                         var="item"                         
+                         rowKey="#{item.idOrdrePayement}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 95% ; margin-left: 2.5%"
+                         selection="#{ordrePayementBcController.ordrePayement}">
+
+                <p:ajax event="rowSelect" update="@form:deleteButton, @form:imprimer_ce , @form:OrdrePayementDataTableContextMenu" listener="#{ordrePayementBcController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:deleteButton, @form:imprimer_ce, @form:OrdrePayementDataTableContextMenu" listener="#{ordrePayementBcController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('OrdrePayementListForm:viewButton').click();"/>
+
+                <p:column style="width:9%; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Number"/>
+                    </f:facet>
+                    <h:outputText value="#{item.code}"/>
+                </p:column>
+                                
+                <p:column style="width:9% ; text-align:center" filterBy="#{item.boncommande.code}">
+                    <f:facet name="header">
+                        <h:outputText value="N°"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.code}"/>
+                </p:column>
+
+                <p:column style="width:32%" filterBy="#{item.objet}">
+                    <f:facet name="header">
+                        <h:outputText value="Order object"/>
+                    </f:facet>
+                    <h:outputText value="#{item.objet}"/>
+                </p:column>
+                         
+                <p:column style="width:8%">
+                    <f:facet name="header">
+                        <h:outputText value="Amount"/>
+                    </f:facet>
+                    <h:outputText value="#{item.montant}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column> 
+
+                <p:column style="width:19%" filterBy="#{item.beneficiaire}">
+                    <f:facet name="header">
+                        <h:outputText value="Beneficiary"/>
+                    </f:facet>
+                    <h:outputText value="#{item.beneficiaire}"/>
+                </p:column>
+
+                <p:column style="width:8% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Date "/>
+                    </f:facet>
+                    <h:outputText value="#{item.dateOrdonnation}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width:5%" >
+                    <f:facet name="header">
+                        <h:outputText value="Type"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nap eq true ? 'N A P' : 'Taxes'}"/>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="Create" 
+                             actionListener="#{ordrePayementBcController.prepareCreate()}" update=":OrdrePayementCreateForm,msg,growl" />
+
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="Cancel" actionListener="#{ordrePayementBcController.delete()}" update="growl,datalist,msg" disabled="#{ordrePayementBcController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:commandButton value="Print"
+                             id="imprimer_ce"
+                             actionListener="#{ordrePayementBcController.printOp()}"
+                             icon="ui-icon-print"
+                             ajax="false"
+                             enabled="#{ordrePayementBcController.detail}"
+                             update="msg,growl" />
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="buget_par_programme" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e8e17e3e-cd3a-4fb0-84d3-2657d8cf52c9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idannee" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idinstitution" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     (tache."totalmontantaloue"-tache."montantengage") AS solde_eng,
+     tache."totalmontantaloue" AS tache_totalmontantaloue,
+     tache."nom" AS tache_nom,
+     tache."aeencours" AS tache_aeencours,
+     tache."cpconsommee" AS tache_cpconsommee,
+     tache."montantengage" AS tache_montantengage,
+     tache."montantliquide" AS tache_montantliquide,
+     tache."montantpayeht" AS tache_montantpayeht,
+     tache."montantpayettc" AS tache_montantpayettc,
+     activite."nom" AS activite_nom,
+     action."nom" AS action_nom,
+     programme."nom" AS programme_nom,
+     programme."code" AS programme_code,
+     action."code" AS action_code,
+     activite."code" AS activite_code,
+     programme."idprogramme" AS programme_idprogramme,
+     action."idaction" AS action_idaction,
+     activite."idactivite" AS activite_idactivite,
+     annee."idannee" AS annee_idannee,
+     institution."nom" AS institution_nom,
+     institution."nom_en" AS institution_nom_en,
+     tache."montant_ordonne" AS tache_montant_ordonne
+FROM
+     "public"."tache" tache INNER JOIN "public"."activite" activite ON tache."idactivite" = activite."idactivite"
+     INNER JOIN "public"."action" action ON activite."idaction" = action."idaction"
+     INNER JOIN "public"."programme" programme ON action."idprogramme" = programme."idprogramme"
+     INNER JOIN "public"."institution" institution ON programme."idinstitution" = institution."idinstitution"
+     INNER JOIN "public"."annee" annee ON tache."idannee" = annee."idannee"
+WHERE
+     tache.idannee = $P{idannee}
+ AND institution.idinstitution = $P{idinstitution}
+ORDER BY
+     programme.code ASC]]>
+	</queryString>
+	<field name="solde_eng" class="java.lang.Double"/>
+	<field name="tache_totalmontantaloue" class="java.lang.Double"/>
+	<field name="tache_nom" class="java.lang.String"/>
+	<field name="tache_aeencours" class="java.lang.Double"/>
+	<field name="tache_cpconsommee" class="java.lang.Double"/>
+	<field name="tache_montantengage" class="java.lang.Double"/>
+	<field name="tache_montantliquide" class="java.lang.Double"/>
+	<field name="tache_montantpayeht" class="java.lang.Double"/>
+	<field name="tache_montantpayettc" class="java.lang.Double"/>
+	<field name="activite_nom" class="java.lang.String"/>
+	<field name="action_nom" class="java.lang.String"/>
+	<field name="programme_nom" class="java.lang.String"/>
+	<field name="programme_code" class="java.lang.String"/>
+	<field name="action_code" class="java.lang.String"/>
+	<field name="activite_code" class="java.lang.String"/>
+	<field name="programme_idprogramme" class="java.lang.Long"/>
+	<field name="action_idaction" class="java.lang.Long"/>
+	<field name="activite_idactivite" class="java.lang.Long"/>
+	<field name="annee_idannee" class="java.lang.Long"/>
+	<field name="institution_nom" class="java.lang.String"/>
+	<field name="institution_nom_en" class="java.lang.String"/>
+	<field name="tache_montant_ordonne" class="java.lang.Double"/>
+	<variable name="tache_totalmontantaloue_1" class="java.lang.Double" resetType="Group" resetGroup="Programme_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_totalmontantaloue}]]></variableExpression>
+	</variable>
+	<variable name="tache_totalmontantaloue_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_totalmontantaloue}]]></variableExpression>
+	</variable>
+	<variable name="tache_montantengage_1" class="java.lang.Double" resetType="Group" resetGroup="Programme_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_montantengage}]]></variableExpression>
+	</variable>
+	<variable name="tache_montantpayettc_1" class="java.lang.Double" resetType="Group" resetGroup="Programme_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_montantpayettc}]]></variableExpression>
+	</variable>
+	<variable name="tache_montantengage_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_montantengage}]]></variableExpression>
+	</variable>
+	<variable name="tache_montantpayettc_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_montantpayettc}]]></variableExpression>
+	</variable>
+	<variable name="solde_eng_1" class="java.lang.Double" resetType="Group" resetGroup="Programme_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{solde_eng}]]></variableExpression>
+	</variable>
+	<variable name="solde_eng_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{solde_eng}]]></variableExpression>
+	</variable>
+	<variable name="tache_montant_ordonne_1" class="java.lang.Double" resetType="Group" resetGroup="Programme_Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_montant_ordonne}]]></variableExpression>
+	</variable>
+	<variable name="tache_montant_ordonne_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{tache_montant_ordonne}]]></variableExpression>
+	</variable>
+	<group name="Programme_Group">
+		<groupExpression><![CDATA[$F{programme_nom}]]></groupExpression>
+		<groupHeader>
+			<band height="46">
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="189" height="46" uuid="f8312d7e-5139-4550-a00b-66737a3be46d"/>
+					<box leftPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{programme_code}+" - "+$F{programme_nom}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="Programme_Group" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="189" y="0" width="75" height="46" uuid="57a38e8c-3af2-44ce-8455-24083cb27cfb"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tache_totalmontantaloue_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="Programme_Group" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="264" y="0" width="75" height="46" uuid="56b92222-0813-4e90-a7a7-28113ed6a828"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tache_montantengage_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="Programme_Group" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="405" y="0" width="75" height="46" uuid="3ac5162e-fd7d-4471-a203-d43e270ba62d"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tache_montantpayettc_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="Programme_Group" pattern="#,##0">
+					<reportElement stretchType="RelativeToBandHeight" x="480" y="0" width="75" height="46" uuid="4f319097-56c3-43c0-8056-d1459bfcb3b8"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{solde_eng_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="Programme_Group" pattern="#,##0">
+					<reportElement x="339" y="0" width="66" height="46" uuid="49b4456f-6d20-4234-aac2-c6760306ec58"/>
+					<box rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Times New Roman"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tache_montant_ordonne_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="88" splitType="Stretch">
+			<staticText>
+				<reportElement x="381" y="35" width="174" height="15" uuid="ebfa4280-d546-415d-bfb2-5faded560051"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="369" y="55" width="186" height="20" uuid="5e5cd760-6fe6-4447-b97a-86c6793ed1c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom_en}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="174" height="15" uuid="dcc65245-177a-42b2-9682-f3c4e18280c2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail - Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="20" width="174" height="15" uuid="d0b7b12b-2369-4d84-971a-f72b47e5bc7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="174" height="20" uuid="28659195-2c05-4d42-8dba-2142d85898fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DU CAMEROUN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="55" width="189" height="20" uuid="6cd5f0d1-a4ef-443f-84f0-a2bc06f1d15c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="381" y="0" width="174" height="20" uuid="b2371dbe-a466-4298-b328-3c978236a951"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIC OF CAMEROON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="35" width="174" height="15" uuid="d4e50281-00f3-4792-a577-d4986db507ce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="247" y="1" width="116" height="74" uuid="9d4a55cf-95ec-4d76-b83c-eed4a7998c79"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="29" uuid="dc424640-9777-44d6-a3a4-d10a043e5122"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXECUTION DU BUDGET PAR PROGRAMME]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="189" height="32" backcolor="#F0F8FF" uuid="77dcbd58-7d44-49f9-8f3b-d44673e2a602"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Programme]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="189" y="0" width="75" height="32" backcolor="#F0F8FF" uuid="fae42866-ef88-4862-b0d2-cac0a4bfa4c0"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Dotation
+Initiale]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="264" y="0" width="75" height="32" backcolor="#F0F8FF" uuid="a91bedf3-04c1-45c9-a887-33f028671473"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Montant
+Engagé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="405" y="0" width="75" height="32" backcolor="#F0F8FF" uuid="3efdd41d-4df2-4264-a8d3-9f02af683ad5"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Montant
+Payé]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="480" y="0" width="75" height="32" backcolor="#F0F8FF" uuid="02f9be18-f9a2-4994-b516-92c255b16dbf"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Solde
+Engagement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="339" y="0" width="66" height="32" backcolor="#F0F8FF" uuid="161fe7c8-86e4-4655-b2b3-07ecb6da488d"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Montant
+ordonné]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="189" y="0" width="75" height="30" backcolor="#F0F8FF" uuid="fb7c207d-b0bf-4ed6-9c90-1f10e43e6829"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tache_totalmontantaloue_2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="189" height="30" backcolor="#F0F8FF" uuid="104e988f-2b60-47b2-8956-3c49e45f937d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Totaux]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="264" y="0" width="75" height="30" backcolor="#F0F8FF" uuid="28a4a6c9-9fd7-43c2-9fc0-07d5392527be"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tache_montantengage_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="405" y="0" width="75" height="30" backcolor="#F0F8FF" uuid="2b4c2432-d734-4fa1-8abd-30572a861816"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tache_montantpayettc_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="480" y="0" width="75" height="30" backcolor="#F0F8FF" uuid="ceaa9a28-23c8-4161-a074-e394db18fe9f"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{solde_eng_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement mode="Opaque" x="339" y="0" width="66" height="30" backcolor="#F0F8FF" uuid="859adea4-39b1-4d80-ad2f-ce727fe9153f"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tache_montant_ordonne_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

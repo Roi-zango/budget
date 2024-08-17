@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <p:growl id="msg" />
+
+    <h:form id="CompteUtilisateurListForm">
+        <p:panel header="LIST OF USER ACCOUNTS">    
+
+            <p:contextMenu id="CompteUtilisateurDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{Create}" onclick="document.getElementById('CompteUtilisateurListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{View}" onclick="document.getElementById('CompteUtilisateurListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{Edit}" onclick="document.getElementById('CompteUtilisateurListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{Delete}" onclick="document.getElementById('CompteUtilisateurListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{compteController.comptes}"
+                         var="item"                         
+                         rowKey="#{item.idCompte}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 90% ; margin-left: 5%"
+                         selection="#{compteController.compte}">
+
+                <p:ajax event="rowSelect" update="@form:editButton,@form:deleteButton,@form:CompteUtilisateurDataTableContextMenu" listener="#{compteController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:CompteUtilisateurDataTableContextMenu" listener="#{compteController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:editButton,@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('CompteUtilisateurListForm:viewButton').click();"/>
+
+                <p:column style=" width:25% ; text-align: left">
+                    <f:facet name="header">
+                        <h:outputText value="Users"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idUtilisateur.nom} #{item.idUtilisateur.prenom}"/>
+                </p:column>
+
+                <p:column style=" width:25% ; text-align: left" >
+                    <f:facet name="header">
+                        <h:outputText value="Login"/>
+                    </f:facet>
+                    <h:outputText value="#{item.login}"/>
+                </p:column>
+
+                <p:column style=" width:20% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Password"/>
+                    </f:facet>
+                    <h:outputText value="#{item.mdp}"/>
+                </p:column>
+                               
+                <p:column style=" width:10%;text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Date"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dateEnregistre}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="#{Create}" 
+                             actionListener="#{compteController.prepareCreate()}" update=":CompteUtilisateurCreateForm" 
+                             oncomplete="PF('CompteUtilisateurCreateDialog').show()"/>
+            
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{Edit}" 
+                             actionListener="#{compteController.prepareEdit()}" update=":CompteUtilisateurCreateForm" 
+                             oncomplete="PF('CompteUtilisateurCreateDialog').show()" disabled="#{compteController.detail}"/>
+            
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{Delete}" actionListener="#{compteController.delete()}" update=":growl,datalist" disabled="#{compteController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

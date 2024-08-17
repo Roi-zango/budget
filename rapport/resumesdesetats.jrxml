@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumesdesetats" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="38c4916f-9a0b-4911-822a-43c0f1d32704">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\wamp\\www\\ppbsx2\\cdmt\\etat\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select public.annee.nom as annees from annee where annee.budget=TRUE]]>
+	</queryString>
+	<field name="annees" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="536" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="621" y="69" width="173" height="23" uuid="14e77d6c-504b-4a21-b5a7-2f821e7735c7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[---------------]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" stretchType="RelativeToTallestObject" x="21" y="209" width="771" height="93" uuid="c69f0e5c-d04d-4f2a-bff7-0454d560e6f3"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cooper Black" size="30" isBold="false" isItalic="false" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<textFieldExpression><![CDATA["HOPITAL GYNECO-OBSTETRIQUE ET PEDIATRIQUE DE DOUALA"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="31" y="30" width="162" height="30" uuid="3b789dc6-a800-45dd-93af-e38e8d8d51eb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail - Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="608" y="51" width="200" height="28" uuid="555f4403-4a45-4b7c-a559-d5a0c0ee68af"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MINISTRY OF PUBLIC HEALTH]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="608" y="11" width="189" height="30" uuid="7270e6f0-d562-46d9-b628-3bfcbccf7cc1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Republic of Cameroon]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="621" y="31" width="160" height="30" uuid="c97d5e05-f193-46e8-96d8-aefb5c3851a9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Peace-Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="21" y="62" width="179" height="23" uuid="63871ce9-d825-46ae-8f9c-738c8ec9d6f9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[---------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="209" height="30" uuid="82100dba-f4f6-4282-a31c-f110c6a4bced"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[République du cameroun]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="29" y="50" width="211" height="22" uuid="911052f8-67c2-4283-91d9-9d233a2043e6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MINISTERE DE LA SANTE PUBLIQUE]]></text>
+			</staticText>
+			<image>
+				<reportElement x="73" y="292" width="855" height="98" uuid="7dd1792d-6911-4bb2-8eee-bdbe94473d2e"/>
+				<imageExpression><![CDATA["bdpr2017.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="331" y="40" width="204" height="169" uuid="b49b5b6b-e0fd-4e94-9602-742286aa769f"/>
+				<imageExpression><![CDATA["logo.jpeg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="301" y="390" width="507" height="99" uuid="44e5dc3c-4251-4b74-8094-5cf2960055d5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="82" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{annees}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="80" splitType="Stretch">
+			<subreport>
+				<reportElement x="10" y="0" width="585" height="23" uuid="090fa9fb-f28e-4763-89b3-ee321d67ef20"/>
+				<subreportParameter name="p_idcdmt"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["synthesedesrecettesSR.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="48" width="657" height="27" uuid="3c726980-ae95-4575-8736-ee79c9ac7ed3"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report3SR.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="2" y="23" width="474" height="25" uuid="8470b2da-4333-42ba-b959-1504181cfb95"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["s_cdmt_etat_action_activite_tachebpSR.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

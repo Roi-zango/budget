@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="EngagementCreateDlg" 
+                  widgetVar="EngagementCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="AJOUTER UN ENGAGEMENT" closeOnEscape="true"
+                  width="90%"
+                  height="650px">
+
+            <h:form id="EngagementCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <center>
+
+                        <h:panelGrid columns="3" columnClasses="column">
+
+                            <p:outputLabel value="Exercice Budgétaire" />
+                            <p:outputLabel value="#{engagementController.budget.annee}" />
+                            <p:outputLabel value=""/>
+
+                            <p:outputLabel value="Bon de commande" for="boncommande" />
+                            <p:selectOneMenu id="boncommande" filter="true" value="#{engagementController.boncommande}" converter="boncommandeConverter" required="true" requiredMessage="Valeur obligatoire">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{engagementController.boncommandes}" var="item" itemLabel="#{item.code}" itemValue="#{item}" />
+                                <p:ajax update="prestataire,objet,reference,dateemission,delailivraison,montant_en_lettre,avance,mode_payement,info_fi,tache,imputation,structure,signataire" listener="#{engagementController.updateData()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="boncommande" />
+
+                            <p:outputLabel value="Paragraphe" />
+                            <p:outputLabel value="#{engagementController.imputation.code} - #{engagementController.imputation.nom}" id="imputation"  />               
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Structure" />
+                            <p:outputLabel value="#{engagementController.structure.nom}" id="structure" />                           
+                            <p:outputLabel value="" />
+                            
+                            <p:outputLabel value="Prestataire" />
+                            <p:outputLabel value="#{engagementController.societe.nom}" id="prestataire" />                           
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Signataire" for="signataire" />
+                            <p:outputLabel value="#{engagementController.signataire.nom} #{engagementController.signataire.prenom}" id="signataire" />                            
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Object" />
+                            <p:outputLabel id="objet" value="#{engagementController.boncommande.objet}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Reference" />
+                            <p:outputLabel style="width: 200px" id="reference" value="#{engagementController.boncommande.code}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Date d'émission" />
+                            <p:outputLabel id="dateemission" value="#{engagementController.boncommande.dateemission}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:outputLabel>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Délai de livrasion (en jrs)" />
+                            <p:outputLabel style="width: 75px" id="delailivraison" value="#{engagementController.boncommande.delailivraison}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Montant en lettre" />
+                            <p:outputLabel style="width: 300px" id="montant_en_lettre" value="#{engagementController.boncommande.montantenlettre}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Avance" />
+                            <p:outputLabel style="width: 100px" id="avance" value="#{engagementController.boncommande.avance}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Mode de payement" />
+                            <h:panelGroup id="mode_payement">
+                                <h:panelGrid columns="6">
+                                    <p:outputLabel value="Chèque" />
+                                    <p:selectBooleanCheckbox disabled="true" value="#{engagementController.boncommande.cheque}">
+                                        <p:ajax />
+                                    </p:selectBooleanCheckbox>
+                                    <p:outputLabel value="Espèce" />
+                                    <p:selectBooleanCheckbox disabled="true" value="#{engagementController.boncommande.espece}">
+                                        <p:ajax />
+                                    </p:selectBooleanCheckbox>
+                                    <p:outputLabel value="Virement"  />
+                                    <p:selectBooleanCheckbox disabled="true" value="#{engagementController.boncommande.virement}">
+                                        <p:ajax />
+                                    </p:selectBooleanCheckbox>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <p:outputLabel value=""/>
+
+                            <p:outputLabel value="Taches" for="tache" />
+                            <p:selectOneMenu id="tache" filter="true" value="#{engagementController.tache}" converter="tacheConverter" required="true" requiredMessage="Valeur obligatoire">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{engagementController.taches}" var="item" itemLabel="#{item.nom}" itemValue="#{item}" />
+                                <p:ajax update="moyens" listener="#{engagementController.updateMoyens()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="tache" />
+
+                            <p:outputLabel value="Moyens" for="moyens" />
+                            <p:selectOneMenu id="moyens" filter="true" value="#{engagementController.moyens}" converter="moyensConverter" required="true" requiredMessage="Valeur obligatoire">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{engagementController.moyenses}" var="moyen" itemLabel="#{moyen.idimputation.code} #{moyen.idimputation.nom}" itemValue="#{item}" />
+                                <p:ajax update="montant_programme,montant_execute" listener="#{engagementController.updateData()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="moyens" />
+
+                            <p:outputLabel value="Montant Programmé" />
+                            <p:outputLabel id="montant_programme" style="width: 100px" value="#{engagementController.moyens.ct}">
+                                <f:convertNumber />
+                            </p:outputLabel>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Montant Exécuté" />
+                            <p:outputLabel id="montant_execute" style="width: 100px" value="#{engagementController.moyens.montantexecute}" >
+                                <f:convertNumber />
+                            </p:outputLabel>
+                            <p:outputLabel value="" />
+
+                        </h:panelGrid>
+
+                    </center>
+
+                    <p:separator style="width: 80%;margin-left: 10%;"/>
+
+                    <p:panelGrid id="info_fi" style="width: 80%;margin-left: 10%;" columns="12">
+
+                        <p:outputLabel value="Total ht"/>
+                        <p:outputLabel id="ht" value="#{engagementController.boncommande.totalht}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="Tva"/>
+                        <p:outputLabel id="tva" value="#{engagementController.boncommande.tva}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="Montant air"/>
+                        <p:outputLabel id="totalair" value="#{engagementController.boncommande.totalair}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="TTC"/>
+                        <p:outputLabel id="ttc" value="#{engagementController.boncommande.ttc}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                        <p:outputLabel value="NAP"/>
+                        <p:outputLabel id="netaper" value="#{engagementController.boncommande.netapayer}">                               
+                            <f:convertNumber />
+                        </p:outputLabel>
+
+                    </p:panelGrid>
+
+                    <p:separator style="width: 80%;margin-left: 10%;"/>
+
+                    <center>
+
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('EngagementCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{engagementController.save()}" value="#{langues.Save}" update="display,:EngagementListForm:datalist,:EngagementListForm:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

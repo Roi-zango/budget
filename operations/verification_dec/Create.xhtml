@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="VerificationCreateDlg" 
+                  widgetVar="VerificationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="VERIFICATION OF DECISIONS" closeOnEscape="true"
+                  width="90%"
+                  height="650px">
+
+            <h:form id="VerificationCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div style="width: 100% ; height: 100%" >
+
+                        <div style="float: left ; width: 60%">
+
+                            <h:panelGrid columns="3" columnClasses="column">
+
+                                <p:outputLabel value="Budgetary exercise" />
+                                <p:outputLabel value="#{verificationdecController.budget.annee}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Purchase order" for="boncommande" />
+                                <p:selectOneMenu id="boncommande" filter="true" value="#{verificationdecController.boncommande}" converter="boncommandeConverter" required="true" requiredMessage="Valeur obligatoire">
+                                    <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                    <f:selectItems value="#{verificationdecController.boncommandes}" var="item" itemLabel="#{item.code}" itemValue="#{item}" />
+                                    <p:ajax update="datalist,prestataire,objet,reference,dateemission,delailivraison,montant_en_lettre,avance,mode_payement,info_fi,tache,imputation,structure,signataire,datalist" listener="#{verificationdecController.updateData()}"/>
+                                </p:selectOneMenu>
+                                <p:message for="boncommande" />
+
+                                <p:outputLabel for="date_verif" value="Date de verif" />
+                                <p:calendar pattern="dd/MM/yyyy" id="date_verif" value="#{verificationdecController.verificationbc.dateverification}" required="true" rendererType="Valeur obligatoire}"  >
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Paragraph" />
+                                <p:outputLabel value="#{verificationdecController.imputation.code} - #{verificationdecController.imputation.nom}" id="imputation"  />               
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Structure" />
+                                <p:outputLabel value="#{verificationdecController.structure.nom}" id="structure" />                           
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Provider" />
+                                <p:outputLabel value="#{verificationdecController.societe.nom}" id="prestataire" />                           
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Signatory" for="signataire" />
+                                <p:outputLabel value="#{verificationdecController.signataire.nom} #{verificationdecController.signataire.prenom}" id="signataire" />                            
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Object" />
+                                <p:outputLabel id="objet" value="#{verificationdecController.boncommande.objet}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Reference" />
+                                <p:outputLabel style="width: 200px" id="reference" value="#{verificationdecController.boncommande.code}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Date of issue" />
+                                <p:outputLabel id="dateemission" value="#{verificationdecController.boncommande.dateemission}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Delivery time (in days)" />
+                                <p:outputLabel style="width: 75px" id="delailivraison" value="#{verificationdecController.boncommande.delailivraison}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Amount in letter" />
+                                <p:outputLabel style="width: 300px" id="montant_en_lettre" value="#{verificationdecController.boncommande.montantenlettre}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Advance" />
+                                <p:outputLabel style="width: 100px" id="avance" value="#{verificationdecController.boncommande.avance}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Payment method" />
+                                <h:panelGroup id="mode_payement">
+                                    <h:panelGrid columns="6">
+                                        <p:outputLabel value="Chèque" />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationdecController.boncommande.cheque}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="cash" />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationdecController.boncommande.espece}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="payment"  />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationdecController.boncommande.virement}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Task" />
+                                <p:outputLabel id="tache" value="#{verificationdecController.tache.nom}" />                            
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Means" for="moyens" />
+                                <p:outputLabel id="moyens" value="#{verificationdecController.imputation.code}" />
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Scheduled Amount" />
+                                <p:outputLabel id="montant_programme" style="width: 100px" value="#{verificationdecController.moyens.ct}">
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Amount Executed" />
+                                <p:outputLabel id="montant_execute" style="width: 100px" value="#{verificationdecController.moyens.montantexecute}" >
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                            </h:panelGrid>
+
+                            <p:separator/>
+
+                            <p:dataTable id="datalist"
+                                         value="#{verificationdecController.lignedecisions}" var="item1"                             
+                                         paginator="true" 
+                                         rowKey="#{item1.idligneDecision}"
+                                         rows="15"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="width: 100%;margin-top: 1%; font-weight: bold; font-style: oblique;"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{msg.Vide}"
+                                         widgetVar="fonctionTable"
+                                         draggableColumns="true"
+                                         resizableColumns="true"
+                                         rowStyleClass="#{item1.verif eq true ? 'rowColorBlue' : 'rowColorRed'}">
+
+                                <f:facet name="header"> 
+                                    <h:outputText value="LIST OF ELEMENTS"/>
+                                </f:facet> 
+
+                                <p:column style="width: 7% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Code"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item1.code}"/> 
+                                </p:column>
+
+                                <p:column style="width: 40%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Désignation" />
+                                    </f:facet>
+                                    <h:outputText value="#{item1.libelle}"/> 
+                                </p:column>
+
+                                <p:column style="width: 7%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="Qty" />
+                                    </f:facet>
+                                    <h:outputText value="#{item1.quantite}"/> 
+                                </p:column>
+
+                                <p:column style="width: 10%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="unit price" />
+                                    </f:facet>
+                                    <h:outputText value="#{item1.coutunitaire}">
+                                        <f:convertNumber />
+                                    </h:outputText> 
+                                </p:column>
+
+                                <p:column style="width: 13% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="total cost"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item1.total}">
+                                        <f:convertNumber />
+                                    </h:outputText>  
+                                </p:column>
+
+                                <p:column style="width: 7% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Modif"/>
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox value="#{item1.verif}" >
+                                        <p:ajax listener="#{verificationdecController.affiche(item1.verif)}"/>
+                                    </h:selectBooleanCheckbox> 
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:separator/>
+
+                            <p:panelGrid id="info_fi" style="width: 100%;" columns="12">
+
+                                <p:outputLabel value="Total ht"/>
+                                <p:outputLabel id="ht" value="#{verificationdecController.boncommande.totalht}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Tva"/>
+                                <p:outputLabel id="tva" value="#{verificationdecController.boncommande.tva}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Montant air"/>
+                                <p:outputLabel id="totalair" value="#{verificationdecController.boncommande.totalair}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="TTC"/>
+                                <p:outputLabel id="ttc" value="#{verificationdecController.boncommande.ttc}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="NAP"/>
+                                <p:outputLabel id="netaper" value="#{verificationdecController.boncommande.netapayer}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                            </p:panelGrid>
+
+                        </div>
+
+                        <div style="float: right ; width: 39%;margin-left: 1%">
+
+                            <center>
+                                <p:commandButton value="close" onclick="PF('VerificationCreateDialog').hide()"/>
+
+                                <p:commandButton rendered="false" class="btn btn-danger" 
+                                                 actionListener="#{verificationdecController.prepareRejet()}" 
+                                                 value="Rejetter" update="display,:VerificationListForm:datalist,:RejetCreateForm,:VerificationListForm:msg"/>
+                            </center>
+
+                            <p:separator/>
+
+                            <center>
+                                <h:panelGrid columns="4">
+
+                                    <h:outputText value="Validation" />
+                                    <h:selectBooleanCheckbox id="valide_sb" value="#{verificationdecController.valide}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationdecController.updateRenderPanel('valide')}"/>
+                                    </h:selectBooleanCheckbox>
+
+                                    <h:outputText value="Rejection" />
+                                    <h:selectBooleanCheckbox id="rejet_sb" value="#{verificationdecController.rejet}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationdecController.updateRenderPanel('rejet')}" />
+                                    </h:selectBooleanCheckbox>
+
+                                </h:panelGrid>
+                            </center>
+
+                            <p:separator/>
+
+                            <p:panel id="panel_1" rendered="#{verificationdecController.valide}" header="Zone de saisie des Observations de la Validation" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <p:separator/>
+
+                                <p:inputTextarea value="#{verificationdecController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationdecController.saveValidation()}" value="validate" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous valider cette lettre commande ?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                            <p:panel id="panel_2" rendered="#{verificationdecController.rejet}" header="Zone de saisie des Observations du rejet" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <br/>
+                                <p:inputTextarea value="#{verificationdecController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationdecController.saveRejet()}" value="validate" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous rejeter cette lettre commande ?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                        </div>
+
+                    </div>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

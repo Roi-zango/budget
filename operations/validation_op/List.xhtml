@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:form id="ValidationOPListForm">
+
+        <p:messages id="growl" closable="true" />
+        <p:growl id="msg" />
+
+        <p:panel header="LIST OF LIQUIDATION ORDERS">    
+
+            <p:contextMenu id="ValidationOPDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('ValidationOPListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('ValidationOPListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('ValidationOPListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('ValidationOPListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{verificationOpController.verificationOps}"
+                         var="item"                         
+                         rowKey="#{item.idverificationOp}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 95% ; margin-left: 2.5%"
+                         selection="#{verificationOpController.verificationOp}">
+
+                <p:ajax event="rowSelect" update="@form:deleteButton, @form:imprimer_ce , @form:ValidationOPDataTableContextMenu" listener="#{verificationOpController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:deleteButton, @form:imprimer_ce, @form:ValidationOPDataTableContextMenu" listener="#{verificationOpController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ValidationOPListForm:viewButton').click();"/>
+
+                <p:column filterBy="#{item.odrePayement.code}" style="width:10%; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="op Number"/>
+                    </f:facet>
+                    <h:outputText value="#{item.odrePayement.code}"/>
+                </p:column>
+
+                <p:column style="width:32%" filterBy="#{item.odrePayement.objet}">
+                    <f:facet name="header">
+                        <h:outputText value="OP object"/>
+                    </f:facet>
+                    <h:outputText value="#{item.odrePayement.objet}"/>
+                </p:column>
+
+                <p:column style="width:10% ; text-align:center" filterBy="#{item.odrePayement.boncommande.code}">
+                    <f:facet name="header">
+                        <h:outputText value="Commande N° "/>
+                    </f:facet>
+                    <h:outputText value="#{item.odrePayement.boncommande.code}"/>
+                </p:column>
+
+                <p:column style="width:8%">
+                    <f:facet name="header">
+                        <h:outputText value="Amount"/>
+                    </f:facet>
+                    <h:outputText value="#{item.odrePayement.montant}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column> 
+
+                <p:column style="width:25%" filterBy="#{item.observation}">
+                    <f:facet name="header">
+                        <h:outputText value="Observation"/>
+                    </f:facet>
+                    <h:outputText value="#{item.observation}"/>
+                </p:column>
+
+                <p:column style="width:8% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Verified date "/>
+                    </f:facet>
+                    <h:outputText value="#{item.dateVerification}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style="width:7% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Etat"/>
+                    </f:facet>
+                    <h:outputText value="#{item.valide eq true ? 'Validé' : 'Rejet'}" />
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="Edit" 
+                             actionListener="#{verificationOpController.prepareprepareEdit()}" update=":ValidationOPCreateForm,msg,growl" />
+
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="cancel" actionListener="#{verificationOpController.delete()}" update="growl,datalist,msg" disabled="#{verificationOpController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+          <p:commandButton value="Print" id="imprimer_ce" onclick="PF('printDialog').show()" icon="ui-icon-print" ajax="false" enabled="#{verificationOpController.detail}" update="msg,growl" />
+
+                 <p:dialog widgetVar="printDialog" modal="true" showEffect="fade" hideEffect="fade">
+                     <h:outputText value="Contenu à imprimer" />
+                      <p:commandButton value="Confirmer l'impression" actionListener="#{verificationOpController.printCe()}" icon="ui-icon-print" ajax="false" update="msg,growl" />
+                 </p:dialog>
+          
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

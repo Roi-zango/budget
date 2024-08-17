@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="Saisie des taches"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="TacheListForm">
+
+                <p:growl id="growl" showDetail="true"/>
+                <br/>
+                <center>
+                    <p:panelGrid columns="6">
+
+                        <p:outputLabel value="Structure" for="structure" />
+                        <p:selectOneMenu filter="true" id="structure" value="#{tacheController.structure.idstructure}">
+                            <f:selectItem itemLabel="make your choice" itemValue=""/>
+                            <f:selectItems value="#{tacheController.structures}" var="str" itemLabel="#{str.nom}" itemValue="#{str.idstructure}"/>                                                                             
+                            <p:ajax update="datalist"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Research" update="datalist,growl" actionListener="#{tacheController.findTache()}"/>
+
+                    </p:panelGrid>
+                </center>
+
+                <p:dataTable id="datalist" value="#{tacheController.taches}" var="item"                             
+                             paginator="true"
+                             rowKey="#{item.idtache}"
+                             selectionMode="single"
+                             selection="#{tacheController.tache}"
+                             rows="15"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             style="margin-top:1% !important; text-align:left; font-weight: bold; font-style: oblique;"
+                             rowIndexVar="index"
+                             emptyMessage="#{msg.Vide}">                                                          
+
+                    <p:ajax event="rowSelect" update="@form:createButton,@form:editButton,@form:deleteButton,datalist" listener="#{tacheController.activeButton()}"/>
+
+                    <f:facet name="header"> 
+                        <h:outputText value="LIST OF Operations"/>
+                    </f:facet> 
+
+                    <p:column filterBy="#{item.nom}" style="width: 50%">
+                        <f:facet name="header">
+                            <h:outputText value="Task"/>
+                        </f:facet>
+                        <h:outputText class="hardBreak" value="#{item.nom}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{item.idbailleurfond.nom}" style="width: 25%">
+                        <f:facet name="header">
+                            <h:outputText class="hardBreak" value="Source of funding"/>
+                        </f:facet>
+                        <h:outputText class="hardBreak" value="#{item.idbailleurfond.nom}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{item.totalmontantaloue}" style="width: 25%">
+                        <f:facet name="header">
+                            <h:outputText value="Total amount"/>
+                        </f:facet>
+                        <h:outputText value="#{item.totalmontantaloue}">
+                            <f:convertNumber />
+                        </h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+
+                <center>
+                    <p:commandButton update=":TacheCreateForm,growl" id="createButton"  
+                                     value="Add a new operation" 
+                                     actionListener="#{tacheController.prepareCreateTache()}"
+                                     icon="ui-icon-plus"/>
+
+                    <p:commandButton update=":TacheCreateForm,growl" id="editButton" 
+                                     value="Edit an operation"  actionListener="#{tacheController.prepareEdit()}" 
+                                     disabled="#{tacheController.detail}"
+                                     icon="ui-icon-pencil"/>
+
+                    <p:commandButton update="datalist,growl" id="deleteButton" value="Delete an operation" actionListener="#{tacheController.deleteTache()}" disabled="#{tacheController.detail}" icon="ui-icon-trash">
+                        <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </center>
+
+                <ui:include src="/confirmation.xhtml"/>
+            </h:form>
+
+            <ui:include src="/operations/tache/Create.xhtml"/>
+            <ui:include src="/operations/tache/Createparagraphe.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+
+</html>

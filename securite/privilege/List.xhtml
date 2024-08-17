@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <p:growl id="msg" />
+
+    <h:form id="AccessListForm">
+        <p:panel header="MANAGEMENT OF ACCESS RIGHTS">    
+
+
+            <p:contextMenu id="AccesDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langue['Conv.Creer']}" onclick="document.getElementById('actionsForm:creer').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langue['Conv.Detail']}" onclick="document.getElementById('actionsForm:detail').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{langue['Conv.Modifier']}" onclick="document.getElementById('actionsForm:modifier').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langue['Conv.Supprimer']}" onclick="document.getElementById('actionsForm:supprimer').click();" icon="ui-icon-trash"/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{privilegeController.comptes}"
+                         var="item"
+                         rowKey="#{item.idCompte}"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50">                         
+
+                <p:column filterBy="#{item.idUtilisateur.nom} #{item.idUtilisateur.prenom}" style="width: 50%" >
+                    <f:facet name="header">
+                        <h:outputText value="Users"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idUtilisateur.nom} #{item.idUtilisateur.prenom}"/>
+                </p:column>
+
+                <p:column  filterBy="#{item.login}" style="width: 30%">
+                    <f:facet name="header">
+                        <h:outputText value="login"/>
+                    </f:facet>
+                    <h:outputText value="#{item.login}"/>
+                </p:column> 
+
+                <p:column style="width: 20%;text-align: center" >                    
+                    <f:facet name="header">
+                        <h:outputText value="action"/>
+                    </f:facet>
+                    <p:commandButton value="detail" icon="ui-icon-eye-open" oncomplete="PF('AccessDetailDialog').show()">
+                        <p:ajax event="click" listener="#{privilegeController.viewAccess(item)}" update=":AccessDetailForm"/>
+                    </p:commandButton>                    
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+
+        <center>  
+
+            <p:commandButton id="creer"  icon="ui-icon-plus"   
+                             value="Manage" 
+                             actionListener="#{privilegeController.prepareCreate()}"
+                             update=":AccessCreateForm,:growl" />
+                             
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

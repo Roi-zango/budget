@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="ValidationOPCreateDlg" 
+                  widgetVar="ValidationOPCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="VALIDER / REJETTER UN ORDRE DE LIQUIDATION" closeOnEscape="true"
+                  width="60%"
+                  height="600px">
+
+            <h:form id="ValidationOPCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <center>
+
+                        <h:panelGrid columns="3" columnClasses="column">
+
+                            <p:outputLabel value="Type of document" for="type" />
+                            <p:selectOneMenu id="type" filter="true" value="#{verificationOpController.typeFiltre}">
+                                <f:selectItem itemLabel="Tout" itemValue="Tout" />
+                                <f:selectItem itemLabel="Bon de commande" itemValue="BC" />
+                                <f:selectItem itemLabel="Lettre commande" itemValue="LC" />
+                                <f:selectItem itemLabel="Décision" itemValue="DEC" />
+                                <f:selectItem itemLabel="Mission" itemValue="MIS" />
+                                <f:selectItem itemLabel="Salaire" itemValue="SAL" />
+                                <p:ajax update="op" listener="#{verificationOpController.updateDataType()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="type" />
+
+                            <p:outputLabel value="Payment order" for="op" />
+                            <p:selectOneMenu id="op" filter="true" value="#{verificationOpController.idOp}" required="true" requiredMessage="Valeur obligatoire">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                                <f:selectItems value="#{verificationOpController.ordrePayements}" var="op" itemLabel="#{op.code} - #{op.boncommande.code}" itemValue="#{op.idOrdrePayement}" />
+                                <p:ajax update="display,numero,montant_nap,montant_en_lettre,pieces,mode_payement,objet" listener="#{verificationOpController.updateData()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="op" />
+
+                            <p:outputLabel value="Object" for="objet" />
+                            <p:inputTextarea disabled="true" style="width: 350px" cols="350" rows="3" id="objet" value="#{verificationOpController.ordrePayement.objet}" >
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Op Number" for="numero" />
+                            <p:inputText disabled="true" style="width: 150px" id="numero" value="#{verificationOpController.ordrePayement.code}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputText>
+                            <p:message for="numero" />
+
+                            <p:outputLabel rendered="#{verificationOpController.modeOp eq 1}" value="Amount" />
+                            <p:inputText disabled="true" rendered="#{verificationOpController.modeOp eq 1}" id="montant_nap" value="#{verificationOpController.ordrePayement.montant}"  />
+                            <p:outputLabel rendered="#{verificationOpController.modeOp eq 1}" value="" />
+
+                            <p:outputLabel value="Date of issue" />                            
+                            <p:outputLabel id="dateemission" value="#{verificationOpController.ordrePayement.dateOrdonnation}"  >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:outputLabel>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Date of issue" for="date_verification" />
+                            <p:calendar pattern="dd/MM/yyyy" id="date_verification" value="#{verificationOpController.verificationOp.dateVerification}" required="true" requiredMessage="Valeur obligatoire" navigator="true">
+                                <p:ajax event="dateSelect" />
+                            </p:calendar>
+                            <p:message for="date_verification" />
+
+                            <p:outputLabel value="Beneficiary" for="beneficiaire" />
+                            <p:inputTextarea disabled="true" style="width: 300px" rows="2" id="beneficiaire" value="#{verificationOpController.ordrePayement.beneficiaire}" >
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Amount in letter" for="montant_en_lettre" />
+                            <p:inputTextarea disabled="true" style="width: 350px" cols="350" rows="3" id="montant_en_lettre" value="#{verificationOpController.ordrePayement.montantEnLettre}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:message for="montant_en_lettre" />
+
+                            <p:outputLabel value="payment method" for="mode_payement" />
+                            <p:selectOneMenu id="mode_payement" filter="true" value="#{verificationOpController.ordrePayement.modePaiement}" >
+                                <f:selectItem itemLabel="Virement" itemValue="Virement" />
+                                <f:selectItem itemLabel="Espèce" itemValue="Espèce" />
+                                <f:selectItem itemLabel="Chèque" itemValue="Chèque" />                                
+                            </p:selectOneMenu>
+                            <p:message for="mode_payement" />
+
+                            <p:outputLabel value="Pièces" for="pieces" />
+                            <p:inputTextarea disabled="true" style="width: 300px" rows="3" id="pieces" value="#{verificationOpController.ordrePayement.pieces}" >
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:outputLabel value="" />
+
+                        </h:panelGrid>
+
+                        <center>
+                            <h:panelGrid columns="4">
+                                <h:outputText value="Validation" />
+                                <h:selectBooleanCheckbox id="valide_sb" value="#{verificationOpController.valide}" >
+                                    <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationOpController.updateRenderPanel('valide')}"/>
+                                </h:selectBooleanCheckbox>
+
+                                <h:outputText value="Rejection" />
+                                <h:selectBooleanCheckbox id="rejet_sb" value="#{verificationOpController.rejet}" >
+                                    <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationOpController.updateRenderPanel('rejet')}" />
+                                </h:selectBooleanCheckbox>
+                            </h:panelGrid>
+                        </center>
+
+                        <p:panel id="panel_1" rendered="#{verificationOpController.valide}" header="Zone de saisi des observations" >
+                            <p:outputLabel style="font-size : 25px" value="Observation" />
+                            <br/>
+                            <p:inputTextarea value="#{verificationOpController.verificationOp.observation}" cols="500" rows="10" style="width: 500px">
+                                <p:ajax/>
+                            </p:inputTextarea>
+
+                            <p:separator/>
+                            <center>
+                                <p:commandButton class="btn btn-primary" actionListener="#{verificationOpController.saveValidation()}" value="validate" update="display,:ValidationOPListForm:datalist,:ValidationOPListForm:msg">
+                                    <p:confirm header="Confirmation" message="Voulez - vous valider ce bon de commande" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                            </center>
+                        </p:panel>
+
+                        <p:panel id="panel_2" rendered="#{verificationOpController.rejet}" header="Zone de saisie des observations du rejet" >
+                            <p:outputLabel style="font-size : 25px" value="Observation" />
+                            <br/>
+                            <p:inputTextarea value="#{verificationOpController.verificationOp.observation}" cols="500" rows="10" style="width: 500px">
+                                <p:ajax/>
+                            </p:inputTextarea>
+
+                            <p:separator/>
+
+                            <center>
+                                <p:commandButton class="btn btn-primary" actionListener="#{verificationOpController.saveRejet()}" value="Save" update="display,:ValidationOPListForm:datalist,:ValidationOPListForm:msg">
+                                    <p:confirm header="Confirmation" message="Voulez - vous rejeter ce bon de commande ?" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                            </center>
+                        </p:panel>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+</html>
+
+

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="VerificationCreateDlg" 
+                  widgetVar="VerificationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="VERIFICATION OF PURCHASE ORDERS" closeOnEscape="true"
+                  width="90%"
+                  height="650px">
+
+            <h:form id="VerificationCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div style="width: 100% ; height: 100%" >
+
+                        <div style="float: left ; width: 60%">
+
+                            <h:panelGrid columns="3" columnClasses="column">
+
+                                <p:outputLabel value="Budgetary exercise" />
+                                <p:outputLabel value="#{verificationbcController.budget.annee}" />
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Purchase order" for="boncommande" />
+                                <p:selectOneMenu id="boncommande" filter="true" value="#{verificationbcController.boncommande}" converter="boncommandeConverter" required="true" requiredMessage="Valeur obligatoire">
+                                    <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                    <f:selectItems value="#{verificationbcController.boncommandes}" var="item" itemLabel="#{item.code}" itemValue="#{item}" />
+                                    <p:ajax update="prestataire,objet,reference,dateemission,delailivraison,montant_en_lettre,avance,mode_payement,info_fi,tache,imputation,structure,signataire,datalist" listener="#{verificationbcController.updateData()}"/>
+                                </p:selectOneMenu>
+                                <p:message for="boncommande" />
+
+                                <p:outputLabel for="date_verif" value="Date de verif" />
+                                <p:calendar pattern="dd/MM/yyyy" id="date_verif" value="#{verificationbcController.verificationbc.dateverification}" required="true" rendererType="Valeur obligatoire}"  >
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Paragraph" style="width: 200px;" />
+                                <p:outputLabel value="#{verificationbcController.imputation.code} - #{verificationbcController.imputation.nom}" id="imputation"  />               
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Structure" style="width: 200px;" />
+                                <p:outputLabel value="#{verificationbcController.structure.nom}" id="structure" />                           
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Provider" style="width: 200px;" />
+                                <p:outputLabel value="#{verificationbcController.societe.nom}" id="prestataire" />                           
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="signatory" for="signataire" style="width: 200px;" />
+                                <p:outputLabel value="#{verificationbcController.signataire.nom} #{verificationbcController.signataire.prenom}" id="signataire" />                            
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Object" style="width: 200px;" />
+                                <p:outputLabel id="objet" value="#{verificationbcController.boncommande.objet}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Reference" style="width: 200px;" />
+                                <p:outputLabel style="width: 200px" id="reference" value="#{verificationbcController.boncommande.code}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Date of issue" style="width: 200px;" />
+                                <p:outputLabel id="dateemission" value="#{verificationbcController.boncommande.dateemission}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Delivery time (in days)" style="width: 200px;" />
+                                <p:outputLabel style="width: 75px" id="delailivraison" value="#{verificationbcController.boncommande.delailivraison}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Amount in letter" style="width: 200px;" />
+                                <p:outputLabel style="width: 300px" id="montant_en_lettre" value="#{verificationbcController.boncommande.montantenlettre}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Advance" style="width: 200px;" />
+                                <p:outputLabel style="width: 100px" id="avance" value="#{verificationbcController.boncommande.avance}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Payment method" />
+                                <h:panelGroup id="mode_payement">
+                                    <h:panelGrid columns="6">
+                                        <p:outputLabel value="Check" />
+                                        <p:selectBooleanCheckbox enabled="true" value="#{verificationbcController.boncommande.cheque}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="cash" />
+                                        <p:selectBooleanCheckbox enabled="true" value="#{verificationbcController.boncommande.espece}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="Payment"  />
+                                        <p:selectBooleanCheckbox enabled="true" value="#{verificationbcController.boncommande.virement}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Task" style="width: 200px;" />
+                                <p:outputLabel id="tache" value="#{verificationbcController.tache.nom}" />                            
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Means" for="moyens" style="width: 200px;" />
+                                <p:outputLabel id="moyens" value="#{verificationbcController.imputation.code}" />
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Scheduled Amount" style="width: 200px;" />
+                                <p:outputLabel id="montant_programme"  value="#{verificationbcController.moyens.ct}">
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Amount Executed" style="width: 200px;" />
+                                <p:outputLabel id="montant_execute"  value="#{verificationbcController.moyens.montantexecute}" >
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                            </h:panelGrid>
+
+                            <p:separator/>
+
+                            <p:dataTable id="datalist" value="#{verificationbcController.ligneboncommandes}" var="item"                             
+                                         paginator="true" 
+                                         rowKey="#{item.idligneboncommande}"
+                                         rows="15"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="width: 100%;margin-top: 1%; font-weight: bold; font-style: oblique;"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{msg.Vide}"
+                                         widgetVar="fonctionTable"
+                                         draggableColumns="true"
+                                         resizableColumns="true"
+                                         rowStyleClass="#{item.verif eq true ? 'rowColorBlue' : 'rowColorRed'}">
+
+                                <f:facet name="header"> 
+                                    <h:outputText value="LIST OF REFERENCES"/>
+                                </f:facet> 
+
+                                <p:column style="width: 10% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Code"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.elementcout.code}"/> 
+                                </p:column>
+
+                                <p:column style="width: 45%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Désignation" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.elementcout.nom}"/> 
+                                </p:column>
+
+                                <p:column style="width: 10%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="Quantity" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.quantite}"/> 
+                                </p:column>
+
+                                <p:column style="width: 10%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="unit price" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.prixunitaire}">
+                                        <f:convertNumber />
+                                    </h:outputText> 
+                                </p:column>
+
+                                <p:column style="width: 10% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="total cost"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.total}">
+                                        <f:convertNumber />
+                                    </h:outputText>  
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:separator/>
+
+                            <p:panelGrid id="info_fi" style="width: 100%;" columns="12">
+
+                                <p:outputLabel value="Total ht"/>
+                                <p:outputLabel id="ht" value="#{verificationbcController.boncommande.totalht}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Tva"/>
+                                <p:outputLabel id="tva" value="#{verificationbcController.boncommande.tva}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="air amount"/>
+                                <p:outputLabel id="totalair" value="#{verificationbcController.boncommande.totalair}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="TTC"/>
+                                <p:outputLabel id="ttc" value="#{verificationbcController.boncommande.ttc}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="NAP"/>
+                                <p:outputLabel id="netaper" value="#{verificationbcController.boncommande.netapayer}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                            </p:panelGrid>
+
+                        </div>
+
+                        <div id="form_" style="float: right ; width: 39%;margin-left: 1%">
+
+                            <center>
+
+                                <p:commandButton value="close" onclick="PF('VerificationCreateDialog').hide()"/>
+
+                                <p:commandButton rendered="false" class="btn btn-danger" 
+                                                 actionListener="#{verificationbcController.prepareRejet()}" 
+                                                 value="Reject" update="display,:VerificationListForm:datalist,:VerificationListForm:msg"/>
+
+                            </center>
+
+                            <p:separator/>
+
+                            <center>
+                                <h:panelGrid columns="4">
+                                    
+                                    <h:outputText value="Validation" />
+                                    <h:selectBooleanCheckbox id="valide_sb" value="#{verificationbcController.valide}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationbcController.updateRenderPanel('valide')}"/>
+                                    </h:selectBooleanCheckbox>
+
+                                    <h:outputText value="Rejection" />
+                                    <h:selectBooleanCheckbox id="rejet_sb" value="#{verificationbcController.rejet}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationbcController.updateRenderPanel('rejet')}" />
+                                    </h:selectBooleanCheckbox>
+                                    
+                                </h:panelGrid>
+                            </center>
+
+                            <p:separator/>
+
+                            <p:panel id="panel_1" rendered="#{verificationbcController.valide}" header="Zone de Validation" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <br/>
+                                <p:inputTextarea value="#{verificationbcController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationbcController.saveValidation()}" value="#{langues.valider}" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous valider ce bon de commande" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                            <p:panel id="panel_2" rendered="#{verificationbcController.rejet}" header="Zone de saisie des observations du rejet" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <br/>
+                                <p:inputTextarea value="#{verificationbcController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationbcController.saveRejet()}" value="save" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous rejeter ce bon de commande ?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                        </div>
+
+                    </div>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

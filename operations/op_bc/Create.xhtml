@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="OrdrePayementCreateDlg" 
+                  widgetVar="OrdrePayementCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD A LIQUIDATION ORDER" closeOnEscape="true"
+                  width="60%"
+                  height="600px">
+
+            <h:form id="OrdrePayementCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <center>
+
+                        <h:panelGrid columns="3" columnClasses="column">
+
+                            <p:outputLabel value="Type de document" for="type" />
+                            <p:selectOneMenu id="type" filter="true" value="#{ordrePayementBcController.typeFiltre}">
+                                <f:selectItem itemLabel="Tout" itemValue="Tout" />
+                                <f:selectItem itemLabel="Bon de commande" itemValue="BC" />
+                                <f:selectItem itemLabel="Lettre commande" itemValue="LC" />
+                                <f:selectItem itemLabel="Décision" itemValue="DEC" />
+                                <f:selectItem itemLabel="Mission" itemValue="MIS" />
+                                <f:selectItem itemLabel="Salaire" itemValue="SAL" />
+                                <p:ajax update="bc" listener="#{ordrePayementBcController.updateDataType()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="type" />
+
+                            <p:outputLabel value="N° / Ref" for="bc" />
+                            <p:selectOneMenu id="bc" filter="true" value="#{ordrePayementBcController.idBonCommande}" required="true" requiredMessage="Valeur obligatoire">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="0" />
+                                <f:selectItems value="#{ordrePayementBcController.boncommandes}" var="bc" itemLabel="#{bc.code}" itemValue="#{bc.idboncommande}" />
+                                <p:ajax update="display,imputation,structure,objet_bon,numero,reference,montant_nap,montant_tva,montant_air,total_a_ordonner,montant_en_lettre,pieces,mode_payement,objet" listener="#{ordrePayementBcController.updateData()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="bc" />
+
+                            <p:outputLabel value="Mode" for="mode" />
+                            <p:selectOneMenu id="mode" filter="true" value="#{ordrePayementBcController.modeOp}" >
+                                <f:selectItem itemLabel="Net à payer (Prestation)" itemValue="1" />
+                                <f:selectItem itemLabel="Taxes (TVA + IR)" itemValue="2" />
+                                <p:ajax update="display,montant_nap,montant_tva,montant_air,total_a_ordonner,beneficiaire,montant_en_lettre,pieces,objet" listener="#{ordrePayementBcController.updateModeOp()}"/>
+                            </p:selectOneMenu>
+                            <p:message for="mode" />
+
+                            <p:outputLabel value="Paragraph"  />
+                            <p:outputLabel id="imputation" value="#{ordrePayementBcController.boncommande.imputation.nom}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Structure"  />
+                            <p:outputLabel id="structure" value="#{ordrePayementBcController.boncommande.structure.nom}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Purpose of the voucher" for="objet_bon" />
+                            <p:inputTextarea disabled="true" style="width: 500px" cols="500" rows="4" id="objet_bon" value="#{ordrePayementBcController.boncommande.objet}" >
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:message for="objet" /> 
+
+                            <p:outputLabel value="Voucher Number" for="numero" />
+                            <p:inputText disabled="true" style="width: 150px" id="numero" value="#{ordrePayementBcController.boncommande.code}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputText>
+                            <p:message for="numero" />
+
+                            <p:outputLabel value="Reference" for="reference" />
+                            <p:inputText disabled="true" style="width: 150px" id="reference" value="#{ordrePayementBcController.boncommande.reference}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputText>
+                            <p:message for="reference" />
+
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 1}" value="NAP amount" />
+                            <p:inputText disabled="true" rendered="#{ordrePayementBcController.modeOp eq 1}" id="montant_nap" value="#{ordrePayementBcController.boncommande.netapayer}"  />
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 1}" value="" />
+
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 1}" value="NAP Already ordered" />
+                            <p:inputText disabled="true" rendered="#{ordrePayementBcController.modeOp eq 1}" id="montant_nap_ordonne" value="#{ordrePayementBcController.boncommande.napOrdonne}"  />
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 1}" value="" />
+
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 2}" value="TVA amount" />                   
+                            <p:inputText disabled="true" id="montant_tva" rendered="#{ordrePayementBcController.modeOp eq 2}" value="#{ordrePayementBcController.boncommande.tva}" />                              
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 2}" value="" />
+
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 2}" value="AIR amount" />                
+                            <p:inputText disabled="true" id="montant_air" rendered="#{ordrePayementBcController.modeOp eq 2}" value="#{ordrePayementBcController.boncommande.totalair}" />                            
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 2}" value="" />
+
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 2}" value="Taxes Already Ordered" />
+                            <p:inputText disabled="true" rendered="#{ordrePayementBcController.modeOp eq 2}" id="montant_taxe_ordonne" value="#{ordrePayementBcController.boncommande.taxeOrdonne}"  />
+                            <p:outputLabel rendered="#{ordrePayementBcController.modeOp eq 2}" value="" />
+
+                            <p:outputLabel value="Date of issue" for="dateemission" />
+                            <p:calendar pattern="dd/MM/yyyy" id="dateemission" value="#{ordrePayementBcController.ordrePayement.dateOrdonnation}" required="true" requiredMessage="Valeur obligatoire" navigator="true">
+                                <p:ajax event="dateSelect" />
+                            </p:calendar>
+                            <p:message for="dateemission" />
+
+                            <p:outputLabel value="Object" for="objet" />
+                            <p:inputTextarea style="width: 350px" cols="350" rows="3" id="objet" value="#{ordrePayementBcController.ordrePayement.objet}" >
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel  value="Remains to Order" />                
+                            <p:inputText id="total_a_ordonner" value="#{ordrePayementBcController.ordrePayement.montant}" required="true" requiredMessage="Valeur Obligatoire" >
+                                <p:ajax event="keyup" update="montant_en_lettre" listener="#{ordrePayementBcController.updateMontantEnLettre()}" />
+                            </p:inputText>                            
+                            <p:message for="total_a_ordonner" />
+
+                            <p:outputLabel value="Beneficiary" for="beneficiaire" />
+                            <p:inputTextarea style="width: 300px" rows="2" id="beneficiaire" value="#{ordrePayementBcController.ordrePayement.beneficiaire}" >
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Amount in letter" for="montant_en_lettre" />
+                            <p:inputTextarea disabled="true" style="width: 350px" cols="350" rows="3" id="montant_en_lettre" value="#{ordrePayementBcController.ordrePayement.montantEnLettre}" required="true" requiredMessage="Valeur obligatoire">
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:message for="montant_en_lettre" />
+
+                            <p:outputLabel value="payemnt method"/>
+                            <p:selectOneMenu id="mode_payement" filter="true" value="#{ordrePayementBcController.ordrePayement.modePaiement}" >
+                                <f:selectItem itemLabel="Virement" itemValue="Virement" />
+                                <f:selectItem itemLabel="Espèce" itemValue="Espèce" />
+                                <f:selectItem itemLabel="Chèque" itemValue="Chèque" />                                
+                            </p:selectOneMenu>
+                           
+
+                            <p:outputLabel value="Pièces" for="pieces" />
+                            <p:inputTextarea style="width: 300px" rows="3" id="pieces" value="#{ordrePayementBcController.ordrePayement.pieces}" >
+                                <p:ajax />
+                            </p:inputTextarea>
+                            <p:outputLabel value="" />
+
+                        </h:panelGrid>
+
+                    </center>
+
+                    <p:separator style="width: 80%;margin-left: 10%;"/>
+
+                    <center>
+                        <p:commandButton value="Cancel" onclick="PF('OrdrePayementCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{ordrePayementBcController.save()}" value="Save" update="display,:OrdrePayementListForm:datalist,:OrdrePayementListForm:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+</html>
+
+

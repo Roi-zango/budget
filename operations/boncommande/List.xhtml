@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+
+    <h:form id="BoncommandeListForm">
+
+        <p:messages id="growl" closable="true" />
+        <p:growl id="msg" />
+
+        <p:panel header="LISTE DES BONS DE COMMANDES">    
+
+            <p:contextMenu id="BoncommandeDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('BoncommandeListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('BoncommandeListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('BoncommandeListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('BoncommandeListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{boncommandeController.boncommandes}"
+                         var="item"                         
+                         rowKey="#{item.idboncommande}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 95% ; margin-left: 2.5%"
+                         selection="#{boncommandeController.boncommande}">
+
+                <p:ajax event="rowSelect" update="@form:editButton,@form:deleteButton,@form:imprimer, @form:imprimer_ce , @form:BoncommandeDataTableContextMenu" listener="#{boncommandeController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:imprimer, @form:imprimer_ce, @form:BoncommandeDataTableContextMenu" listener="#{boncommandeController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:editButton,@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('BoncommandeListForm:viewButton').click();"/>
+
+                <p:column style="width:10% ; text-align: center" filterBy="#{item.code}">
+                    <f:facet name="header">
+                        <h:outputText value="Numéro"/>
+                    </f:facet>
+                    <h:outputText value="#{item.code}"/>
+                </p:column>
+
+                <p:column style="width:29%" filterBy="#{item.objet}" class="hardBreak">
+                    <f:facet name="header">
+                        <h:outputText value="Nom"/>
+                    </f:facet>
+                    <h:outputText value="#{item.objet}"/>
+                </p:column>
+
+                <p:column style="width:19%" filterBy="#{item.structure.nom}" class="hardBreak">
+                    <f:facet name="header">
+                        <h:outputText value="Structure"/>
+                    </f:facet>
+                    <h:outputText value="#{item.structure.nom}"/>
+                </p:column> 
+                
+                <p:column style="width:19%" filterBy="#{item.imputation.code} #{item.imputation.nom}" class="hardBreak">
+                    <f:facet name="header">
+                        <h:outputText value="Paragraphe"/>
+                    </f:facet>
+                    <h:outputText value="#{item.imputation.code} - #{item.imputation.nom}"/>
+                </p:column>
+                
+                <p:column style="width:7% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Date"/>
+                    </f:facet>
+                    <h:outputText value="#{item.dateemission}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width:9% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Montant ht"/>
+                    </f:facet>
+                    <h:outputText value="#{item.totalht}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column>  
+
+                <p:column style="width:9% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Total ttc"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ttc}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="#{langues.Create}" 
+                             actionListener="#{boncommandeController.prepareCreate()}" update=":BoncommandeCreateForm,msg,growl,:Duplication_Option" />
+                             
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{langues.Edit}" 
+                             actionListener="#{boncommandeController.prepareEdit()}" update=":BoncommandeCreateForm,msg,growl,:Duplication_Option" 
+                             disabled="#{boncommandeController.detail}" />
+
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{langues.Delete}" actionListener="#{boncommandeController.delete()}" 
+                             update="growl,datalist,msg,deleteButton,editButton,imprimer,imprimer_ce" disabled="#{boncommandeController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            
+            <p:commandButton value="Imprimer BC"
+                             id="imprimer"
+                             actionListener="#{boncommandeController.print()}"
+                             icon="ui-icon-print"
+                             ajax="false"
+                             disabled="#{boncommandeController.detail}"
+                             update="msg,growl" />
+            
+            <p:commandButton value="Imprimer CE"
+                             id="imprimer_ce"
+                             actionListener="#{boncommandeController.printCe()}"
+                             icon="ui-icon-print"
+                             ajax="false"
+                             disabled="#{boncommandeController.detail}"
+                             update="msg,growl" />
+
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="InstitutionCreateDlg" 
+                  widgetVar="InstitutionCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="AJOUTER UNE INSTITUTION" 
+                  closeOnEscape="true"
+                  height="450px">
+
+            <h:form id="InstitutionCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">                        
+
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText style="width: 200px" id="code" value="#{institutionController.institution.code}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="code" />
+
+                        <p:outputLabel value="#{langues.nom} #{langues.francais}" for="libelle_fr" />
+                        <p:inputTextarea style="width: 300px" cols="300" rows="3" id="libelle_fr" value="#{institutionController.institution.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="libelle_fr" /> 
+                        
+                        <p:outputLabel value="#{langues.nom} #{langues.anglais}" for="libelle_en" />
+                        <p:inputTextarea style="width: 300px" cols="300" rows="3" id="libelle_en" value="#{institutionController.institution.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="libelle_en" /> 
+
+                        <p:outputLabel value="Sous secteur" for="soussecteur" />
+                        <p:selectOneMenu id="soussecteur" filter="true" value="#{institutionController.soussecteur.idsoussecteur}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{institutionController.soussecteurs}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idsoussecteur}" />
+                        </p:selectOneMenu>
+                        <p:message for="soussecteur" />
+                        
+                        <p:outputLabel value="Sigle" for="sigle" />
+                        <p:inputText style="width: 200px" id="sigle" value="#{institutionController.institution.sigle}" />
+                        <p:message for="sigle" />
+                        
+                        <p:outputLabel value="Chapitre" for="chapitre" />
+                        <p:inputText style="width: 200px" id="chapitre" value="#{institutionController.institution.chapitre}" />
+                        <p:message for="chapitre" />
+                        
+                        <p:outputLabel value="Etat" for="etat" />
+                        <p:selectOneMenu id="etat" filter="true" value="#{institutionController.institution.etat}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="Actif" itemValue="Actif" />
+                            <f:selectItem itemLabel="Inactif" itemValue="Inactif" />
+                        </p:selectOneMenu>
+                        <p:message for="etat" />
+                        
+                        <p:outputLabel value="Choix Stratégique" for="choixstrategique" />
+                        <p:inputTextarea style="width: 400px" cols="350" rows="7" id="choixstrategique" value="#{institutionController.institution.choixstrategique}" />
+                        <p:message for="choixstrategique" /> 
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('InstitutionCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{institutionController.save()}" value="#{langues.Save}" update="display,:InstitutionListForm:datalist,:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

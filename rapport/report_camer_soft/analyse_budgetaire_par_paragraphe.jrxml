@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="analyse_budgetaire_par_paragraphe" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5db1f646-084b-4ab7-b4ea-64e29b56b91d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idannee" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idinstitution" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     (tache."totalmontantaloue"-tache."montantengage") AS solde_eng,
+     (moyens."ct"-moyens."montantexecute") AS solde_eng_imp,
+     tache."totalmontantaloue" AS tache_totalmontantaloue,
+     tache."nom" AS tache_nom,
+     tache."aeencours" AS tache_aeencours,
+     tache."cpconsommee" AS tache_cpconsommee,
+     tache."montantengage" AS tache_montantengage,
+     tache."montantliquide" AS tache_montantliquide,
+     tache."montantpayeht" AS tache_montantpayeht,
+     tache."montantpayettc" AS tache_montantpayettc,
+     activite."nom" AS activite_nom,
+     action."nom" AS action_nom,
+     programme."nom" AS programme_nom,
+     programme."code" AS programme_code,
+     action."code" AS action_code,
+     activite."code" AS activite_code,
+     programme."idprogramme" AS programme_idprogramme,
+     action."idaction" AS action_idaction,
+     activite."idactivite" AS activite_idactivite,
+     annee."idannee" AS annee_idannee,
+     moyens."ct" AS moyens_ct,
+     imputation."nom" AS imputation_nom,
+     moyens."montantexecute" AS moyens_montantexecute,
+     imputation."code" AS imputation_code,
+     institution."nom" AS institution_nom,
+     institution."nom_en" AS institution_nom_en
+FROM
+     "public"."tache" tache INNER JOIN "public"."activite" activite ON tache."idactivite" = activite."idactivite"
+     INNER JOIN "public"."action" action ON activite."idaction" = action."idaction"
+     INNER JOIN "public"."programme" programme ON action."idprogramme" = programme."idprogramme"
+     INNER JOIN "public"."institution" institution ON programme."idinstitution" = institution."idinstitution"
+     INNER JOIN "public"."annee" annee ON tache."idannee" = annee."idannee"
+     INNER JOIN "public"."moyens" moyens ON tache."idtache" = moyens."idtache"
+     INNER JOIN "public"."imputation" imputation ON moyens."idimputation" = imputation."idimputation"
+WHERE
+     tache.idannee = $P{idannee}
+ AND institution.idinstitution = $P{idinstitution}
+ORDER BY
+     imputation.code ASC]]>
+	</queryString>
+	<field name="solde_eng" class="java.lang.Double"/>
+	<field name="solde_eng_imp" class="java.lang.Double"/>
+	<field name="tache_totalmontantaloue" class="java.lang.Double"/>
+	<field name="tache_nom" class="java.lang.String"/>
+	<field name="tache_aeencours" class="java.lang.Double"/>
+	<field name="tache_cpconsommee" class="java.lang.Double"/>
+	<field name="tache_montantengage" class="java.lang.Double"/>
+	<field name="tache_montantliquide" class="java.lang.Double"/>
+	<field name="tache_montantpayeht" class="java.lang.Double"/>
+	<field name="tache_montantpayettc" class="java.lang.Double"/>
+	<field name="activite_nom" class="java.lang.String"/>
+	<field name="action_nom" class="java.lang.String"/>
+	<field name="programme_nom" class="java.lang.String"/>
+	<field name="programme_code" class="java.lang.String"/>
+	<field name="action_code" class="java.lang.String"/>
+	<field name="activite_code" class="java.lang.String"/>
+	<field name="programme_idprogramme" class="java.lang.Long"/>
+	<field name="action_idaction" class="java.lang.Long"/>
+	<field name="activite_idactivite" class="java.lang.Long"/>
+	<field name="annee_idannee" class="java.lang.Long"/>
+	<field name="moyens_ct" class="java.lang.Double"/>
+	<field name="imputation_nom" class="java.lang.String"/>
+	<field name="moyens_montantexecute" class="java.lang.Double"/>
+	<field name="imputation_code" class="java.lang.String"/>
+	<field name="institution_nom" class="java.lang.String"/>
+	<field name="institution_nom_en" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="51" width="189" height="20" uuid="45e20158-c268-4399-88a2-d380c08c5047"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="628" y="35" width="174" height="15" uuid="bf62d089-b9e3-4dc7-84de-fc7a955e976c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="616" y="51" width="186" height="20" uuid="00a74dbf-41c6-42d8-9075-85a419f5e4b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom_en}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="174" height="15" uuid="f186d9bc-9c94-4923-814e-f6205a6a50ce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail - Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="35" width="174" height="15" uuid="4a6bd93e-989f-466b-87e6-ddf3862a7186"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="0" width="174" height="20" uuid="d4d404d7-e8b5-4a02-82fd-37752f79fbec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIC OF CAMEROON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="20" width="174" height="15" uuid="1dc2002d-2c8d-43c9-980b-b880115d4d17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="174" height="20" uuid="90ca61e2-cc61-4365-a9b8-9a9723ed64ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DU CAMEROUN]]></text>
+			</staticText>
+			<image>
+				<reportElement x="358" y="1" width="116" height="74" uuid="212feb5c-68da-4b17-a03a-6879e2bf950b"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="97" y="10" width="599" height="29" uuid="636ed8d0-9e14-4d69-8a7d-65a754d3a75c"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANALYSE GLOBAL  DU BUDGET PAR PARAGRAPHE]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="365" splitType="Stretch">
+			<barChart>
+				<chart>
+					<reportElement x="24" y="7" width="757" height="345" uuid="79d9e8dd-b639-4990-b535-80a818348777"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dotation Initiale"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{imputation_code}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{moyens_ct}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Montant engagé"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{imputation_code}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{moyens_montantexecute}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Montant payé"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{imputation_code}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{solde_eng_imp}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

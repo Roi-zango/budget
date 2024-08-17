@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <f:view locale="#{loginController.language}">
+            <script type="text/javascript">
+                function checkMatching(value) {
+                    value = document.getElementById("confirmpassword").value;
+                    alert(value);
+                }
+            </script>
+            <h:form id="menuForm" style="font-size: 12px;">
+                <p:poll interval="300" listener="#{loginController.watcher()}" />
+                <p:menubar style="border:none;" styleClass="navbar">
+
+                    <p:menuitem value="Home" outcome="/index.xhtml" icon="ui-icon-home"/> 
+
+                    <p:submenu label="Security">
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Users" outcome="/securite/utilisateur/index"/>
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="User account" outcome="/securite/compte/index"/>
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Access rights" outcome="/securite/privilege/index"/>
+                    </p:submenu>
+
+                    <p:submenu label="Maintenance"> 
+
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Global Settings" outcome="/parametrages/param/index"/>
+
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Institution" outcome="/parametrages/institution/index"/>
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Structures" outcome="/parametrages/service/index"/>
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Signatory" outcome="/parametrages/signataire/index"/>
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Providers" outcome="/parametrages/prestataire/index"/>
+
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Year" outcome="/parametrages/annee/index"/>
+                        
+                        
+                            <p:submenu label="Budget allocation">
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Items" outcome="/parametrages/article/index" />
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Sections" outcome="/parametrages/section/index" />
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Paragraph type" outcome="/parametrages/typeimputation/index" />
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Paragraph" outcome="/parametrages/paragraphe/index" />
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Budgetary Exercise" outcome="/parametrages/exercice_b/index"/>
+                           </p:submenu>
+                           
+                        <p:submenu label="Mercurial">
+                            <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Reference" outcome="/parametrages/reference_m/index"/>
+                             <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Rubric" outcome="/parametrages/rubrique_m/index"/>
+                              <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Sub-section" outcome="/parametrages/sous_rubrique_m/index"/>
+                        </p:submenu>
+                        
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="subprogram" outcome="/parametrages/programme/index" />
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Activity" outcome="/parametrages/action/index" />
+
+                    </p:submenu>
+
+                    <p:submenu label="treatments">                        
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Recipes" outcome="/operations/recette/List" />
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Tasks" outcome="/operations/activite/List" />
+                        <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Operation" outcome="/operations/tache/List" />
+
+                        <p:submenu label="Commitments">
+
+                            <p:submenu label="Purchase order">
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Seizure" outcome="/operations/boncommande/index" />
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Validation" outcome="/operations/verification_bc/index" />                                              
+                            </p:submenu>
+
+                            <p:submenu label="Order letter">
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Seizure" outcome="/operations/lettre_commande/index" />
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Validation" outcome="/operations/verification_lc/index" />
+                            </p:submenu>
+
+                            <p:submenu label="Decisions">
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Seizure" outcome="/operations/decision/index" />
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Validation" outcome="/operations/verification_dec/index" />
+                            </p:submenu>
+
+                            <p:submenu label="Salary">
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Seizure" outcome="/operations/salaire/index" />
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Validation" outcome="/operations/verification_salaire/index" />
+                            </p:submenu>
+                            
+                             <p:submenu label="Print list">
+                               <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Seizure" outcome="/operations/salaire/index" />
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Validation" outcome="/operations/verification_salaire/index" />
+                            </p:submenu>
+                           
+                        </p:submenu>
+                        
+                         <p:submenu label="liquidation/ Order">
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Payment mandate entry" outcome="/operations/op_bc/index" />
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Validation of payment mandate" outcome="/operations/validation_op/index" />
+                                <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Import liquidations" outcome="/operations/payement_marche/index" />
+                                  <p:menuitem style="color: #0b76ee; font-style: italic; font-weight: bold" value="Print list" outcome="/operations/payement_marche/index" />
+                            </p:submenu>
+
+                    </p:submenu>
+
+                    <p:submenu label="analysis">
+                        <p:menuitem icon="ui-icon-print" style="color: #0b76ee; font-style: italic; font-weight: bold" value="Periodic Releases" outcome="/impression_rejet_interval/index" />
+                        <p:menuitem icon="ui-icon-print" style="color: #0b76ee; font-style: italic; font-weight: bold" value="Budget analysis" outcome="/analyse/analse_budget/index" /> 
+                    </p:submenu>
+
+                    <p:menuitem value="logout" style="margin-left:2%;color: red" actionListener="#{loginController.logout()}"/>
+                    <p:submenu label="help"/>
+                </p:menubar>
+            </h:form>
+        </f:view>
+    </ui:composition>
+</html>

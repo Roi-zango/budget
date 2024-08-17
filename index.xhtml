@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{msg.AppName}"></h:outputText>
+        </ui:define> 
+        <ui:define name="body">
+
+            <div id="HomeMiddleDivsContainer">
+
+                <p:dialog id="SessionCreerDlg" 
+                          widgetVar="MenuCreerDialog" 
+                          modal="true" 
+                          resizable="false" 
+                          appendTo="@(body)"
+                          closable="false"
+                          visible="#{loginController.showSessionPanel}"
+                          header="#{session_data}">
+
+                    <h:form id="SessionCreerForm">
+
+                        <p:messages id="growl" closable="true">
+                            <p:effect type="pulsate" event="load" delay="50" />
+                        </p:messages>
+
+                        <h:panelGrid columns="3" columnClasses="column">
+
+                            <p:outputLabel value="Institution"  for="institution"/>
+                            <p:selectOneMenu id="institution" value="#{loginController.institution.idinstitution}" requiredMessage="Valeur Obligatoire" >
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{loginController.institutions}" var="item" itemLabel="#{item.nom}" itemValue="#{item.idinstitution}" />
+                            </p:selectOneMenu>
+                            <p:message for="institution" />
+
+                            <p:outputLabel value="Year" for="annee" />
+                            <p:selectOneMenu id="annee" value="#{loginController.annee.idannee}" requiredMessage="Valeur Obligatoire" >
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                <f:selectItems value="#{loginController.annees}" var="annee" itemLabel="#{annee.nom}" itemValue="#{annee.idannee}"  />
+                            </p:selectOneMenu>
+                            <p:message for="annee" />
+
+                        </h:panelGrid>
+
+                        <p:separator/>
+
+                        <center>
+                            <p:commandButton partialSubmit="true" actionListener="#{loginController.initSession()}" value="#{langues.valider}" 
+                                             update="SessionCreerForm,:SessionCreerDlg,growl" icon="ui-icon-check"/>
+                        </center>
+
+                    </h:form>
+
+                </p:dialog>
+
+            </div>
+        </ui:define>
+    </ui:composition>
+
+</html>

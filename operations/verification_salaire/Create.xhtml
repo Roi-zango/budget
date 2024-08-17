@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="VerificationCreateDlg" 
+                  widgetVar="VerificationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="VERIFICATION DES ENGAGEMENTS DE SALAIRE" closeOnEscape="true"
+                  width="70%"
+                  height="650px">
+
+            <h:form id="VerificationCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div style="width: 100% ; height: 100%" >
+
+                        <div style="float: left ; width: 50%">
+
+                            <h:panelGrid columns="3" columnClasses="column">
+
+                                <p:outputLabel value="Exercice Budgétaire" />
+                                <p:outputLabel value="#{verificationmisController.budget.annee}" />
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Bon de commande" for="boncommande" />
+                                <p:selectOneMenu id="boncommande" filter="true" value="#{verificationmisController.boncommande}" converter="boncommandeConverter" required="true" requiredMessage="Valeur obligatoire">
+                                    <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                    <f:selectItems value="#{verificationmisController.boncommandes}" var="item" itemLabel="#{item.code}" itemValue="#{item}" />
+                                    <p:ajax update="ht_,objet,reference,dateemission,delailivraison,montant_en_lettre,avance,mode_payement,info_fi,tache,imputation,structure,signataire,moyens" listener="#{verificationmisController.updateData()}"/>
+                                </p:selectOneMenu>
+                                <p:message for="boncommande" />
+
+                                <p:outputLabel for="date_verif" value="Date de verif" />
+                                <p:calendar pattern="dd/MM/yyyy" id="date_verif" value="#{verificationmisController.verificationbc.dateverification}" required="true" rendererType="Valeur obligatoire}"  >
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Paragraphe" />
+                                <p:outputLabel value="#{verificationmisController.imputation.code} - #{verificationmisController.imputation.nom}" id="imputation"  />               
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Structure" />
+                                <p:outputLabel value="#{verificationmisController.structure.nom}" id="structure" />                           
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Signataire" for="signataire" />
+                                <p:outputLabel value="#{verificationmisController.signataire.nom} #{verificationmisController.signataire.prenom}" id="signataire" />                            
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Object" />
+                                <p:outputLabel id="objet" value="#{verificationmisController.boncommande.objet}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Reference" />
+                                <p:outputLabel style="width: 200px" id="reference" value="#{verificationmisController.boncommande.code}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Date d'émission" />
+                                <p:outputLabel id="dateemission" value="#{verificationmisController.boncommande.dateemission}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Délai de livrasion (en jrs)" />
+                                <p:outputLabel style="width: 75px" id="delailivraison" value="#{verificationmisController.boncommande.delailivraison}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Montant en lettre" />
+                                <p:outputLabel style="width: 300px" id="montant_en_lettre" value="#{verificationmisController.boncommande.montantenlettre}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Avance" />
+                                <p:outputLabel style="width: 100px" id="avance" value="#{verificationmisController.boncommande.avance}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Mode de payement" />
+                                <h:panelGroup id="mode_payement">
+                                    <h:panelGrid columns="6">
+                                        <p:outputLabel value="Chèque" />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationmisController.boncommande.cheque}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="Espèce" />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationmisController.boncommande.espece}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="Virement"  />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationmisController.boncommande.virement}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Taches" />
+                                <p:outputLabel id="tache" value="#{verificationmisController.tache.nom}" />                            
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Moyens" for="moyens" />
+                                <p:outputLabel id="moyens" value="#{verificationmisController.imputation.code} - #{verificationmisController.imputation.nom}" />
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Montant Total"/>
+                                <p:outputLabel id="ht_" value="#{verificationmisController.boncommande.totalht}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Montant Programmé" />
+                                <p:outputLabel id="montant_programme" style="width: 100px" value="#{verificationmisController.moyens.ct}">
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Montant Exécuté" />
+                                <p:outputLabel id="montant_execute" style="width: 100px" value="#{verificationmisController.moyens.montantexecute}" >
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                            </h:panelGrid>
+
+
+                            <p:separator rendered="false"/>
+
+                            <p:panelGrid rendered="false" id="info_fi" style="width: 100%;" columns="12">
+
+                                <p:outputLabel value="Total ht"/>
+                                <p:outputLabel id="ht" value="#{verificationmisController.boncommande.totalht}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Tva"/>
+                                <p:outputLabel id="tva" value="#{verificationmisController.boncommande.tva}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Montant air"/>
+                                <p:outputLabel id="totalair" value="#{verificationmisController.boncommande.totalair}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="TTC"/>
+                                <p:outputLabel id="ttc" value="#{verificationmisController.boncommande.ttc}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="NAP"/>
+                                <p:outputLabel id="netaper" value="#{verificationmisController.boncommande.netapayer}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                            </p:panelGrid>
+
+                        </div>
+
+                        <div id="form_" style="float: right ; width: 49%;margin-left: 1%">
+
+                            <center>
+
+                                <p:commandButton value="#{langues.fermer}" onclick="PF('VerificationCreateDialog').hide()"/>
+
+                                <p:commandButton rendered="false" class="btn btn-danger" 
+                                                 actionListener="#{verificationmisController.prepareRejet()}" 
+                                                 value="Rejetter" update="display,:VerificationListForm:datalist,:VerificationListForm:msg"/>
+
+                            </center>
+
+                            <p:separator/>
+
+                            <center>
+                                <h:panelGrid columns="4">
+
+                                    <h:outputText value="Validation" />
+                                    <h:selectBooleanCheckbox id="valide_sb" value="#{verificationmisController.valide}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationmisController.updateRenderPanel('valide')}"/>
+                                    </h:selectBooleanCheckbox>
+
+                                    <h:outputText value="Rejet" />
+                                    <h:selectBooleanCheckbox id="rejet_sb" value="#{verificationmisController.rejet}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationmisController.updateRenderPanel('rejet')}" />
+                                    </h:selectBooleanCheckbox>
+
+                                </h:panelGrid>
+                            </center>
+
+                            <p:separator/>
+
+                            <p:panel id="panel_1" rendered="#{verificationmisController.valide}" header="Zone de Validation" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <br/>
+                                <p:inputTextarea value="#{verificationmisController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationmisController.saveValidation()}" value="#{langues.valider}" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous valider ce bon de commande" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                            <p:panel id="panel_2" rendered="#{verificationmisController.rejet}" header="Zone de saisie des observations du rejet" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <br/>
+                                <p:inputTextarea value="#{verificationmisController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationmisController.saveRejet()}" value="Enregistrer" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous rejeter ce bon de commande ?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                        </div>
+
+                    </div>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

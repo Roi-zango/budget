@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SocieteCreateDlg" 
+                  widgetVar="SocieteCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD A PROVIDER" closeOnEscape="true">
+
+            <h:form id="SocieteCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">
+
+                        <p:outputLabel value="Id / Numero Contribuable" for="nuid" />
+                        <p:inputText style="width: 200px" id="nuid" value="#{societeController.societe.numerocontribuable}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="nuid" />
+
+                        <p:outputLabel value="Name" for="nom" />
+                        <p:inputTextarea style="width: 300px" cols="300" rows="3" id="nom" value="#{societeController.societe.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="nom" />
+                        
+                        <p:outputLabel value="Coge" for="coge" />
+                        <p:inputText style="width: 200px" id="coge" value="#{societeController.societe.coge}" />
+                        <p:message for="coge" />
+                        
+                        <p:outputLabel value="N° RC" for="no_rc" />
+                        <p:inputText style="width: 200px" id="no_rc" value="#{societeController.societe.rc}"/>
+                        <p:message for="no_rc" />
+
+                        <p:outputLabel value="Rib 1" for="rib_1" />
+                        <p:inputText style="width: 200px" id="rib_1" value="#{societeController.societe.rib1}"/>
+                        <p:message for="rib_1" />
+
+                        <p:outputLabel value="Rib 2" for="rib_2" />
+                        <p:inputText style="width: 200px" id="rib_2" value="#{societeController.societe.rib2}"/>
+                        <p:message for="rib_2" />
+
+                        <p:outputLabel value="Adress 1" for="adresse_1" />
+                        <p:inputText style="width: 200px" id="adresse_1" value="#{societeController.societe.ad1}" />
+                        <p:message for="adresse_1" />
+
+                        <p:outputLabel value="Téléphone" for="tel" />
+                        <p:inputText style="width: 200px" id="tel" value="#{societeController.societe.tel}"/>
+                        <p:message for="tel" />
+                        
+                        <p:outputLabel value="Adress 2" for="adresse_2" />
+                        <p:inputText style="width: 200px" id="adresse_2" value="#{societeController.societe.ad2}" />
+                        <p:message for="adresse_2" />
+
+                        <p:outputLabel value="Adress 3" for="adresse_3" />
+                        <p:inputText style="width: 200px" id="adresse_3" value="#{societeController.societe.ad3}" />
+                        <p:message for="adresse_3" />
+
+                        <p:outputLabel value="Fax" for="fax" />
+                        <p:inputText style="width: 200px" id="fax" value="#{societeController.societe.fax}"/>
+                        <p:message for="fax" />
+
+                        <p:outputLabel value="Email" for="email" />
+                        <p:inputText style="width: 200px" id="email" value="#{societeController.societe.email}"/>
+                        <p:message for="email" />
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="Cancel" onclick="PF('SocieteCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{societeController.save()}" value="Save" update="display,:SocieteListForm,:msg">
+                            <p:confirm header="ConfirmationHeader" message="ConfirmCreateMessage" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

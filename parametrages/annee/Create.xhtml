@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AnneeCreateDlg" widgetVar="AnneeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="ACTIVATE/DEACTIVATE A YEAR" closeOnEscape="true">
+
+            <h:form id="AnneeCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                         <h:outputLabel for="anneeNom" value="Annee Nom:" />
+                        <h:inputText id="anneeNom" value="#{anneeController.annee.nom}"  maxlength="254" required="true" requiredMessage="the name field is required"/>
+
+                        <p:outputLabel value="State" for="etat"/>
+                        <h:selectBooleanCheckbox id="etat" value="#{anneeController.annee.etat}"/>
+
+                    </p:panelGrid>
+
+                    <p:separator/>
+
+                    <p:commandButton style="float: right" actionListener="#{anneeController.create}" value="Create" update="display,:AnneeListForm:datalist,:growl" oncomplete="PF('AnneeCreateDialog').hide()">
+                        <p:confirm header="ConfirmationHeader" message="ConfirmCreateMessage" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton style="float: left" value="Cancel" onclick="PF('AnneeCreateDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

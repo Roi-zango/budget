@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <h:form id="ParagrapheRechercheForm" style="margin-top: 1%">
+
+            <h:panelGroup id="display" rendered="true">
+
+                <center>
+                    <p:panelGrid columns="2"> 
+                        <p:outputLabel value="Heading" for="rubrique"/>
+                        <p:selectOneMenu  id="rubrique" style=" width: 200px" value="#{imputationController.rubrique.idrubrique}" filter="true" required="true" >
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue="" />
+                            <f:selectItems value="#{imputationController.rubriques}"
+                                           var="rub"                                          
+                                           itemLabel="#{rub.code} - #{rub.nom}"
+                                           itemValue="#{rub.idrubrique}" />                                           
+                            <p:ajax update="sr,:ParagrapheListForm:datalist" listener="#{imputationController.filterSousrubriqueByRubrique()}" /> 
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Sub-heading"  for="sr"/>
+                        <p:selectOneMenu id="sr" style=" width: 500px"  value="#{imputationController.sousrubrique.idsousrubrique}" filter="true"  required="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue=""/>
+                            <f:selectItems value="#{imputationController.sousrubriques}"
+                                           var="sr"
+                                           itemValue="#{sr.idsousrubrique}"
+                                           itemLabel="#{sr.code} - #{sr.nom}" />                                           
+                         <p:ajax update=":ParagrapheListForm:datalist"/>
+                        </p:selectOneMenu>
+
+                    </p:panelGrid> 
+                    <p:commandButton value="Rechercher" update=":ParagrapheListForm:datalist,:msg" actionListener="#{imputationController.afficher()}"/>
+                </center>
+            </h:panelGroup>
+
+        </h:form>
+    </ui:composition>
+</html>

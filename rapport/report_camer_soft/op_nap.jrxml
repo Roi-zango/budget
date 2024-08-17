@@ -1,0 +1,1235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="op_nap" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f00e427-2f39-440e-9ab2-38ed928c57c0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idOp" class="java.lang.Long"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     ordre_payement."beneficiaire" AS ordre_payement_beneficiaire,
+     ordre_payement."montant" AS ordre_payement_montant,
+     ordre_payement."montant_en_lettre" AS ordre_payement_montant_en_lettre,
+     ordre_payement."pieces" AS ordre_payement_pieces,
+     ordre_payement."date_ordonnation" AS ordre_payement_date_ordonnation,
+     ordre_payement."code" AS ordre_payement_code,
+     boncommande."objet" AS boncommande_objet,
+     boncommande."code" AS boncommande_code,
+     boncommande."ttc" AS boncommande_ttc,
+     boncommande."espece" AS boncommande_espece,
+     boncommande."cheque" AS boncommande_cheque,
+     boncommande."virement" AS boncommande_virement,
+     boncommande."montant_ordonne" AS boncommande_montant_ordonne,
+     boncommande."taxe_ordonne" AS boncommande_taxe_ordonne,
+     boncommande."nap_ordonne" AS boncommande_nap_ordonne,
+     budget."annee" AS budget_annee,
+     structure."nom" AS structure_nom,
+     institution."nom" AS institution_nom,
+     institution."nom_en" AS institution_nom_en,
+     boncommande."imputations" AS boncommande_imputations,
+     signataire."nom" AS signataire_nom,
+     signataire."prenom" AS signataire_prenom,
+     ordre_payement."objet" AS ordre_payement_objet,
+     boncommande."totalht" AS boncommande_totalht,
+     boncommande."tva" AS boncommande_tva,
+     boncommande."totalair" AS boncommande_totalair,
+     societe."nom" AS societe_nom,
+     societe."rib1" AS societe_rib1,
+     ordre_payement."mode_paiement" AS ordre_payement_mode_paiement
+FROM
+     "public"."boncommande" boncommande INNER JOIN "public"."ordre_payement" ordre_payement ON boncommande."idboncommande" = ordre_payement."idboncommande"
+     INNER JOIN "public"."budget" budget ON boncommande."idbudget" = budget."idbudget"
+     INNER JOIN "public"."structure" structure ON boncommande."idstructure" = structure."idstructure"
+     INNER JOIN "public"."signataire" signataire ON boncommande."idsignataire" = signataire."idsignataire"
+     INNER JOIN "public"."societe" societe ON boncommande."idsociete" = societe."idsociete"
+     INNER JOIN "public"."institution" institution ON structure."idinstitution" = institution."idinstitution"
+WHERE
+     ordre_payement."id_ordre_payement" = $P{idOp}]]>
+	</queryString>
+	<field name="ordre_payement_beneficiaire" class="java.lang.String"/>
+	<field name="ordre_payement_montant" class="java.lang.Double"/>
+	<field name="ordre_payement_montant_en_lettre" class="java.lang.String"/>
+	<field name="ordre_payement_pieces" class="java.lang.String"/>
+	<field name="ordre_payement_date_ordonnation" class="java.sql.Date"/>
+	<field name="ordre_payement_code" class="java.lang.String"/>
+	<field name="boncommande_objet" class="java.lang.String"/>
+	<field name="boncommande_code" class="java.lang.String"/>
+	<field name="boncommande_ttc" class="java.lang.Double"/>
+	<field name="boncommande_espece" class="java.lang.Boolean"/>
+	<field name="boncommande_cheque" class="java.lang.Boolean"/>
+	<field name="boncommande_virement" class="java.lang.Boolean"/>
+	<field name="boncommande_montant_ordonne" class="java.lang.Double"/>
+	<field name="boncommande_taxe_ordonne" class="java.lang.Double"/>
+	<field name="boncommande_nap_ordonne" class="java.lang.Double"/>
+	<field name="budget_annee" class="java.lang.String"/>
+	<field name="structure_nom" class="java.lang.String"/>
+	<field name="institution_nom" class="java.lang.String"/>
+	<field name="institution_nom_en" class="java.lang.String"/>
+	<field name="boncommande_imputations" class="java.lang.String"/>
+	<field name="signataire_nom" class="java.lang.String"/>
+	<field name="signataire_prenom" class="java.lang.String"/>
+	<field name="ordre_payement_objet" class="java.lang.String"/>
+	<field name="boncommande_totalht" class="java.lang.Double"/>
+	<field name="boncommande_tva" class="java.lang.Double"/>
+	<field name="boncommande_totalair" class="java.lang.Double"/>
+	<field name="societe_nom" class="java.lang.String"/>
+	<field name="societe_rib1" class="java.lang.String"/>
+	<field name="ordre_payement_mode_paiement" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="91" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="226" height="20" uuid="406c0083-d30a-4187-a890-2c96864ee9fa"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DU CAMEROUN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="225" height="20" uuid="fc0a79ae-6f93-4b94-8210-ecff0a06e8ae"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[REPUBLIC OF CAMEROON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="226" height="20" uuid="175cf7d0-271f-473d-8772-8aaeae72b47a"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail - Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="20" width="225" height="20" uuid="06715fe7-400c-4c02-84be-51a8994a7348"/>
+				<box rightPadding="0">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="40" width="226" height="51" uuid="44469185-fd14-49bc-9101-b2804399f02b"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="40" width="225" height="51" uuid="27187e95-510f-4dd7-923c-ac94ff59dbb0"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom_en}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="226" y="0" width="104" height="91" uuid="cdf0cc61-19db-40fc-913c-374f4a9e1f4c"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<image>
+				<reportElement x="245" y="10" width="73" height="81" uuid="b83b2b02-8f3e-48e4-bffb-93b2cee6a379"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="665" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="200" height="20" uuid="b75d8c9a-a06e-476f-bdc4-1ef69abf9b17"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["BUDGET "+$F{budget_annee}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="200" height="30" uuid="75fbd12c-94b2-4423-87e2-a58471106f79"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[FINANCIAL YEAR]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="50" width="200" height="38" uuid="3e984d94-a032-4bf1-ae7b-dd2d71237b37"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dotation Budg :  "+$F{boncommande_imputations}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="88" width="200" height="20" uuid="26903f18-e10a-4a78-a4b6-f3ae6e4f53b7"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Total Eng Ant
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="108" width="200" height="15" uuid="2f0d27d5-3800-451b-b908-7358d97a50bb"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total Prev Com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="123" width="200" height="17" uuid="12797f80-042a-45a6-a3ed-2bca9a1ff2bc"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Disponible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="140" width="200" height="15" uuid="d64c7646-4df1-484a-8596-f144b50419c6"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Balance]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="155" width="200" height="20" uuid="2e2c6135-255d-438a-ae11-7d247c1c78a4"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dép en cours : "+$F{ordre_payement_montant}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="175" width="200" height="13" uuid="ab721077-9193-4012-9925-968b61429825"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Current comm]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="188" width="200" height="20" uuid="a49e4f04-bba7-4154-a232-3813c5bd1edc"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Solde "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="208" width="200" height="15" uuid="3871bf3a-4c72-4bf0-a240-8ac86e05ba11"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Curr Balance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="20" width="132" height="20" uuid="01a8ca50-2f13-4fd1-b295-51793358005c"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Budget of]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="353" y="40" width="132" height="15" uuid="4104b909-1398-40ce-8541-561e07e6288b"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ordonnateur ........."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="353" y="55" width="132" height="20" uuid="4cfe74c3-a747-41fd-90b4-4fe794b5420f"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{signataire_nom}+" "+$F{signataire_prenom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="353" y="75" width="132" height="13" uuid="a76b4603-b953-46d8-ae0b-db2feb8f2d01"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Vote controller]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="88" width="132" height="20" uuid="bb9ef8a0-c5d7-4345-bffa-6b0ab01a75a1"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Mois et exercice d'émission]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="106" width="132" height="15" uuid="fb2b0bf4-a0a1-4faa-b407-43afc3f48b03"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Month and ...]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="120" width="132" height="20" uuid="c5363f1b-8202-4357-a275-854331ab2ebd"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Exercice d'origine]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="153" width="132" height="20" uuid="7a406cba-4d39-4286-8f24-dd333ca02f41"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Numéro du bordéreau d'émission]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="173" width="132" height="13" uuid="195b1c30-e0bb-44b6-9cac-be782d5dc0a7"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[N° of submission of issue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="186" width="132" height="20" uuid="8a9a01ad-0a3b-44d1-b7b3-6f2e9f66afaf"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Numéro du mandat de paiement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="206" width="132" height="17" uuid="430178e0-916d-4ffe-bc3d-1078dff98bf9"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[N° of payement order]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="40" width="70" height="48" uuid="660be8ff-db10-4280-a91d-20045601ecfc"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[ADM]]></text>
+			</staticText>
+			<textField pattern="MMM-yy">
+				<reportElement x="485" y="88" width="70" height="33" uuid="e4f074c2-208b-475e-857d-af61af925c86"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_date_ordonnation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="353" y="140" width="132" height="13" uuid="9a827ff7-884a-49b4-acc9-dc2f50275717"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Year of Origin]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="485" y="121" width="70" height="32" uuid="95a0c208-1348-41c8-9bec-c7ae3a310e6a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{budget_annee}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="485" y="153" width="70" height="33" uuid="2a898ad7-6591-4cfd-a6a4-e5bafa797376"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="485" y="186" width="70" height="37" uuid="e1bb5826-eb7e-40df-8e24-7ad395d657e3"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="353" y="0" width="132" height="20" uuid="5b9c2447-d89f-4a5b-88a7-e008694b52f9"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Budget de fonctionnement  "+$F{budget_annee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="485" y="0" width="70" height="40" uuid="a01e5eb4-5390-4c92-a383-40984cb0d869"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="10" width="153" height="20" uuid="b15091ae-dd07-42d6-a474-8b364d442d91"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORDRE DE PAIEMENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="30" width="153" height="20" uuid="ba65b009-9603-4183-af43-155063f0f7af"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[PAYMENT ORDER]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="55" width="153" height="25" uuid="a27d76a3-acf0-4c1d-bf51-c079248f4421"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" EXERCICE  "+$F{budget_annee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="79" width="153" height="25" uuid="6ad09dee-a9f7-4859-81b2-776895a03d0c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Times New Roman" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FINANCIAL YEAR  "+$F{budget_annee}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="103" width="153" height="70" uuid="c8dcf8a6-9169-4268-a633-009e29a9f4e9"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[En vertu des crédits ouverts au titre du chapitre désigné ci-contre,l'Ordonnateur soussigné en date....................
+La créance ci-après]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="173" width="153" height="50" uuid="6a31141f-0516-4c02-a5c5-c45d1d3dd26a"/>
+				<box leftPadding="2">
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[By virtue of the votes allocated as shown hereon , the vote controller hereby authorities................................
+To disburse funds details hereunder]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="223" width="353" height="71" uuid="5307a68b-8baf-4883-b4ee-bb03e71118d1"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["OBJET DU PAIEMENT : " + $F{ordre_payement_objet}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="353" y="223" width="202" height="20" uuid="ba18843e-0370-4d1b-9499-5a01ace99f25"/>
+				<box>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[VISA DU CONTROLLEUR FINANCIER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="243" width="201" height="51" uuid="17c2c7b5-5d07-45ea-b72d-53b0f94d4eee"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[FINANCIEL CONTROLLER'S VISA ]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="0" y="294" width="264" height="20" uuid="061759d3-2d49-4da4-b933-03f14c5a0845"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DESINGATION DU CREANCIER : "+$F{ordre_payement_beneficiaire}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="344" width="264" height="71" uuid="a265474d-3f0c-4205-a5d8-017e2b6b0da6"/>
+				<box leftPadding="15">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_pieces}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="314" width="264" height="15" uuid="2ee7d33c-6acc-4c97-84ae-60e3afddab01"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[PIECES JUSTIFICATIVES DE LA DEPENSE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="329" width="264" height="15" uuid="27a794c2-37e6-4e00-9d1f-53f142a1f767"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[DOCUMENT ATTACHED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="415" width="119" height="25" uuid="49be900f-d0ea-48a3-9b14-bd004eefcac7"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[COMPTE A CREDITER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="440" width="119" height="25" uuid="36cef2a4-0e24-4ac8-bed5-3ff7ff3f4695"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ACCOUNT TO BE CREDITED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="294" width="158" height="20" uuid="6acdc41e-4766-412d-a748-a299b86f4442"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Montant brut de l'ordonnancement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="314" width="158" height="15" uuid="97688f72-c6bf-41b5-9de5-e7702ed55fe2"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cross amount of order]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="329" width="158" height="15" uuid="2cac05b9-d810-4376-bf4a-1bb88af0b0d5"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Montant brut : la TVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="344" width="158" height="15" uuid="a1b214fb-075f-457b-85c7-d35edb8d45c7"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cross amount order]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="359" width="158" height="15" uuid="00764fea-3a10-462c-b0ce-1db0ea959557"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Montant brut AIR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="374" width="158" height="15" uuid="bff98dc5-3469-4ea3-8174-b20e3ccc71e9"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Cross amount of order]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="389" width="158" height="26" uuid="c357b0f9-873e-44c5-a834-3036c7b21f5c"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Somme nette à payer ou à virer]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="422" y="294" width="74" height="35" uuid="f8504a39-7221-4021-8d8a-bd7428b2d873"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_totalht}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="422" y="329" width="74" height="30" uuid="b913b38e-9587-4cd9-b838-11a9152f3904"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_tva}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="422" y="359" width="74" height="30" uuid="43418896-beb2-4bcd-aabc-e898b695c963"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_totalair}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="422" y="389" width="74" height="26" uuid="a05f2c81-0e66-4e2a-ab6f-c100a6258f53"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_montant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="415" width="145" height="50" uuid="cc65178b-a7bc-47a3-8096-045eb171494e"/>
+				<box leftPadding="2">
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{societe_rib1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="415" width="221" height="15" uuid="011fd39b-4633-45ef-b156-99a8a931bccb"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<text><![CDATA[Arreté par sous le mandat de paiement à la somme de : ]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="485" y="415" width="70" height="30" uuid="e4895f5f-b03b-4b71-806c-0a79647e5c52"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_montant}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="430" width="221" height="15" uuid="9138cf7a-b68a-4514-9b7a-57738904fafb"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" size="9" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Present order closed off at the sum of CFA Francs]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="264" y="445" width="291" height="20" uuid="d5a4553a-5dff-4162-9021-2852b6ff6ff6"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_montant_en_lettre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="465" width="264" height="15" uuid="b6e6f103-c77f-4e0d-9e65-c66d3bf7f01f"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman" size="9"/>
+				</textElement>
+				<text><![CDATA[POUR ACQUIS DE LA SOMME DE INDIQUEE CI - DESSUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="480" width="264" height="15" uuid="ea1c8425-6f31-40e0-8827-924df701b023"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman" size="9" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[RECEIVED THE SUM INDICATED HEREON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="495" width="264" height="20" uuid="a6326ba5-264b-4c94-a812-b2c6bbb8c7d1"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[A Yaoundé...................... Date ....................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="465" width="144" height="20" uuid="b7dcabb6-9b47-4fa8-962a-334cea7f4afe"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[L'ordonnateur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="485" width="144" height="30" uuid="4d7f33d6-a50b-41a4-aa29-960e2b68e84f"/>
+				<box leftPadding="2">
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Vote controller]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="465" width="147" height="20" uuid="4b591176-0507-40a3-abd0-02044993c8ec"/>
+				<box>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Fait à yaoundé le ...................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="485" width="147" height="30" uuid="f117fb2c-0667-4597-8c67-7f83f0f7ae59"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Done  at yaoundé]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="515" width="555" height="20" uuid="1f4f901d-6541-41bb-8666-95a30196669e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" PAIEMENT PAR "+$F{ordre_payement_mode_paiement}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="535" width="264" height="20" uuid="388540ff-7801-4ad5-bd40-738df06721bd"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RETRAIT DU CHEQUE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="555" width="264" height="20" uuid="08b9ade9-8bfe-45f6-b369-eb108fefe611"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[N° CHEQUE DE Banque...............................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="575" width="264" height="20" uuid="4677e013-0889-4a9d-916d-6b176c101414"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[N° ORDRE DE VIREMENT .........................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="595" width="264" height="20" uuid="1e8e877a-97de-4885-9c9a-05a0153e58d2"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[DECHARGE PAR .......................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="615" width="264" height="20" uuid="84eafaaa-eb81-4ab0-882b-7edc4d5990b9"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[N° CNI .......................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="635" width="264" height="30" uuid="9e48f481-4b1d-4b5b-9a1c-f4ccdc00da17"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Yaoundé ,  .............................Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="535" width="291" height="15" uuid="43dd5c64-0b66-4326-81e5-1c6bca96e940"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[A Servir dans tous les cas de paiement par virement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="550" width="291" height="15" uuid="3add2021-f168-4235-91ab-6b90c78f7287"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Times New Roman" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[To be used for Bank transferts]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="565" width="291" height="15" uuid="f28df3db-96ec-4cfe-819f-e89b6e48d3b8"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[ORDRE DE VIREMENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="580" width="291" height="15" uuid="b538d801-85d6-4585-ba9d-a8e7387b29a0"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ORDER TO TRANSFERT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="595" width="77" height="15" uuid="cdf679ae-f0e3-4d94-8e1a-a9fad6d0cb9f"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Montant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="610" width="77" height="15" uuid="e257b4e3-b60d-43c6-88e0-a509ea664169"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Béneficiaire]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="625" width="77" height="15" uuid="38cff010-0825-4e58-89d2-66d2f4e84204"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Banque agence]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="640" width="77" height="25" uuid="377787fd-c9d9-4d96-b15e-ad93e4dcab92"/>
+				<box leftPadding="2">
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Compte N° ]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="341" y="595" width="92" height="15" uuid="1710a3a7-c9df-48fb-8ed1-2f35a9c0f1e4"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_montant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="610" width="214" height="15" uuid="d2ed15e5-1b78-4b68-9d47-1b834fdc852a"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordre_payement_beneficiaire}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="341" y="625" width="214" height="40" uuid="5ce67f5b-5698-4402-a595-0fb0e5a1e78c"/>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="294" width="59" height="35" uuid="5a9b1d98-d2fa-45c8-a510-a3d9e9180214"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[FCFA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="329" width="59" height="30" uuid="549882b8-a88a-44a9-b9d9-466c2ae83ebb"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[FCFA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="359" width="59" height="30" uuid="9bee4302-1c13-4a07-8ffe-faba45b76715"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[FCFA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="389" width="59" height="26" uuid="e27d0756-2918-42e4-9a1e-735ec8e79ce9"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[FCFA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="595" width="122" height="15" uuid="12009b45-0b12-4048-a7a6-88f8b1baf310"/>
+				<box>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[FCFA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

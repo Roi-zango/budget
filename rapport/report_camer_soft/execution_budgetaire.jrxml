@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="execution_budgetaire" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="83c740ce-5bf7-4919-a4ea-f0fcfa0cd45f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="idannee" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idinstitution" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     (tache."totalmontantaloue"-tache."montantengage") AS solde_eng,
+     tache."totalmontantaloue" AS tache_totalmontantaloue,
+     tache."nom" AS tache_nom,
+     tache."aeencours" AS tache_aeencours,
+     tache."cpconsommee" AS tache_cpconsommee,
+     tache."montantengage" AS tache_montantengage,
+     tache."montantliquide" AS tache_montantliquide,
+     tache."montantpayeht" AS tache_montantpayeht,
+     tache."montantpayettc" AS tache_montantpayettc,
+     activite."nom" AS activite_nom,
+     action."nom" AS action_nom,
+     programme."nom" AS programme_nom,
+     programme."code" AS programme_code,
+     action."code" AS action_code,
+     activite."code" AS activite_code,
+     programme."idprogramme" AS programme_idprogramme,
+     action."idaction" AS action_idaction,
+     activite."idactivite" AS activite_idactivite,
+     annee."idannee" AS annee_idannee,
+     institution."nom" AS institution_nom,
+     institution."nom_en" AS institution_nom_en,
+     tache."montant_ordonne" AS tache_montant_ordonne
+FROM
+     "public"."tache" tache INNER JOIN "public"."activite" activite ON tache."idactivite" = activite."idactivite"
+     INNER JOIN "public"."action" action ON activite."idaction" = action."idaction"
+     INNER JOIN "public"."programme" programme ON action."idprogramme" = programme."idprogramme"
+     INNER JOIN "public"."institution" institution ON programme."idinstitution" = institution."idinstitution"
+     INNER JOIN "public"."annee" annee ON tache."idannee" = annee."idannee"
+WHERE
+     tache.idannee = $P{idannee}
+ AND institution.idinstitution = $P{idinstitution}
+ORDER BY
+     programme.code ASC]]>
+	</queryString>
+	<field name="solde_eng" class="java.lang.Double"/>
+	<field name="tache_totalmontantaloue" class="java.lang.Double"/>
+	<field name="tache_nom" class="java.lang.String"/>
+	<field name="tache_aeencours" class="java.lang.Double"/>
+	<field name="tache_cpconsommee" class="java.lang.Double"/>
+	<field name="tache_montantengage" class="java.lang.Double"/>
+	<field name="tache_montantliquide" class="java.lang.Double"/>
+	<field name="tache_montantpayeht" class="java.lang.Double"/>
+	<field name="tache_montantpayettc" class="java.lang.Double"/>
+	<field name="activite_nom" class="java.lang.String"/>
+	<field name="action_nom" class="java.lang.String"/>
+	<field name="programme_nom" class="java.lang.String"/>
+	<field name="programme_code" class="java.lang.String"/>
+	<field name="action_code" class="java.lang.String"/>
+	<field name="activite_code" class="java.lang.String"/>
+	<field name="programme_idprogramme" class="java.lang.Long"/>
+	<field name="action_idaction" class="java.lang.Long"/>
+	<field name="activite_idactivite" class="java.lang.Long"/>
+	<field name="annee_idannee" class="java.lang.Long"/>
+	<field name="institution_nom" class="java.lang.String"/>
+	<field name="institution_nom_en" class="java.lang.String"/>
+	<field name="tache_montant_ordonne" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="95" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="35" width="174" height="15" uuid="1052c849-1490-4a68-9f07-38090fd6314a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="174" height="20" uuid="ea138449-d91a-4e85-af9d-4cc41c7bc7c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DU CAMEROUN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="20" width="174" height="15" uuid="0d421f01-b494-4303-a747-ea76fa74fafd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="0" width="174" height="20" uuid="0e3a6c70-a684-443b-ad90-6b133da830b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIC OF CAMEROON]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="51" width="189" height="20" uuid="da0f7d7d-9c5e-490b-8559-6c5d4eb45933"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="616" y="51" width="186" height="20" uuid="6e208139-b7fd-4237-8156-8a342e91705b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom_en}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="174" height="15" uuid="c39adc68-f521-4538-864e-15d705991f9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail - Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="35" width="174" height="15" uuid="71c39439-2036-4978-b39f-2a541578f562"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="358" y="1" width="116" height="74" uuid="0eaccd43-0a10-4436-99d0-a1d0c2c3f4ae"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="91" y="0" width="599" height="34" uuid="05b92a55-7511-4000-a381-f5c8b60bcc91"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ETAT D'EXECUTION DU BUDGET PAR TACHE]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="147" splitType="Stretch">
+			<elementGroup>
+				<elementGroup>
+					<crosstab>
+						<reportElement x="0" y="0" width="802" height="147" uuid="9b9ea7dd-dd60-4e2b-a81e-d4d28581dbf6"/>
+						<crosstabHeaderCell>
+							<cellContents>
+								<staticText>
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="127" height="44" backcolor="#F0F8FF" uuid="349acbed-ae9d-435c-8c47-a7ab3db72048"/>
+									<box>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="12"/>
+									</textElement>
+									<text><![CDATA[Programme]]></text>
+								</staticText>
+								<staticText>
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="127" y="0" width="126" height="44" backcolor="#F0F8FF" uuid="12490c15-613c-4695-9659-e1067d2991ea"/>
+									<box>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="12"/>
+									</textElement>
+									<text><![CDATA[Action]]></text>
+								</staticText>
+								<staticText>
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="253" y="0" width="136" height="44" backcolor="#F0F8FF" uuid="d02668d1-a952-4e36-9ace-69ede4f38d35"/>
+									<box>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="12"/>
+									</textElement>
+									<text><![CDATA[Activité]]></text>
+								</staticText>
+								<staticText>
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="389" y="0" width="126" height="44" backcolor="#F0F8FF" uuid="cf4db120-7968-4677-b070-c74c32d16136"/>
+									<box>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="12"/>
+									</textElement>
+									<text><![CDATA[Tache]]></text>
+								</staticText>
+							</cellContents>
+						</crosstabHeaderCell>
+						<rowGroup name="programme_nom" width="127" totalPosition="End">
+							<bucket class="java.lang.String">
+								<bucketExpression><![CDATA[$F{programme_nom}]]></bucketExpression>
+							</bucket>
+							<crosstabRowHeader>
+								<cellContents backcolor="#F0F8FF" mode="Transparent">
+									<box>
+										<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField isStretchWithOverflow="true">
+										<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="127" height="25" uuid="89729b43-5fc2-4771-a3c1-9615668d5abd"/>
+										<textElement verticalAlignment="Middle">
+											<font fontName="Times New Roman"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$V{programme_nom}]]></textFieldExpression>
+									</textField>
+								</cellContents>
+							</crosstabRowHeader>
+							<crosstabTotalRowHeader>
+								<cellContents>
+									<staticText>
+										<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="515" height="36" backcolor="#F4F7FC" uuid="9dcbbff8-2dc6-4e8f-959a-a5ee4e1b0d2a"/>
+										<box leftPadding="2">
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement textAlignment="Left" verticalAlignment="Middle">
+											<font fontName="Times New Roman"/>
+										</textElement>
+										<text><![CDATA[Totaux]]></text>
+									</staticText>
+								</cellContents>
+							</crosstabTotalRowHeader>
+						</rowGroup>
+						<rowGroup name="action_nom" width="126">
+							<bucket class="java.lang.String">
+								<bucketExpression><![CDATA[$F{action_nom}]]></bucketExpression>
+							</bucket>
+							<crosstabRowHeader>
+								<cellContents backcolor="#F0F8FF" mode="Transparent">
+									<box>
+										<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<textField isStretchWithOverflow="true">
+										<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="126" height="25" uuid="9d577d8a-cc56-446a-bf74-37707dbbb726"/>
+										<box leftPadding="2">
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement textAlignment="Left" verticalAlignment="Middle">
+											<font fontName="Times New Roman"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$V{action_nom}]]></textFieldExpression>
+									</textField>
+								</cellContents>
+							</crosstabRowHeader>
+							<crosstabTotalRowHeader>
+								<cellContents/>
+							</crosstabTotalRowHeader>
+						</rowGroup>
+						<rowGroup name="group1" width="136">
+							<bucket class="java.lang.String">
+								<bucketExpression><![CDATA[$F{activite_nom}]]></bucketExpression>
+							</bucket>
+							<crosstabRowHeader>
+								<cellContents>
+									<textField isStretchWithOverflow="true">
+										<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="136" height="25" uuid="0a3dde1f-eff2-4975-b290-3a6ffb899ad9"/>
+										<box leftPadding="2">
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement textAlignment="Left" verticalAlignment="Middle">
+											<font fontName="Times New Roman"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$V{group1}]]></textFieldExpression>
+									</textField>
+								</cellContents>
+							</crosstabRowHeader>
+							<crosstabTotalRowHeader>
+								<cellContents/>
+							</crosstabTotalRowHeader>
+						</rowGroup>
+						<rowGroup name="group2" width="126">
+							<bucket class="java.lang.String">
+								<bucketExpression><![CDATA[$F{tache_nom}]]></bucketExpression>
+							</bucket>
+							<crosstabRowHeader>
+								<cellContents>
+									<textField isStretchWithOverflow="true">
+										<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="126" height="25" uuid="d5f46e25-898d-423a-bedf-216661a19cef"/>
+										<box leftPadding="2">
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement textAlignment="Left" verticalAlignment="Middle">
+											<font fontName="Times New Roman"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$V{group2}]]></textFieldExpression>
+									</textField>
+								</cellContents>
+							</crosstabRowHeader>
+							<crosstabTotalRowHeader>
+								<cellContents/>
+							</crosstabTotalRowHeader>
+						</rowGroup>
+						<columnGroup name="annee_idannee" height="44">
+							<bucket class="java.lang.Long">
+								<bucketExpression><![CDATA[$F{annee_idannee}]]></bucketExpression>
+							</bucket>
+							<crosstabColumnHeader>
+								<cellContents backcolor="#F0F8FF" mode="Opaque">
+									<box>
+										<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									</box>
+									<staticText>
+										<reportElement style="Crosstab Data Text" x="0" y="0" width="55" height="44" uuid="a97d75cd-dce3-4bdb-9eb2-94211d488d33"/>
+										<box>
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement verticalAlignment="Middle">
+											<font fontName="Times New Roman" size="10"/>
+										</textElement>
+										<text><![CDATA[Dotation
+Initiale]]></text>
+									</staticText>
+									<staticText>
+										<reportElement style="Crosstab Data Text" x="55" y="0" width="53" height="44" uuid="b95f3767-a5e9-4137-86ba-afc3001752fd"/>
+										<box>
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement verticalAlignment="Middle">
+											<font fontName="Times New Roman" size="10"/>
+										</textElement>
+										<text><![CDATA[Montant
+engagé]]></text>
+									</staticText>
+									<staticText>
+										<reportElement style="Crosstab Data Text" x="161" y="0" width="53" height="44" uuid="0e80973e-1da7-4daf-a870-65b14edff35c"/>
+										<box>
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement verticalAlignment="Middle">
+											<font fontName="Times New Roman" size="10"/>
+										</textElement>
+										<text><![CDATA[Montant
+payé]]></text>
+									</staticText>
+									<staticText>
+										<reportElement style="Crosstab Data Text" x="214" y="0" width="54" height="44" uuid="50918828-e918-4206-8354-a89bdebdd0c3"/>
+										<box>
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement verticalAlignment="Middle">
+											<font fontName="Times New Roman" size="10"/>
+										</textElement>
+										<text><![CDATA[Solde
+Engagement]]></text>
+									</staticText>
+									<staticText>
+										<reportElement style="Crosstab Data Text" x="108" y="0" width="53" height="44" uuid="16409cde-e976-4f2a-9053-9c8d9c8f241b"/>
+										<box>
+											<topPen lineWidth="0.5"/>
+											<leftPen lineWidth="0.5"/>
+											<bottomPen lineWidth="0.5"/>
+											<rightPen lineWidth="0.5"/>
+										</box>
+										<textElement verticalAlignment="Middle">
+											<font fontName="Times New Roman" size="10"/>
+										</textElement>
+										<text><![CDATA[Montant
+ordonné]]></text>
+									</staticText>
+								</cellContents>
+							</crosstabColumnHeader>
+							<crosstabTotalColumnHeader>
+								<cellContents/>
+							</crosstabTotalColumnHeader>
+						</columnGroup>
+						<measure name="tache_totalmontantaloueMeasure" class="java.lang.Double" calculation="Sum">
+							<measureExpression><![CDATA[$F{tache_totalmontantaloue}]]></measureExpression>
+						</measure>
+						<measure name="montant_liquide" class="java.lang.Double" calculation="Sum">
+							<measureExpression><![CDATA[$F{tache_montantliquide}]]></measureExpression>
+						</measure>
+						<measure name="montant_paye" class="java.lang.Double" calculation="Sum">
+							<measureExpression><![CDATA[$F{tache_montantpayettc}]]></measureExpression>
+						</measure>
+						<measure name="montant_engage" class="java.lang.Double" calculation="Sum">
+							<measureExpression><![CDATA[$F{tache_montantengage}]]></measureExpression>
+						</measure>
+						<measure name="reste" class="java.lang.Double" calculation="Sum">
+							<measureExpression><![CDATA[$F{solde_eng}]]></measureExpression>
+						</measure>
+						<measure name="montant_ordonne" class="java.lang.Double" calculation="Sum">
+							<measureExpression><![CDATA[$F{tache_montant_ordonne}]]></measureExpression>
+						</measure>
+						<crosstabCell width="268" height="25">
+							<cellContents>
+								<box>
+									<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField isStretchWithOverflow="true" pattern="#,##0">
+									<reportElement style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="55" height="25" uuid="af5d6b47-69ed-460f-b130-62f776149f01"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{tache_totalmontantaloueMeasure}]]></textFieldExpression>
+								</textField>
+								<textField isStretchWithOverflow="true" pattern="#,##0">
+									<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="55" y="0" width="53" height="25" uuid="4608215d-6bc9-4810-8fb1-a9dd9a620053"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{montant_engage}]]></textFieldExpression>
+								</textField>
+								<textField isStretchWithOverflow="true" pattern="#,##0">
+									<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="161" y="0" width="53" height="25" uuid="ed645f72-da5d-460b-bd7f-12fa37f52dcc"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{montant_paye}]]></textFieldExpression>
+								</textField>
+								<textField isStretchWithOverflow="true" pattern="#,##0">
+									<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="214" y="0" width="54" height="25" uuid="e0d73b7a-2baa-4207-92a9-580502260629"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{reste}]]></textFieldExpression>
+								</textField>
+								<textField isStretchWithOverflow="true" pattern="#,##0">
+									<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="108" y="0" width="53" height="25" uuid="bae37d15-eafd-4510-b8b9-6bb8f8052505"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle"/>
+									<textFieldExpression><![CDATA[$V{montant_ordonne}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabCell>
+						<crosstabCell width="268" height="36" rowTotalGroup="programme_nom">
+							<cellContents backcolor="#005FB3" mode="Transparent">
+								<box>
+									<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField pattern="#,##0">
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="55" height="36" forecolor="#000000" backcolor="#F4F7FC" uuid="4e39f4d5-82ff-42fd-ba0a-a033cef240f7"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="9"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{tache_totalmontantaloueMeasure}]]></textFieldExpression>
+								</textField>
+								<textField pattern="#,##0">
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="214" y="0" width="54" height="36" forecolor="#000000" backcolor="#F4F7FC" uuid="b0d77765-ec71-4b98-bd40-4824aa590a3a"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="9"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{reste}]]></textFieldExpression>
+								</textField>
+								<textField pattern="#,##0">
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="55" y="0" width="53" height="36" forecolor="#000000" backcolor="#F4F7FC" uuid="67fbc1b2-d041-4124-9bf3-f86da723e27f"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="9"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{montant_engage}]]></textFieldExpression>
+								</textField>
+								<textField pattern="#,##0">
+									<reportElement style="Crosstab Data Text" mode="Opaque" x="161" y="0" width="53" height="36" forecolor="#000000" backcolor="#F4F7FC" uuid="cd021097-2e2e-40a6-8b73-52b55be6f87b"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="9"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{montant_paye}]]></textFieldExpression>
+								</textField>
+								<textField pattern="#,##0">
+									<reportElement style="Crosstab Data Text" x="108" y="0" width="53" height="36" uuid="88b62f68-17b6-43d4-96ad-4d0d0e8946ec"/>
+									<box rightPadding="2">
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Times New Roman" size="9"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{montant_ordonne}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabCell>
+						<crosstabCell width="50" columnTotalGroup="annee_idannee">
+							<cellContents backcolor="#BFE1FF" mode="Opaque">
+								<box>
+									<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField>
+									<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="51982fbf-84ab-490d-91e8-0beb835af6a0"/>
+									<textFieldExpression><![CDATA[$V{tache_totalmontantaloueMeasure}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabCell>
+						<crosstabCell rowTotalGroup="programme_nom" columnTotalGroup="annee_idannee">
+							<cellContents backcolor="#005FB3" mode="Opaque">
+								<box>
+									<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField>
+									<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="26cb9bb2-3cba-4a2e-83d9-028b49dbd8fb"/>
+									<textFieldExpression><![CDATA[$V{tache_totalmontantaloueMeasure}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabCell>
+						<crosstabCell height="36" rowTotalGroup="action_nom">
+							<cellContents backcolor="#BFE1FF" mode="Opaque">
+								<box>
+									<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField pattern="#,##0">
+									<reportElement style="Crosstab Data Text" x="0" y="0" width="65" height="36" uuid="84007fa8-672c-4787-96bb-4de301723935"/>
+									<textFieldExpression><![CDATA[$V{tache_totalmontantaloueMeasure}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabCell>
+						<crosstabCell rowTotalGroup="action_nom" columnTotalGroup="annee_idannee">
+							<cellContents backcolor="#BFE1FF" mode="Opaque">
+								<box>
+									<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textField>
+									<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="271ec32b-1244-4137-89a4-697fdfa1ccf8"/>
+									<textFieldExpression><![CDATA[$V{tache_totalmontantaloueMeasure}]]></textFieldExpression>
+								</textField>
+							</cellContents>
+						</crosstabCell>
+						<crosstabCell rowTotalGroup="group1">
+							<cellContents/>
+						</crosstabCell>
+						<crosstabCell rowTotalGroup="group1" columnTotalGroup="annee_idannee">
+							<cellContents/>
+						</crosstabCell>
+						<crosstabCell rowTotalGroup="group2">
+							<cellContents/>
+						</crosstabCell>
+						<crosstabCell rowTotalGroup="group2" columnTotalGroup="annee_idannee">
+							<cellContents/>
+						</crosstabCell>
+					</crosstab>
+				</elementGroup>
+			</elementGroup>
+		</band>
+	</summary>
+</jasperReport>

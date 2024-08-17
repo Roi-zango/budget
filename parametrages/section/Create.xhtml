@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="SousRubriqueMCreateDlg" 
+                  widgetVar="SousRubriqueMCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD A SECTION" closeOnEscape="true">
+
+            <h:form id="SousRubriqueMCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">
+                        
+                        <p:outputLabel value="Section" for="section" />
+                        <p:selectOneMenu id="section" filter="true" value="#{sectionController.article.idarticle}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{sectionController.articles}" var="item" itemLabel="#{item.code} #{item.nom}" itemValue="#{item.idarticle}" />
+                        </p:selectOneMenu>
+                        <p:message for="section" />
+                        
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText style="width: 150px" id="code" value="#{sectionController.section.code}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="code" />
+
+                        <p:outputLabel value="Wording" for="libelle" />
+                        <p:inputTextarea style="width: 400px" cols="400" rows="6" id="libelle" value="#{sectionController.section.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="libelle" />                        
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+                        
+                        <p:commandButton value="Cancel" onclick="PF('SousRubriqueMCreateDialog').hide()"/>
+                        
+                        <p:commandButton actionListener="#{sectionController.save()}" value="Save" update="display,:SousRubriqueMListForm:datalist,:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="ParagrapheCreateDlg" 
+                  widgetVar="ParagrapheCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD/EDIT A PARAGRAPH" 
+                  closeOnEscape="true">
+
+            <h:form id="ParagrapheCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="Heading" for="rubrique" />
+                        <p:selectOneMenu id="rubrique" style=" width: 200px" value="#{imputationController.rubrique}" required="true" filter="true" filterMatchMode="contains" converter="rubriqueConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue="" />
+                            <f:selectItems value="#{imputationController.rubriques}"
+                                           var="rub" itemLabel="#{rub.code} - #{rub.nom}" itemValue="#{rub}" />   
+                            <p:ajax update="sous_rubrique" listener="#{imputationController.filterSousrubriqueByRubrique()}"/> 
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Sub-heading" for="sous_rubrique" />
+                        <p:selectOneMenu  id="sous_rubrique" style=" width: 200px" value="#{imputationController.sousrubrique}" required="true" filter="true" filterMatchMode="contains" converter="sousrubriqueConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue="" />
+                            <f:selectItems value="#{imputationController.sousrubriques}"
+                                           var="sr" itemLabel="#{sr.code} - #{sr.nom}" itemValue="#{sr}" />                                                                                                                                                                      
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="Paragraph type" for="type_paragraph" />
+                        <p:selectOneMenu  id="type_paragraph" style=" width: 200px" value="#{imputationController.typeimputation}" required="true" filter="true" filterMatchMode="contains" converter="typeimputationConverter">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue="" />
+                            <f:selectItems value="#{imputationController.typeimputations}"
+                                           var="ti" itemLabel="#{ti.nom}" itemValue="#{ti}" />                                                                                                                                                                      
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Section" for="section" />
+                        <p:selectOneMenu  id="section" style=" width: 200px" value="#{imputationController.section.idsection}" required="true" filter="true">
+                            <f:selectItem itemLabel="#{langues.SelectOneMessage}" itemValue="" />
+                            <f:selectItems value="#{imputationController.sections}"
+                                           var="section" itemLabel="#{section.nom}" itemValue="#{section.idsection}" />                                                                                                                                                                      
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Code" for="nom" />
+                        <p:inputText style=" width: 100px"  id="nom" value="#{imputationController.imputation.code}" required="true" requiredMessage="le champ nom est obligatoire"/>
+
+                        <p:outputLabel value="wording" for="nm" />
+                        <p:inputTextarea rows="6" style=" width: 400px" id="nm" value="#{imputationController.imputation.nom}" required="true" requiredMessage="le champ nom est obligatoire"/>
+                        
+                        <p:outputLabel rendered="#{imputationController.mode.equals('Edit')}" value="Etat" for="etat" />
+                        <p:selectOneMenu rendered="#{imputationController.mode.equals('Edit')}"  id="etat" value="#{imputationController.imputation.etat}">
+                            <f:selectItem itemLabel="Actif" itemValue="Actif" />
+                            <f:selectItem itemLabel="Inactif" itemValue="Inactif" />
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+
+                    <p:separator />
+
+                    <center>
+                        <p:commandButton value="Cancel" onclick="PF('ParagrapheCreateDialog').hide()"/>
+
+                        <p:commandButton actionListener="#{imputationController.save()}" value="Save" update="display,:ParagrapheListForm:datalist,:msg" oncomplete="PF('ParagrapheCreateDialog').hide()">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>    
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

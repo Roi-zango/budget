@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="EngagementListForm">
+
+        <p:messages id="growl" closable="true" />
+        <p:growl id="msg" />
+
+        <p:panel header="LISTE DES BONS DES ENGAGEMENTS">    
+
+            <p:contextMenu id="EngagementDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('EngagementListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('EngagementListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('EngagementListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('EngagementListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{engagementController.certificatengagements}"
+                         var="item"                         
+                         rowKey="#{item.idcertificatengagement}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 95% ; margin-left: 2.5%"
+                         selection="#{engagementController.certificatengagement}">
+
+                <p:ajax event="rowSelect" update="@form:editButton,@form:deleteButton,@form:imprimer,@form:EngagementDataTableContextMenu" listener="#{engagementController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:imprimer,@form:EngagementDataTableContextMenu" listener="#{engagementController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:editButton,@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('EngagementListForm:viewButton').click();"/>
+
+                <p:column style="width:11% ; text-align: center" filterBy="#{item.boncommande.code}">
+                    <f:facet name="header">
+                        <h:outputText value="Numéro"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.code}"/>
+                </p:column>
+
+                <p:column style="width:33%" filterBy="#{item.boncommande.objet}">
+                    <f:facet name="header">
+                        <h:outputText value="Nom"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.objet}"/>
+                </p:column>
+
+                <p:column style="width:20%" filterBy="#{item.boncommande.structure.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Structure"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.structure.nom}"/>
+                </p:column> 
+
+                <p:column style=" width:10% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Montant ht"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.totalht}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width:10% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Tva"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.tva}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column>
+
+                <p:column style=" width:10% ; text-align: center">
+                    <f:facet name="header">
+                        <h:outputText value="Total ttc"/>
+                    </f:facet>
+                    <h:outputText value="#{item.boncommande.ttc}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="#{langues.Create}" 
+                             actionListener="#{engagementController.prepareCreate()}" update=":EngagementCreateForm" />
+
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{langues.Edit}" 
+                             actionListener="#{engagementController.prepareEdit()}" update=":EngagementCreateForm" 
+                             disabled="true"/>
+
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{langues.Delete}" actionListener="#{engagementController.delete()}" update="growl,datalist" disabled="#{engagementController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+            <p:commandButton value="Imprimer"
+                             id="imprimer"
+                             actionListener="#{engagementController.print()}"
+                             icon="ui-icon-print"
+                             ajax="false"
+                             disabled="#{engagementController.detail}"/>
+
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

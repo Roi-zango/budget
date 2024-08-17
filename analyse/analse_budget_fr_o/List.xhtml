@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <p:messages id="growl" closable="true" />
+    <p:growl id="msg" />
+
+    <br/>
+    <br/>
+    <h:form>
+        <center>
+            <p:panel header="Exécution du budget  par action" style="width: 70%">  
+                <center>
+                    <h:panelGrid columns="6">
+
+                        <h:outputLabel rendered="false" value="Programme" />
+                        <p:selectOneMenu rendered="false" filter="true" value="#{impressionAnalyseFROController.programme.idprogramme}" >
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{impressionAnalyseFROController.programmes}" var="prg" itemLabel="#{prg.nom}" itemValue="#{prg.idprogramme}" />
+                            <p:ajax update="action" listener="#{impressionAnalyseFROController.filterActionByProgram()}" />
+                        </p:selectOneMenu>
+
+                        <h:outputLabel rendered="false" value="Action" />
+                        <p:selectOneMenu rendered="false" id="action" filter="true" value="#{impressionAnalyseFROController.action.idaction}" >
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{impressionAnalyseFROController.actions}" var="act" itemLabel="#{act.nom}" itemValue="#{act.idaction}" />
+                        </p:selectOneMenu>
+
+                        <p:commandButton value="Imprimer" ajax="false" icon="ui-icon-print" actionListener="#{impressionAnalyseFROController.printBudgetByAction()}" />
+                    </h:panelGrid>
+                </center>
+            </p:panel>
+        </center>
+    </h:form>
+
+    <br/>
+    <br/>
+
+    <p:separator style="width: 70%" />
+
+    <br/>
+    <br/>
+
+    <center>
+        <h:panelGrid columns="2" style="width: 70%">
+
+            <h:form>
+                <center>
+                    <p:panel header="Exécution du budget par paragraphe">
+                        <p:commandButton value="Imprimer" ajax="false" icon="ui-icon-print" actionListener="#{impressionAnalyseFROController.printAnalyseBudgetParParagraphe()}" />
+                    </p:panel>
+                </center>
+            </h:form>
+
+            <h:form>
+                <p:panel header="Synthese du budget par activté">
+
+                    <h:panelGrid columns="3">
+
+                        <h:outputLabel value="Programme" />
+                        <p:selectOneMenu filter="true" value="#{impressionAnalyseFROController.programme.idprogramme}" >
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{impressionAnalyseFROController.programmes}" var="prg" itemLabel="#{prg.nom}" itemValue="#{prg.idprogramme}" />
+                            <p:ajax />
+                        </p:selectOneMenu>
+                        <p:commandButton value="Imprimer" ajax="false" icon="ui-icon-print" actionListener="#{impressionAnalyseFROController.printSyntheseByActivite()}" />
+
+                    </h:panelGrid>
+
+                </p:panel>
+
+            </h:form>
+
+        </h:panelGrid>
+
+    </center>
+
+    <br/>
+    <br/>
+
+    <p:separator style="width: 70%" />
+
+    <br/>
+    <br/>
+
+    <center>
+
+        <h:panelGrid columns="2" style="width: 70%" >
+            <h:form>
+                <p:panel header="Execution du budget par tache">
+
+                    <h:panelGrid columns="3">
+
+                        <h:outputLabel value="Programme" />
+                        <p:selectOneMenu filter="true" value="#{impressionAnalyseFROController.programme.idprogramme}" >
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{impressionAnalyseFROController.programmes}" var="prg" itemLabel="#{prg.nom}" itemValue="#{prg.idprogramme}" />
+                            <p:ajax />
+                        </p:selectOneMenu>
+
+                        <p:commandButton value="Imprimer" ajax="false" icon="ui-icon-print" actionListener="#{impressionAnalyseFROController.printExecutionBudgetaire()}" />
+
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+
+            <h:form>
+                <center>
+                    <p:panel header="Synthèse du budget par programme">
+                        <p:commandButton value="Imprimer" ajax="false" icon="ui-icon-print" actionListener="#{impressionAnalyseFROController.printSynthsesByProgram()}" />
+                    </p:panel>
+                </center>
+            </h:form>
+
+        </h:panelGrid>
+
+    </center>
+
+    <h:form id="VerificationListForm">
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

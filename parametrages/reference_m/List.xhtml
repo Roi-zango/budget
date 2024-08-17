@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <p:growl id="msg" />
+
+    <h:form id="ElementcoutListForm">
+        <p:panel header="LIST OF MERCURY REFERENCES">    
+
+            <p:contextMenu id="ElementcoutDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('ElementcoutListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('ElementcoutListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('ElementcoutListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('ElementcoutListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{elementcoutController.elementcouts}"
+                         var="item"                         
+                         rowKey="#{item.idelementcout}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 100%;"
+                         selection="#{elementcoutController.elementcout}">
+
+                <p:ajax event="rowSelect" update="@form:editButton,@form:deleteButton,@form:ElementcoutDataTableContextMenu" listener="#{elementcoutController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:ElementcoutDataTableContextMenu" listener="#{elementcoutController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:editButton,@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ElementcoutListForm:viewButton').click();"/>
+
+                <p:column style=" width:10% ; text-align: center" filterBy="#{item.code}">
+                    <f:facet name="header">
+                        <h:outputText value="Code"/>
+                    </f:facet>
+                    <h:outputText value="#{item.code}"/>
+                </p:column>
+
+                <p:column style=" width:27%" filterBy="#{item.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Name"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
+
+                <p:column style=" width:20%" filterBy="#{item.imputation.code} #{item.imputation.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Paragraph"/>
+                    </f:facet>
+                    <h:outputText value="#{item.imputation.code} #{item.imputation.nom}"/>
+                </p:column> 
+                
+                <p:column style=" width:27%" filterBy="#{item.sousrubriquemercurial.code} #{item.sousrubriquemercurial.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Sub-heading"/>
+                    </f:facet>
+                    <h:outputText value="#{item.sousrubriquemercurial.code} #{item.sousrubriquemercurial.nom}"/>
+                </p:column>
+                
+                <p:column style=" width:7%" filterBy="#{item.prixunitaire}">
+                    <f:facet name="header">
+                        <h:outputText value="Unit price"/>
+                    </f:facet>
+                    <h:outputText value="#{item.prixunitaire}">
+                        <f:convertNumber />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column style=" width:10% ; text-align: center" filterBy="#{item.unite.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Unit"/>
+                    </f:facet>
+                    <h:outputText value="#{item.unite.nom}"/>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="Create" 
+                             actionListener="#{elementcoutController.prepareCreate()}" 
+                             update=":ElementcoutCreateForm,:msg,:growl" />
+                                 
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="Edit" 
+                             actionListener="#{elementcoutController.prepareEdit()}" update=":ElementcoutCreateForm,:msg,:growl" 
+                             disabled="#{elementcoutController.detail}"/>
+            
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="Delete" actionListener="#{elementcoutController.delete()}" update=":growl,datalist,:growl" disabled="#{elementcoutController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

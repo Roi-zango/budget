@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition>
+	<p:dialog id="TacheCreateDlg" widgetVar="TacheCreateDialog"
+		modal="true" resizable="true" appendTo="@(body)" height="600px"
+		width="80%" header="CREATE / MODIFY A NEW OPERATION">
+		<h:form id="TacheCreateForm">
+			<h:panelGroup id="display">
+
+				<div style="width: 100%; margin-top: 1%">
+
+					<p:panelGrid style="width: 80%;margin-left: 10%;" columns="2">
+
+						<p:outputLabel value="sub-program" for="programme" />
+						<p:selectOneMenu filter="true" id="programme"
+							value="#{tacheController.programme.idprogramme}">
+							<f:selectItem itemLabel="choose" itemValue="" />
+							<f:selectItems value="#{tacheController.programmes}" var="prg"
+								itemLabel="#{prg.code} #{prg.nom}"
+								itemValue="#{prg.idprogramme}" />
+							<p:ajax listener="#{tacheController.filterAction()}"
+								update="action" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Activity" for="action" />
+						<p:selectOneMenu filter="true" id="action"
+							value="#{tacheController.action.idaction}">
+							<f:selectItem itemLabel="choose" itemValue="" />
+							<f:selectItems value="#{tacheController.actions}" var="action"
+								itemLabel="#{action.code} #{action.nom}"
+								itemValue="#{action.idaction}" />
+							<p:ajax listener="#{tacheController.filterActivite()}"
+								update="activite" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Tasks" for="activite" />
+						<p:selectOneMenu filter="true" id="activite"
+							value="#{tacheController.activite.idactivite}" required="true"
+							requiredMessage="le programme  est requis">
+							<f:selectItem itemLabel="choose" itemValue="" />
+							<f:selectItems value="#{tacheController.activites}"
+								var="activite" itemLabel="#{activite.code} #{activite.nom}"
+								itemValue="#{activite.idactivite}" />
+							<p:ajax listener="#{tacheController.initActivite()}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Structure" for="structure" />
+						<p:selectOneMenu filter="true" id="structure"
+							value="#{tacheController.structure.idstructure}" required="true"
+							requiredMessage="le programme  est requis">
+							<f:selectItem itemLabel="choose" itemValue="" />
+							<f:selectItems value="#{tacheController.structures}"
+								var="structure" itemLabel="#{structure.nom}"
+								itemValue="#{structure.idstructure}" />
+							<p:ajax />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Operation" for="tache" />
+						<p:inputTextarea rows="3" required="true" id="tache"
+							style="width: 600px" value="#{tacheController.tache.nom}">
+							<p:ajax />
+						</p:inputTextarea>
+
+						<p:outputLabel value="Result process" for="rp" />
+						<p:inputTextarea rows="3" required="true" id="rp"
+							style="width: 600px"
+							value="#{tacheController.tache.resultprocess}">
+							<p:ajax />
+						</p:inputTextarea>
+
+						<p:outputLabel value="Results indicator" for="ir" />
+						<p:inputTextarea rows="3" required="true" id="ir"
+							style="width: 600px"
+							value="#{tacheController.tache.indicateurresult}">
+							<p:ajax />
+						</p:inputTextarea>
+
+						<p:outputLabel value="Amount allocated" for="m_a" />
+						<p:inputText id="m_a" style="width: 80px"
+							value="#{tacheController.tache.totalmontantaloue}">
+							<p:ajax />
+						</p:inputText>
+
+						<p:outputLabel value="Year + 1" for="a_1" />
+						<p:inputText id="a_1" style="width: 80px"
+							value="#{tacheController.tache.cpanneeplus1}">
+							<p:ajax />
+						</p:inputText>
+
+						<p:outputLabel value="Year + 2" for="a_2" />
+						<p:inputText id="a_2" style="width: 80px"
+							value="#{tacheController.tache.cpanneeplus2}">
+							<p:ajax />
+						</p:inputText>
+
+					</p:panelGrid>
+					<br />
+
+					<p:panelGrid style="width: 90%;margin-left: 5%;" columns="8">
+						<p:outputLabel value="Type of financing" />
+						<p:selectOneMenu filter="true"
+							value="#{tacheController.typefinancement.idtypefinancement}">
+							<f:selectItem itemLabel="-- make your choice --" />
+							<f:selectItems value="#{tacheController.typefinancements}"
+								var="type" itemLabel="#{type.nom}"
+								itemValue="#{type.idtypefinancement}" />
+							<p:ajax />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="lessor" for="bailleur_fond" />
+						<p:selectOneMenu id="bailleur_fond"
+							value="#{tacheController.bailleurfond.idbailleurfond}"
+							filter="true" filterMatchMode="contains">
+							<f:selectItem itemLabel="choose" />
+							<f:selectItems value="#{tacheController.bailleurfonds}"
+								var="bailleur" itemLabel="#{bailleur.nom}"
+								itemValue="#{bailleur.idbailleurfond}" />
+							<p:ajax />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Risk" />
+						<p:selectOneMenu filter="true"
+							value="#{tacheController.risque.idrisque}">
+							<f:selectItem itemLabel="-- make your choice --" />
+							<f:selectItems value="#{recetteController.risques}" var="rsq"
+								itemLabel="#{rsq.nom}" itemValue="#{rsq.idrisque}" />
+							<p:ajax />
+						</p:selectOneMenu>
+					</p:panelGrid>
+				</div>
+
+				<div style="width: 100%">
+
+					<p:dataTable id="datalist" value="#{tacheController.moyenses}"
+						var="item" paginator="true" editable="true"
+						rowKey="#{item.idmoyens}" rows="15"
+						rowsPerPageTemplate="10,20,30,40,50"
+						style="width: 95%;margin-left: 2.5%;margin-top: 2%; text-align:left; font-weight: bold; font-style: oblique;"
+						rowIndexVar="index" emptyMessage="#{msg.Vide}"
+						widgetVar="fonctionTable" draggableColumns="true"
+						resizableColumns="true">
+
+						<f:facet name="header">
+							<h:outputText value="LIST OF BUDGET PARAGRAPHS" />
+						</f:facet>
+
+						<p:column style="width: 33%">
+							<f:facet name="header">
+								<h:outputText value="Paragraph" />
+							</f:facet>
+							<h:outputText class="hardBreak"
+								value="#{item.idimputation.code} - #{item.idimputation.nom}" />
+						</p:column>
+
+						<p:column style="width: 7%" headerText="Qty">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.qte}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText required="true" value="#{item.qte}">
+										<p:ajax event="keyup"
+											listener="#{tacheController.updateTotal()}"
+											update=":TacheCreateForm:total" />
+									</p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width: 12%" headerText="C.U">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.cu}">
+										<f:convertNumber />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText required="true" value="#{item.cu}">
+										<f:convertNumber />
+										<p:ajax event="keyup"
+											listener="#{tacheController.updateTotal()}"
+											update=":TacheCreateForm:total" />
+									</p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width: 14%">
+							<f:facet name="header">
+								<h:outputText value="Total cost" />
+							</f:facet>
+							<h:outputText value="#{item.ct}">
+								<f:convertNumber />
+							</h:outputText>
+						</p:column>
+
+						<p:column style="width: 14%"
+							headerText="C.P #{tacheController.ann}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.cp}">
+										<f:convertNumber />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText required="true" value="#{item.cp}">
+										<f:convertNumber />
+									</p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width: 14%"
+							headerText="C.P #{tacheController.ann+1}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.cpanneeplus1}">
+										<f:convertNumber />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText required="true" value="#{item.cpanneeplus1}">
+										<f:convertNumber />
+									</p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width: 14%"
+							headerText="C.P #{tacheController.ann +2}">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{item.cpanneeplus2}">
+										<f:convertNumber />
+									</h:outputText>
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText required="true" value="#{item.cpanneeplus2}">
+										<f:convertNumber />
+									</p:inputText>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width:20px">
+							<p:rowEditor />
+						</p:column>
+
+						<p:column style="width: 14%">
+							<f:facet name="header">
+								<h:outputText value="DELETE" />
+							</f:facet>
+							<p:commandButton value="DELETE">
+								<p:ajax event="click"
+									listener="#{tacheController.removeParagraphe(item)}"
+									update=":TacheListForm:growl,datalist,:TacheCreateForm:total" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+					<p:panelGrid style="width: 70%;margin-left: 15%;" columns="4">
+						<p:outputLabel for="total" value="Total" />
+						<p:outputLabel id="total" value="#{tacheController.total}">
+							<f:convertNumber />
+						</p:outputLabel>
+						<p:commandButton value="Calculate"
+							actionListener="#{tacheController.updateTotal()}" update="total" />
+						<p:commandButton value="Add a Paragraph"
+							update=":ParagrapheCreateForm,:ParagrapheCreateDlg,:ParagrapheCreateForm:display"
+							actionListener="#{tacheController.prepareCreateParagraphe()}"
+							oncomplete="PF('ParagrapheCreateDialog').show()" />
+					</p:panelGrid>
+
+				</div>
+
+				<p:separator />
+
+				<h:form id="form">
+    <p:commandButton id="createBtn" value="Create Operation" action="#{tacheController.createOperation}">
+        <p:confirm header="Confirmation" message="Are you sure you want to create this operation?" icon="pi pi-exclamation-triangle"/>
+    </p:commandButton>
+</h:form>
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+</p:confirmDialog>
+
+
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+
+</ui:composition>
+</html>

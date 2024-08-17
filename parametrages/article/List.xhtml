@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages id="growl" closable="true" />
+    <p:growl id="msg" />
+
+    <h:form id="RubriqueMercurialListForm">
+        <p:panel header="LIST OF ARTICLES">    
+
+            <p:contextMenu id="RubriqueMercurialDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{langues.Create}" onclick="document.getElementById('RubriqueMercurialListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{langues.View}" onclick="document.getElementById('RubriqueMercurialListForm:viewButton').click();" icon="ui-icon-search"/>                
+                <p:menuitem value="#{langues.Edit}" onclick="document.getElementById('RubriqueMercurialListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{langues.Delete}" onclick="document.getElementById('RubriqueMercurialListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+            </p:contextMenu>
+
+            <p:dataTable id="datalist"
+                         value="#{articleController.articles}"
+                         var="item"                         
+                         rowKey="#{item.idarticle}"
+                         paginator="true"
+                         rows="30"   
+                         rowIndexVar="index"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         style="width: 80% ; margin-left: 10%"
+                         selection="#{articleController.article}">
+
+                <p:ajax event="rowSelect" update="@form:editButton,@form:deleteButton,@form:RubriqueMercurialDataTableContextMenu" listener="#{articleController.activeButton()}"/>
+                <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:RubriqueMercurialDataTableContextMenu" listener="#{articleController.deactiveButton()}"/>
+                <p:ajax event="contextMenu" update="@form:editButton,@form:deleteButton" />
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('RubriqueMercurialListForm:viewButton').click();"/>
+
+                <p:column style=" width:20%" filterBy="#{item.code}">
+                    <f:facet name="header">
+                        <h:outputText value="Code"/>
+                    </f:facet>
+                    <h:outputText value="#{item.code}"/>
+                </p:column>
+
+                <p:column style=" width:40%" filterBy="#{item.nom}">
+                    <f:facet name="header">
+                        <h:outputText value="Name"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nom}"/>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <center>  
+            <p:commandButton id="createButton" icon="ui-icon-plus" value="Create" 
+                             actionListener="#{articleController.prepareCreate()}" update=":RubriqueMercurialCreateForm" 
+                             oncomplete="PF('RubriqueMercurialCreateDialog').show()"/>
+
+            <p:commandButton id="editButton" icon="ui-icon-pencil" value="Edit" 
+                             actionListener="#{articleController.prepareEdit()}" update=":RubriqueMercurialCreateForm" 
+                             oncomplete="PF('RubriqueMercurialCreateDialog').show()" disabled="#{articleController.detail}"/>
+
+            <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#Delete" actionListener="#{articleController.delete()}" update=":growl,datalist" disabled="#{articleController.detail}">
+                <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </center>
+
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

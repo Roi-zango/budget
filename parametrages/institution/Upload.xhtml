@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PhotoCreateDlg" 
+                  widgetVar="PhotoCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="ADD AN INSTITUTION" 
+                  closeOnEscape="true"
+                  height="450px">
+
+            <h:form id="PhotoCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <h:panelGrid columns="2" columnClasses="column"> 
+
+                        <h:panelGroup>
+                            <p:outputLabel value="Parent Institution" style="font-size: 20px" />
+                            <p:fileUpload id="add_photo_1" fileUploadListener="#{institutionController.handleFileUpload1}" mode="advanced" dragDropSupport="false" accept=""  invalidSizeMessage="#{langues.taille_erreur}" cancelLabel="#{langues.fermer}" invalidFileMessage="#{langues.fichier_non_pris_en_charge}" uploadLabel="#{langues.charger}"   
+                                          update="nt_img" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(jpg|jpeg|png|gif)$/" />
+
+                            <h:graphicImage id="nt_img" url="/photos/#{institutionController.filenameInstitution}" style="cursor:pointer" width="200px" height="200px"/>
+
+                        </h:panelGroup>
+
+                        <h:panelGroup>
+                            <p:outputLabel value="Institution" style="font-size: 20px" />
+                            <p:fileUpload id="add_photo" fileUploadListener="#{institutionController.handleFileUpload}" mode="advanced" dragDropSupport="false" accept=""  invalidSizeMessage="#{langues.taille_erreur}" cancelLabel="#{langues.fermer}" invalidFileMessage="#{langues.fichier_non_pris_en_charge}" uploadLabel="#{langues.charger}"   
+                                          update="nt_img_1" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(jpg|jpeg|png|gif)$/" />
+
+                            <h:graphicImage id="nt_img_1" url="/photos/#{institutionController.filename}" style="cursor:pointer" width="200px" height="200px" />
+                        </h:panelGroup>
+
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+
+                        <p:commandButton value="Cancel" onclick="PF('PhotoCreateDialog').hide()"/>
+
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

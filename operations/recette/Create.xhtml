@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="RecetteCreateDlg" 
+                  widgetVar="RecetteCreateDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" header="ENTER / MODIFY RECIPES"
+                  height="600px">
+            <h:form id="RecetteCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2">
+
+                        <p:outputLabel value="Imputation" for="imputation" />
+                        <p:selectOneMenu filter="true" id="imputation" value="#{recetteController.imputation}" disabled="true" required="true" converter="imputationConverter" requiredMessage="L'imputation  est réquise">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{recetteController.imputations}" var="imp" itemLabel="#{imp.nom}" itemValue="#{imp}"/>                                                                             
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Funder" for="bailleur" />
+                        <p:selectOneMenu filter="true" id="bailleur" value="#{recetteController.bailleurfond.idbailleurfond}" required="true" requiredMessage="Le bailleur de fond  est réquise">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                            <f:selectItems value="#{recetteController.bailleurfonds}" var="bail" itemLabel="#{bail.nom}" itemValue="#{bail.idbailleurfond}"/>                                                                             
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Amount consumed #{recetteController.ann - 1}" for="montant_consomme" />
+                        <p:inputText id="montant_consomme" value="#{recetteController.recette.montantConsommeAvant}">
+                            <f:convertNumber/>
+                        </p:inputText>
+
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2"> 
+
+                        <p:outputLabel value="Recipe year #{recetteController.ann}"/>
+                        <h:panelGroup>
+                            <h:panelGrid columns="2">
+
+                                <p:outputLabel value="Unit cost" />
+                                <p:inputText id="papcout" value="#{recetteController.recette.cu}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="patotal" listener="#{recetteController.updateRecetteAnneeN()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Quantity"/>
+                                <p:inputText id="paqte" value="#{recetteController.recette.qte}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="patotal" listener="#{recetteController.updateRecetteAnneeN()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Total" />
+                                <p:inputText id="patotal" disabled="true" value="#{recetteController.recette.ct}">
+                                    <f:convertNumber/>
+                                </p:inputText>
+
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Recipe year #{recetteController.ann - 1}"/>
+                        <h:panelGroup>
+                            <h:panelGrid columns="2">
+
+                                <p:outputLabel value="Unit cost" />
+                                <p:inputText id="rapcout" value="#{recetteController.recette.ranneeavantCu}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="ratotal" listener="#{recetteController.updateRecetteAnneeAvant()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Quantity" />
+                                <p:inputText id="raqte" value="#{recetteController.recette.ranneeavantQte}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="ratotal" listener="#{recetteController.updateRecetteAnneeAvant()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Total" />
+                                <p:inputText id="ratotal" disabled="true" value="#{recetteController.recette.ranneeavant}">
+                                    <f:convertNumber/>
+                                </p:inputText>
+
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Achievement year #{recetteController.ann - 1}"/>
+                        <h:panelGroup>
+                            <h:panelGrid columns="2">
+
+                                <p:outputLabel value="unit price" />
+                                <p:inputText id="reapcout" value="#{recetteController.recette.reaanneeavantCu}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="reatotal" listener="#{recetteController.updateRealisationAnneeAvant()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Quantity" />
+                                <p:inputText id="reaqte" value="#{recetteController.recette.reaanneeavantQte}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="reatotal" listener="#{recetteController.updateRealisationAnneeAvant()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Total" />
+                                <p:inputText id="reatotal" disabled="true" value="#{recetteController.recette.reaanneeavant}">
+                                    <f:convertNumber/>
+                                </p:inputText>
+
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Forecast year #{recetteController.ann + 1}"/>
+                        <h:panelGroup>
+                            <h:panelGrid columns="2">
+
+                                <p:outputLabel value="unit price" />
+                                <p:inputText id="paplus1cout" value="#{recetteController.recette.pranneePlus1Cout}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="paplus1total" listener="#{recetteController.updatePrevionAnneePlus_1()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Quantity" />
+                                <p:inputText id="paplus1qte" value="#{recetteController.recette.pranneePlus1Qte}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="paplus1total" listener="#{recetteController.updatePrevionAnneePlus_1()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Total" />
+                                <p:inputText id="paplus1total" disabled="true" value="#{recetteController.recette.pranneePlus1Total}">
+                                    <f:convertNumber/>
+                                </p:inputText>
+
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Forecast year #{recetteController.ann + 2}" />
+                        <h:panelGroup>
+                            <h:panelGrid columns="2">
+
+                                <p:outputLabel value="unit price" />
+                                <p:inputText id="paplus2cout" value="#{recetteController.recette.pranneePlus2Cout}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="paplus2total" listener="#{recetteController.updatePrevionAnneePlus_2()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Quantity" />
+                                <p:inputText id="paplus2qte" value="#{recetteController.recette.pranneePlus2Qte}">
+                                    <f:convertNumber/>
+                                    <p:ajax event="keyup" update="paplus2total" listener="#{recetteController.updatePrevionAnneePlus_2()}"/>
+                                </p:inputText>
+
+                                <p:outputLabel value="Total" />
+                                <p:inputText id="paplus2total" disabled="true" value="#{recetteController.recette.pranneePlus2Total}">
+                                    <f:convertNumber/>
+                                </p:inputText>
+
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+
+                </h:panelGroup>
+
+                <p:separator/>
+
+                <center>                    
+                    <p:commandButton style="color: red;" icon="ui-icon-close" value="Cancel" onclick="PF('RecetteCreateDialog').hide()"/>
+                    <p:commandButton actionListener="#{recetteController.create()}" icon="ui-icon-check" value="Validate" update="display,:RecetteListForm:datalist,:RecetteListForm:growl" oncomplete="PF('RecetteCreateDialog').hide()"/>
+                </center>
+
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

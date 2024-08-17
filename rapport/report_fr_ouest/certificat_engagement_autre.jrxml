@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificat_engagement_autre" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d44cb833-ea6c-40bb-89a9-c8612781a04d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="60"/>
+	<parameter name="idboncommande" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     boncommande."objet" AS boncommande_objet,
+     boncommande."code" AS boncommande_code,
+     boncommande."montantenlettre" AS boncommande_montantenlettre,
+     boncommande."ttc" AS boncommande_ttc,
+     boncommande."datelivraison" AS boncommande_datelivraison,
+     tache."nom" AS tache_nom,
+     signataire."nom" AS signataire_nom,
+     signataire."prenom" AS signataire_prenom,
+     structure."nom" AS structure_nom,
+     structure."article" AS structure_article,
+     institution."nom" AS institution_nom,
+     institution."chapitre" AS institution_chapitre,
+     imputation."code" AS imputation_code,
+     activite."nom" AS activite_nom,
+     action."nom" AS action_nom,
+     action."code" AS action_code,
+     programme."nom" AS programme_nom,
+     programme."objectifs" AS programme_objectifs,
+     boncommande."reference" AS boncommande_reference,
+     boncommande."dateemission" AS boncommande_dateemission
+FROM
+     "public"."boncommande" boncommande
+     INNER JOIN "public"."moyens" moyens ON boncommande."idmoyens" = moyens."idmoyens"
+     INNER JOIN "public"."tache" tache ON moyens."idtache" = tache."idtache"
+     INNER JOIN "public"."activite" activite ON tache."idactivite" = activite."idactivite"
+     INNER JOIN "public"."action" action ON activite."idaction" = action."idaction"
+     INNER JOIN "public"."programme" programme ON action."idprogramme" = programme."idprogramme"
+     INNER JOIN "public"."signataire" signataire ON boncommande."idsignataire" = signataire."idsignataire"
+     INNER JOIN "public"."structure" structure ON boncommande."idstructure" = structure."idstructure"
+     INNER JOIN "public"."imputation" imputation ON boncommande."idimputation" = imputation."idimputation"
+     INNER JOIN "public"."institution" institution ON structure."idinstitution" = institution."idinstitution"
+WHERE
+     boncommande.idboncommande = $P{idboncommande}]]>
+	</queryString>
+	<field name="boncommande_objet" class="java.lang.String"/>
+	<field name="boncommande_code" class="java.lang.String"/>
+	<field name="boncommande_montantenlettre" class="java.lang.String"/>
+	<field name="boncommande_ttc" class="java.lang.Double"/>
+	<field name="boncommande_datelivraison" class="java.sql.Date"/>
+	<field name="tache_nom" class="java.lang.String"/>
+	<field name="signataire_nom" class="java.lang.String"/>
+	<field name="signataire_prenom" class="java.lang.String"/>
+	<field name="structure_nom" class="java.lang.String"/>
+	<field name="structure_article" class="java.lang.String"/>
+	<field name="institution_nom" class="java.lang.String"/>
+	<field name="institution_chapitre" class="java.lang.String"/>
+	<field name="imputation_code" class="java.lang.String"/>
+	<field name="activite_nom" class="java.lang.String"/>
+	<field name="action_nom" class="java.lang.String"/>
+	<field name="action_code" class="java.lang.String"/>
+	<field name="programme_nom" class="java.lang.String"/>
+	<field name="programme_objectifs" class="java.lang.String"/>
+	<field name="boncommande_reference" class="java.lang.String"/>
+	<field name="boncommande_dateemission" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="553" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="55" width="189" height="20" uuid="b110acf9-844e-452a-9b86-71500319e967"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="35" width="174" height="15" uuid="6d2a2d00-df69-4faf-821e-b746c4e2096d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="0" width="174" height="20" uuid="1027da01-67c6-4ca3-8447-6eb2f800b868"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIC OF CAMEROON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="174" height="15" uuid="cdbf7b8d-8f25-44dd-899b-188e72c46cb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Paix - Travail - Patrie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="35" width="174" height="15" uuid="d70eaab9-2db9-44ac-b561-b74acbdf5228"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[* * * * * * * ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="369" y="55" width="186" height="20" uuid="b873f73e-e928-4211-817c-08d2b02510a9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="381" y="20" width="174" height="15" uuid="f923b195-4ef7-49e7-bc22-c56a8362ebe3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[Peace - Work - Fatherland]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="174" height="20" uuid="6476419a-b475-4346-a875-cbcb1518bc2a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DU CAMEROUN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="95" width="427" height="27" uuid="7094217b-09cd-4fde-9dc8-d9274c4557d7"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.5" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICAT D'ENGAGEMENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="137" width="272" height="20" uuid="459c4ced-a2c8-42ef-8317-6d27e347487a"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Une autorisation d'engagement d'un montant : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="157" width="105" height="20" uuid="5a9df98d-384b-49a5-a4a6-a9a8eb4b98c1"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Montant en chfiffre : ]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="105" y="157" width="167" height="20" uuid="aa8a3cd4-696c-461f-8c42-b2b33bb527aa"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_ttc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="177" width="53" height="20" uuid="e8a426d7-ee95-45bc-8f3c-9a2c8f1afc2b"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[En lettre : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="177" width="437" height="20" uuid="8b18ce6a-327e-46a0-9dc1-c90d82b65fe6"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_montantenlettre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="197" width="222" height="20" uuid="def5d40e-88e1-45f0-8b12-5fe900e3012c"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Est reservé pour l'acte administratif ci-après : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="217" width="63" height="20" uuid="a8381a02-b64f-4233-b6d0-59af1dfff859"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Reference : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="63" y="217" width="269" height="20" uuid="5fdbde24-a6dc-4c67-8a3a-ea804cef172a"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_reference}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="237" width="102" height="20" uuid="c6c6fe31-1e49-4d6c-b0d7-c7a73986222a"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Date de signature : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="102" y="237" width="249" height="20" uuid="9b02d49b-a2c6-4267-8429-2dcb041b6f6c"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_dateemission}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="257" width="63" height="20" uuid="e6aa0c48-544c-4b76-aaae-e05ef14a4400"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Signataire : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="63" y="257" width="427" height="20" uuid="8b56c013-e875-4285-aa2c-7d3387e1df46"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{signataire_nom}+" "+$F{signataire_prenom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="277" width="63" height="20" uuid="d73ff401-3f06-4380-8fc8-c91b3a24bad2"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Objet : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="63" y="277" width="427" height="20" uuid="191fb48c-4f4f-4e09-a4b2-3fa0b9db5e52"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{boncommande_objet}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="297" width="73" height="20" uuid="d6aecaec-fa1a-4878-b093-99a79c55d791"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Bénéficiaires : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="297" width="417" height="20" uuid="28c0a18d-aa9f-40bf-93fd-8ec1f4ba0d43"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CONCERNES"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="317" width="490" height="20" uuid="202e2043-5547-48e1-9363-cadf421fad7d"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Cette autrisation d'engagement est imputée de la manière suivante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="337" width="68" height="20" uuid="c373e5c2-2985-449e-bfde-550a29756115"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Chapitre]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="68" y="357" width="269" height="20" uuid="2646955a-a101-4648-9f7e-99f52228be60"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{structure_nom}+" "+$F{structure_article}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="68" y="337" width="185" height="20" uuid="2e50e778-25b4-4f46-9d8b-697faecab5d0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institution_chapitre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="357" width="68" height="20" uuid="b7b5bc97-a236-4b37-9cd2-a97b231269ad"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Article]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="377" width="68" height="20" uuid="05392a0d-3b4b-4d70-bdfd-6b360742c638"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[Paragraphe]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="68" y="377" width="269" height="20" uuid="ea87eed5-be40-4030-abdb-79ccdaf6f7e2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{imputation_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="411" width="73" height="20" uuid="88a3d176-2a36-446b-9a3e-676307dc513f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Programme]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="411" width="482" height="20" uuid="76b317bb-8c60-4088-a84a-0d0873d0f394"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programme_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="431" width="73" height="30" uuid="3a7e00b5-57e1-4fad-bf3f-05ebe13a6dfc"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Objectifs]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="431" width="482" height="30" uuid="aea449a6-3880-4fa9-a39f-9e8f200649b3"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{programme_objectifs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="461" width="482" height="30" uuid="d2487499-1046-4cf2-87ff-c85aaa1c8d1c"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{action_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="461" width="73" height="30" uuid="8edd5be8-12e4-4488-a6a8-841b125c1a78"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Action]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="491" width="73" height="30" uuid="8a111ef2-0c22-4521-b9e0-6e271a9be0e7"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Activité]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="491" width="482" height="30" uuid="c1f192be-6514-444e-a467-5feb7b8a498f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{activite_nom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="521" width="73" height="30" uuid="ca65ff1e-d3fc-4c79-9951-8501c93850c3"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tache]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="521" width="482" height="30" uuid="6276924f-eebe-4577-9912-2275de22ed77"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tache_nom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

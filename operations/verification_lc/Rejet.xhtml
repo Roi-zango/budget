@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="RejetCreateDlg" 
+                  widgetVar="RejetCreateDialog" 
+                  modal="true" resizable="true" 
+                  appendTo="@(body)" header="Rejetter une lettre commande"
+                  height="650px"
+                  width="70%">
+            <h:form id="RejetCreateForm">
+                <h:panelGroup id="display">
+
+                    <p:dataTable id="datalist" rendered="#{verificationlcController.boncommande.greAgre eq true}" 
+                                 value="#{verificationlcController.ligneboncommandePb}" var="item"                             
+                                 paginator="true" 
+                                 rowKey="#{item.idligneboncommande}"
+                                 rows="15"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="width: 80%;margin-left: 10%;margin-top: 1%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true"
+                                 rowStyleClass="#{item.verif eq true ? 'rowColorBlue' : 'rowColorRed'}">
+
+                        <f:facet name="header"> 
+                            <h:outputText value="REFERENCE MERCURIALES PROBLEMATIQUES"/>
+                        </f:facet> 
+
+                        <p:column style="width: 10% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="Code"/>
+                            </f:facet>
+                            <h:outputText value="#{item.elementcout.code}"/> 
+                        </p:column>
+
+                        <p:column style="width: 45%">
+                            <f:facet name="header">
+                                <h:outputText value="Désignation" />
+                            </f:facet>
+                            <h:outputText value="#{item.elementcout.nom}"/> 
+                        </p:column>
+
+                        <p:column style="width: 10%;text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="Quantité" />
+                            </f:facet>
+                            <h:outputText value="#{item.quantite}"/> 
+                        </p:column>
+
+                        <p:column style="width: 10%;text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="Prix Unitaire" />
+                            </f:facet>
+                            <h:outputText value="#{item.prixunitaire}">
+                                <f:convertNumber />
+                            </h:outputText> 
+                        </p:column>
+
+                        <p:column style="width: 10% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="Cout total"/>
+                            </f:facet>
+                            <h:outputText value="#{item.total}">
+                                <f:convertNumber />
+                            </h:outputText>  
+                        </p:column>
+
+                    </p:dataTable>
+                    
+                    <p:dataTable id="datalist_1" rendered="#{verificationlcController.boncommande.greAgre eq false}" 
+                                 value="#{verificationlcController.lignedecisionPb}" var="item"                             
+                                 paginator="true" 
+                                 rowKey="#{item.idligneDecision}"
+                                 rows="15"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="width: 80%;margin-left: 10%;margin-top: 1%; font-weight: bold; font-style: oblique;"
+                                 rowIndexVar="index"
+                                 emptyMessage="#{msg.Vide}"
+                                 widgetVar="fonctionTable"
+                                 draggableColumns="true"
+                                 resizableColumns="true"
+                                 rowStyleClass="#{item.verif eq true ? 'rowColorBlue' : 'rowColorRed'}">
+
+                        <f:facet name="header"> 
+                            <h:outputText value="LIGNES PROBLEMATIQUES"/>
+                        </f:facet> 
+
+                        <p:column style="width: 10% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="Code"/>
+                            </f:facet>
+                            <h:outputText value="#{item.code}"/> 
+                        </p:column>
+
+                        <p:column style="width: 45%">
+                            <f:facet name="header">
+                                <h:outputText value="Désignation" />
+                            </f:facet>
+                            <h:outputText value="#{item.libelle}"/> 
+                        </p:column>
+
+                        <p:column style="width: 10%;text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="Quantité" />
+                            </f:facet>
+                            <h:outputText value="#{item.quantite}"/> 
+                        </p:column>
+
+                        <p:column style="width: 10%;text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="Prix Unitaire" />
+                            </f:facet>
+                            <h:outputText value="#{item.coutunitaire}">
+                                <f:convertNumber />
+                            </h:outputText> 
+                        </p:column>
+
+                        <p:column style="width: 10% ; text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="Cout total"/>
+                            </f:facet>
+                            <h:outputText value="#{item.total}">
+                                <f:convertNumber />
+                            </h:outputText>  
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:separator style="width: 80% ; margin-left: 10%"/>
+
+                    <p:outputLabel style=" margin-left: 10%; font-size: 25px" value="Observation" />
+                    <br/>
+                    <p:inputTextarea value="#{verificationlcController.verificationbc.observation}" 
+                                     cols="900" rows="15" style="width:900px; margin-left: 10%" 
+                                     required="true" requiredMessage="Valeur Obligatoire">
+                        <p:ajax />
+                    </p:inputTextarea>
+
+                    <p:separator style="width: 80% ; margin-left: 10%" />
+
+                    <center>                        
+                        <p:commandButton icon="ui-icon-close" value="#{langues.fermer}" onclick="PF('RejetCreateDialog').hide()"/>
+                        <p:commandButton actionListener="#{verificationlcController.saveRejet()}" icon="ui-icon-check" value="#{langues.Valider}" update="display,:VerificationCreateForm,:VerificationListForm:msg,:VerificationListForm:datalist" />
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

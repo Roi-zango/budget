@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="ActionCreateDlg" 
+                  widgetVar="ActionCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="AJOUTER UNE ACTION" closeOnEscape="true">
+
+            <h:form id="ActionCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+                    <h:panelGrid columns="3" columnClasses="column">
+                                     
+                        <p:outputLabel value="Sous-Programme" for="programme" />
+                        <p:selectOneMenu autoWidth="false" style="width: 500px" id="programme" filter="true" value="#{actionController.programme.idprogramme}" required="true" requiredMessage="Valeur obligatoire">
+                            <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                            <f:selectItems value="#{actionController.programmes}" var="item" itemLabel="#{item.code} #{item.nom}" itemValue="#{item.idprogramme}" />
+                        </p:selectOneMenu>
+                        <p:message for="programme" />
+                        
+                        <p:outputLabel value="Code" for="code" />
+                        <p:inputText style="width: 100px" id="code" value="#{actionController.action.code}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="code" />
+
+                        <p:outputLabel value="Name" for="nom" />
+                        <p:inputTextarea style="width: 600px" cols="500" rows="5" id="nom" value="#{actionController.action.nom}" required="true" requiredMessage="Valeur obligatoire"/>
+                        <p:message for="nom" />
+                        
+                        <p:outputLabel value="Objectifs" for="objectif" />
+                        <p:inputTextarea style="width: 600px" cols="500" rows="5" id="objectif" value="#{actionController.action.objectifs}" />
+                        <p:message for="nom" />
+                        
+                        <p:outputLabel value="Indicateur" for="indicateur" />
+                        <p:inputTextarea style="width: 600px" cols="500" rows="5" id="indicateur" value="#{actionController.action.indicateur}" />
+                        <p:message for="nom" />
+                                                
+                    </h:panelGrid>
+
+                    <p:separator/>
+
+                    <center>
+                        
+                        <p:commandButton value="#{langues.Cancel}" onclick="PF('ActionCreateDialog').hide()"/>
+                        
+                        <p:commandButton actionListener="#{actionController.save()}" value="#{langues.Save}" update="display,:ActionListForm:datalist,:msg">
+                            <p:confirm header="#{langues.ConfirmationHeader}" message="#{langues.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        
+                    </center>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

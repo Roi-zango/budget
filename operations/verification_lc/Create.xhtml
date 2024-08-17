@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+
+        <p:dialog id="VerificationCreateDlg" 
+                  widgetVar="VerificationCreateDialog" 
+                  modal="true" resizable="false" appendTo="@(body)" 
+                  header="VERIFICATION DES LETTRES COMMANDES" closeOnEscape="true"
+                  width="90%"
+                  height="650px">
+
+            <h:form id="VerificationCreateForm">
+
+                <h:panelGroup id="display" rendered="true">
+
+                    <div style="width: 100% ; height: 100%" >
+
+                        <div style="float: left ; width: 60%">
+
+                            <h:panelGrid columns="3" columnClasses="column">
+
+                                <p:outputLabel value="Exercice Budgétaire" />
+                                <p:outputLabel value="#{verificationlcController.budget.annee}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Bon de commande" for="boncommande" />
+                                <p:selectOneMenu id="boncommande" filter="true" value="#{verificationlcController.boncommande}" converter="boncommandeConverter" required="true" requiredMessage="Valeur obligatoire">
+                                    <f:selectItem itemLabel="#{langues.choisir}" itemValue="" />
+                                    <f:selectItems value="#{verificationlcController.boncommandes}" var="item" itemLabel="#{item.code}" itemValue="#{item}" />
+                                    <p:ajax update="datalist,datalist_1,prestataire,objet,reference,dateemission,delailivraison,montant_en_lettre,avance,mode_payement,info_fi,tache,imputation,structure,signataire,datalist" listener="#{verificationlcController.updateData()}"/>
+                                </p:selectOneMenu>
+                                <p:message for="boncommande" />
+
+                                <p:outputLabel for="date_verif" value="Date de verif" />
+                                <p:calendar pattern="dd/MM/yyyy" id="date_verif" value="#{verificationlcController.verificationbc.dateverification}" required="true" rendererType="Valeur obligatoire}"  >
+                                    <p:ajax event="dateSelect" />
+                                </p:calendar>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Paragraphe" />
+                                <p:outputLabel value="#{verificationlcController.imputation.code} - #{verificationlcController.imputation.nom}" id="imputation"  />               
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Structure" />
+                                <p:outputLabel value="#{verificationlcController.structure.nom}" id="structure" />                           
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Prestataire" />
+                                <p:outputLabel value="#{verificationlcController.societe.nom}" id="prestataire" />                           
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Signataire" for="signataire" />
+                                <p:outputLabel value="#{verificationlcController.signataire.nom} #{verificationlcController.signataire.prenom}" id="signataire" />                            
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Object" />
+                                <p:outputLabel id="objet" value="#{verificationlcController.boncommande.objet}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Reference" />
+                                <p:outputLabel style="width: 200px" id="reference" value="#{verificationlcController.boncommande.code}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Date d'émission" />
+                                <p:outputLabel id="dateemission" value="#{verificationlcController.boncommande.dateemission}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Délai de livrasion (en jrs)" />
+                                <p:outputLabel style="width: 75px" id="delailivraison" value="#{verificationlcController.boncommande.delailivraison}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Montant en lettre" />
+                                <p:outputLabel style="width: 300px" id="montant_en_lettre" value="#{verificationlcController.boncommande.montantenlettre}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Avance" />
+                                <p:outputLabel style="width: 100px" id="avance" value="#{verificationlcController.boncommande.avance}" />
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Mode de payement" />
+                                <h:panelGroup id="mode_payement">
+                                    <h:panelGrid columns="6">
+                                        <p:outputLabel value="Chèque" />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationlcController.boncommande.cheque}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="Espèce" />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationlcController.boncommande.espece}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                        <p:outputLabel value="Virement"  />
+                                        <p:selectBooleanCheckbox disabled="true" value="#{verificationlcController.boncommande.virement}">
+                                            <p:ajax />
+                                        </p:selectBooleanCheckbox>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Taches" />
+                                <p:outputLabel id="tache" value="#{verificationlcController.tache.nom}" />                            
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Moyens" for="moyens" />
+                                <p:outputLabel id="moyens" value="#{verificationlcController.imputation.code}" />
+                                <p:outputLabel value=""/>
+
+                                <p:outputLabel value="Montant Programmé" />
+                                <p:outputLabel id="montant_programme" style="width: 100px" value="#{verificationlcController.moyens.ct}">
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                                <p:outputLabel value="Montant Exécuté" />
+                                <p:outputLabel id="montant_execute" style="width: 100px" value="#{verificationlcController.moyens.montantexecute}" >
+                                    <f:convertNumber />
+                                </p:outputLabel>
+                                <p:outputLabel value="" />
+
+                            </h:panelGrid>
+
+                            <p:separator/>
+
+                            <p:dataTable id="datalist" rendered="#{verificationbcController.boncommande.greAgre eq true}"
+                                         value="#{verificationlcController.ligneboncommandes}" var="item"                             
+                                         paginator="true" 
+                                         rowKey="#{item.idligneboncommande}"
+                                         rows="15"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="width: 100%;margin-top: 1%; font-weight: bold; font-style: oblique;"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{msg.Vide}"
+                                         widgetVar="fonctionTable"
+                                         draggableColumns="true"
+                                         resizableColumns="true"
+                                         rowStyleClass="#{item.verif eq true ? 'rowColorBlue' : 'rowColorRed'}">
+
+                                <f:facet name="header"> 
+                                    <h:outputText value="LISTE DES REFERENCES"/>
+                                </f:facet> 
+
+                                <p:column style="width: 10% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Code"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.elementcout.code}"/> 
+                                </p:column>
+
+                                <p:column style="width: 45%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Désignation" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.elementcout.nom}"/> 
+                                </p:column>
+
+                                <p:column style="width: 10%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="Quantité" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.quantite}"/> 
+                                </p:column>
+
+                                <p:column style="width: 10%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="Prix U" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.prixunitaire}">
+                                        <f:convertNumber />
+                                    </h:outputText> 
+                                </p:column>
+
+                                <p:column style="width: 10% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Cout total"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.total}">
+                                        <f:convertNumber />
+                                    </h:outputText>  
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:dataTable id="datalist_1" rendered="#{verificationbcController.boncommande.greAgre eq false}"
+                                         value="#{verificationlcController.lignedecisions}" var="item1"                             
+                                         paginator="true" 
+                                         rowKey="#{item1.idligneDecision}"
+                                         rows="15"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+                                         style="width: 100%;margin-top: 1%; font-weight: bold; font-style: oblique;"
+                                         rowIndexVar="index"
+                                         emptyMessage="#{msg.Vide}"
+                                         widgetVar="fonctionTable"
+                                         draggableColumns="true"
+                                         resizableColumns="true"
+                                         rowStyleClass="#{item1.verif eq true ? 'rowColorBlue' : 'rowColorRed'}">
+
+                                <f:facet name="header"> 
+                                    <h:outputText value="LISTE DES ELEMENTS"/>
+                                </f:facet> 
+
+                                <p:column style="width: 10% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Code"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item1.code}"/> 
+                                </p:column>
+
+                                <p:column style="width: 35%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Désignation" />
+                                    </f:facet>
+                                    <h:outputText value="#{item1.libelle}"/> 
+                                </p:column>
+
+                                <p:column style="width: 7%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="Quantité" />
+                                    </f:facet>
+                                    <h:outputText value="#{item1.quantite}"/> 
+                                </p:column>
+
+                                <p:column style="width: 12%;text-align: center">
+                                    <f:facet name="header">
+                                        <h:outputText value="Prix U" />
+                                    </f:facet>
+                                    <h:outputText value="#{item1.coutunitaire}">
+                                        <f:convertNumber />
+                                    </h:outputText> 
+                                </p:column>
+
+                                <p:column style="width: 13% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Cout total"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item1.total}">
+                                        <f:convertNumber />
+                                    </h:outputText>  
+                                </p:column>
+
+                                <p:column style="width: 7% ; text-align:center" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Modif"/>
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox value="#{item1.verif}" >
+                                        <p:ajax listener="#{verificationlcController.affiche(item1.verif)}"/>
+                                    </h:selectBooleanCheckbox> 
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:separator/>
+
+                            <p:panelGrid id="info_fi" style="width: 100%;" columns="12">
+
+                                <p:outputLabel value="Total ht"/>
+                                <p:outputLabel id="ht" value="#{verificationlcController.boncommande.totalht}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Tva"/>
+                                <p:outputLabel id="tva" value="#{verificationlcController.boncommande.tva}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Montant air"/>
+                                <p:outputLabel id="totalair" value="#{verificationlcController.boncommande.totalair}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="TTC"/>
+                                <p:outputLabel id="ttc" value="#{verificationlcController.boncommande.ttc}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                                <p:outputLabel value="NAP"/>
+                                <p:outputLabel id="netaper" value="#{verificationlcController.boncommande.netapayer}">                               
+                                    <f:convertNumber />
+                                </p:outputLabel>
+
+                            </p:panelGrid>
+
+                        </div>
+
+                        <div style="float: right ; width: 39%;margin-left: 1%">
+
+                            <center>
+                                <p:commandButton value="#{langues.fermer}" onclick="PF('VerificationCreateDialog').hide()"/>
+
+                                <p:commandButton rendered="false" class="btn btn-danger" 
+                                                 actionListener="#{verificationlcController.prepareRejet()}" 
+                                                 value="Rejetter" update="display,:VerificationListForm:datalist,:RejetCreateForm,:VerificationListForm:msg"/>
+                            </center>
+
+                            <p:separator/>
+
+                            <center>
+                                <h:panelGrid columns="4">
+
+                                    <h:outputText value="Validation" />
+                                    <h:selectBooleanCheckbox id="valide_sb" value="#{verificationlcController.valide}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationlcController.updateRenderPanel('valide')}"/>
+                                    </h:selectBooleanCheckbox>
+
+                                    <h:outputText value="Rejet" />
+                                    <h:selectBooleanCheckbox id="rejet_sb" value="#{verificationlcController.rejet}" >
+                                        <p:ajax update="panel_1,panel_2,valide_sb,rejet_sb,display" listener="#{verificationlcController.updateRenderPanel('rejet')}" />
+                                    </h:selectBooleanCheckbox>
+
+                                </h:panelGrid>
+                            </center>
+
+                            <p:separator/>
+
+                            <p:panel id="panel_1" rendered="#{verificationlcController.valide}" header="Zone de saisie des Observations de la Validation" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <p:separator/>
+
+                                <p:inputTextarea value="#{verificationlcController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationlcController.saveValidation()}" value="#{langues.valider}" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous valider cette lettre commande ?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                            <p:panel id="panel_2" rendered="#{verificationlcController.rejet}" header="Zone de saisie des Observations du rejet" >
+
+                                <p:outputLabel style="font-size : 25px" value="Observation" />
+                                <br/>
+                                <p:inputTextarea value="#{verificationlcController.verificationbc.observation}" cols="500" rows="15" style="width: 500px">
+                                    <p:ajax/>
+                                </p:inputTextarea>
+
+                                <p:separator/>
+
+                                <center>
+                                    <p:commandButton class="btn btn-primary" actionListener="#{verificationlcController.saveRejet()}" value="#{langues.valider}" update="display,:VerificationListForm:datalist,:VerificationListForm:msg">
+                                        <p:confirm header="Confirmation" message="Voulez - vous rejeter cette lettre commande ?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </center>
+
+                            </p:panel>
+
+                        </div>
+
+                    </div>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

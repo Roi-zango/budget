@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:dialog id="ActiviteCreateDlg" widgetVar="ActiviteCreateDialog" 
+                  modal="true" resizable="true" 
+                  appendTo="@(body)"
+                  height="600px"
+                  width="60%"
+                  header="CREATE/MODIFY A NEW TASK">
+            <h:form id="ActiviteCreateForm">
+                <h:panelGroup id="display">
+
+                    <div style="width: 100%;margin-top: 1%">
+
+                        <h:panelGrid style="width: 80%;margin-left: 10%;" columns="3">
+
+                            <p:outputLabel value="Structure" for="structure" />
+                            <p:selectOneMenu id="structure" value="#{activiteController.structure.idstructure}" required="true" requiredMessage="La structure est requis">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                                <f:selectItems value="#{activiteController.structures}" var="structure" itemLabel="#{structure.nom}" itemValue="#{structure.idstructure}"/>                                                                             
+                                <p:ajax/>
+                            </p:selectOneMenu>
+                            <p:message for="structure" />
+           
+                            <p:outputLabel value="Program" for="programme" />
+                            <p:selectOneMenu id="programme" value="#{activiteController.programme.idprogramme}" required="true" requiredMessage="Le programme  est requis"  filter="true" filterMatchMode="contains">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                                <f:selectItems value="#{activiteController.programmes}" var="prg" itemLabel="#{prg.code} #{prg.nom}" itemValue="#{prg.idprogramme}"/>                                                                             
+                                <p:ajax listener="#{activiteController.filterAction()}" update="action"/>
+                            </p:selectOneMenu>
+                            <p:message for="programme" />
+
+                            <p:outputLabel value="Activity" for="action" />
+                            <p:selectOneMenu id="action" value="#{activiteController.action.idaction}" required="true" requiredMessage="L'action est requise" filter="true" filterMatchMode="contains">
+                                <f:selectItem itemLabel="#{langues.choisir}" itemValue=""/>
+                                <f:selectItems value="#{activiteController.actions}" var="action" itemLabel="#{action.code} #{action.nom}" itemValue="#{action.idaction}"/>                                                                             
+                            </p:selectOneMenu>
+                            <p:message for="action" />
+                            
+                            <p:outputLabel value="Wording" for="libelle" />
+                            <p:inputTextarea rows="4" required="true" id="libelle" style="width: 600px" value="#{activiteController.activite.nom}">
+                                <p:ajax/>
+                            </p:inputTextarea>
+                            <p:message for="libelle" />
+
+                            <p:outputLabel value="Code" for="code" />
+                            <p:inputText id="code" style="width: 100px" value="#{activiteController.activite.code}" />
+                            <p:message for="code" />
+
+                            <p:outputLabel value="Type of activity" for="typeactivite"/>
+                            <p:selectOneMenu id="typeactivite" value="#{activiteController.typeactivite.idtypeactivite}" filter="true" filterMatchMode="contains">
+                                <f:selectItem itemLabel="-- faites votre choix --" itemValue="-1"/>
+                                <f:selectItems value="#{activiteController.typeactivites}" var="ta" itemLabel="#{ta.nom}" itemValue="#{ta.idtypeactivite}"/>
+                                <p:ajax/>
+                            </p:selectOneMenu>
+                            <p:message for="typeactivite" />
+
+                            <p:outputLabel value="Rank" for="rang"/>
+                            <p:selectOneMenu id="rang" value="#{activiteController.rang.idrang}" filter="true" filterMatchMode="contains">
+                                <f:selectItem itemLabel="-- faites votre choix --" itemValue="-1"/>
+                                <f:selectItems value="#{activiteController.listRang}" var="l" itemLabel="#{l.nom}" itemValue="#{l.idrang}"/>
+                                <p:ajax/>
+                            </p:selectOneMenu>
+                            <p:message for="rang" />
+
+                            <p:outputLabel value="Managers" for="respo" />
+                            <p:inputTextarea rows="2"  id="respo" style="width: 600px" value="#{activiteController.activite.responsables}">
+                                <p:ajax/>
+                            </p:inputTextarea>
+                            <p:message for="respo" />
+
+                            <p:outputLabel value="Justifications" for="justif" />
+                            <p:inputTextarea rows="4" id="justif" style="width: 600px" value="#{activiteController.activite.justification}">
+                                <p:ajax/>
+                            </p:inputTextarea>
+                            <p:message for="justif" />
+
+                            <p:outputLabel rendered="#{activiteController.equals('Edit')}" value="Status" for="etat" />
+                            <p:selectOneMenu rendered="#{activiteController.equals('Edit')}" id="etat" value="#{activiteController.activite.etat}">
+                                <f:selectItem itemLabel="Actif" itemValue="Actif" />
+                                <f:selectItem itemLabel="Inactif" itemValue="Inactif" />
+                            </p:selectOneMenu>
+                            <p:message for="etat" />
+
+
+                        </h:panelGrid>
+
+                    </div>
+
+                    <p:separator/>
+
+                     <center>                        
+                        <p:commandButton style="color: red;" icon="ui-icon-close" value="Cancel" onclick="PF('ActiviteCreateDialog').hide()"/>
+                        <p:commandButton actionListener="#{activiteController.save()}" 
+                                         icon="ui-icon-check" value="validate" 
+                                         update="display,:ActiviteListForm:datalist,:ActiviteListForm:growl"/>
+                    </center>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
